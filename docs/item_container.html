@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>item_container.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="client.html">
+                client.js
+              </a>
+            
+              
+              <a class="source" href="item_container.html">
+                item_container.js
+              </a>
+            
+              
+              <a class="source" href="logger.html">
+                logger.js
+              </a>
+            
+              
+              <a class="source" href="worker.html">
+                worker.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>item_container.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-pi">"use strict"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h1 id="result-stream">Result stream</h1>
+<p>TODO: describe dependencies</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> stream = <span class="hljs-built_in">require</span>(<span class="hljs-string">"stream"</span>);
+<span class="hljs-keyword">var</span> Writable = stream.Writable;
+<span class="hljs-keyword">var</span> _ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'lodash'</span>);
+<span class="hljs-keyword">var</span> util = <span class="hljs-built_in">require</span>(<span class="hljs-string">'util'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Implements Writable stream so we be able to pipe into docker container
+output stream</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Constructor function - handles stream initialization</p>
+<p>Arguments:</p>
+<ul>
+<li><code>item</code> <strong>literal</strong></li>
+<li>callback <strong>function</strong> executed once stream ready to write line of output</li>
+<li>options <strong>Stream options</strong></li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> Container = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, callback, options)</span> {</span>
+    <span class="hljs-keyword">this</span>.callback = callback;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Build Id</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.id = item.id;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Line number</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.lineNum = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.item = item;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Buffer to hold incomplete chunks (it will be complete once line feed or carriage return detected)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.lineBuffer = <span class="hljs-string">""</span>;
+    options = !options ? {} : options;
+    options.objectMode = <span class="hljs-literal">true</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Calling parent constructor</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    Writable.call(<span class="hljs-keyword">this</span>, options);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Inheriting from StreamWritable</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>util.inherits(Container, Writable);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Handles chunk of data. It will buffer it if line end not detected</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Container.prototype.parse = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+    <span class="hljs-keyword">var</span> chars = [
+        {from: <span class="hljs-regexp">/\r\r/g</span>, to: <span class="hljs-string">"\r[#SPLIT#][#RETURN#]"</span>},
+        {from: <span class="hljs-regexp">/\r\n/g</span>, to: <span class="hljs-string">"[#SPLIT#]"</span>},
+        {from: <span class="hljs-regexp">/\n/g</span>, to: <span class="hljs-string">"[#SPLIT#]"</span>},
+        {from: <span class="hljs-regexp">/\r/g</span>, to: <span class="hljs-string">"\r[#RETURN#]"</span>},
+        {from: <span class="hljs-regexp">/\r\s/g</span>, to: <span class="hljs-string">" "</span>}
+    ];
+
+    <span class="hljs-keyword">var</span> result = data.toString();
+    _.each(chars, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, idx)</span> {</span>
+        result = result.replace(val.from, val.to);
+    });
+
+    <span class="hljs-keyword">this</span>.lineBuffer += result;
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\[#SPLIT#\]/</span>.test(result)) {
+        <span class="hljs-keyword">var</span> lines = [];
+        <span class="hljs-keyword">var</span> result = <span class="hljs-keyword">this</span>.lineBuffer.split(<span class="hljs-string">"[#SPLIT#]"</span>).filter(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">return</span> e
+        });
+        _.each(result, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(l)</span> {</span>
+            lines = lines.concat(l.split(<span class="hljs-string">"[#RETURN#]"</span>));
+        }, <span class="hljs-keyword">this</span>);
+        <span class="hljs-keyword">this</span>.lineBuffer = <span class="hljs-string">""</span>;
+        <span class="hljs-keyword">return</span> lines.filter(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+            <span class="hljs-keyword">return</span> e != <span class="hljs-string">"\r"</span> &amp;&amp; e != <span class="hljs-string">""</span>
+        });
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Handles chunk of data from pipe
+Note:it may call <code>this.callback</code> more than once</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Container.prototype._write = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(chunk, enc, cb)</span> {</span>
+    <span class="hljs-keyword">var</span> lines = <span class="hljs-keyword">this</span>.parse(chunk);
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.callback &amp;&amp; lines) {
+        _.each(lines, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(l)</span> {</span>
+            <span class="hljs-keyword">this</span>.callback({
+                id: <span class="hljs-keyword">this</span>.id,
+                line: <span class="hljs-keyword">this</span>.lineNum++,
+                data: l
+            });
+        }, <span class="hljs-keyword">this</span>);
+    }
+    cb();
+};
+
+module.exports = Container;</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+{
+  "name": "worker",
+  "version": "0.0.0",
+  "description": "The worker server that will handle all docker manipulating routine",
+  "main": "index.js",
+  "scripts": {
+    "test": "sudo mocha tests -R progress && sudo mocha --require blanket -R html-cov tests > coverage.html",
+    "startDev": "NODE_ENV=development sudo node service.js",
+    "startProd": "NODE_ENV=production sudo node service.js",
+    "docs": "docco lib/*.js"
+  },
+  "config": {
+    "blanket": {
+      "pattern": "worker/lib"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egorovpavel/worker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/egorovpavel/worker/issues"
+  },
+  "homepage": "https://github.com/egorovpavel/worker",
+  "dependencies": {
+    "bull": "^0.1.6",
+    "dockerode": "~1.2.8",
+    "lodash": "^2.4.1",
+    "npid": "^0.4.0",
+    "redis": "^0.10.3",
+    "winston": "^0.7.3"
+  },
+  "devDependencies": {
+    "blanket": "^1.1.6",
+    "mocha": "~1.18.2",
+    "should": "^3.2.0-beta1"
+  }
+}
