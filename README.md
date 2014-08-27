@@ -36,6 +36,10 @@ Now install vagrant plugin for berkshelf support:
     Installing the 'vagrant-berkshelf' plugin. This can take a few minutes...
     Installed the plugin 'vagrant-berkshelf (2.0.1)!'
 
+Next install cookbook recipes using berkshelf. Inside /cookbooks/ciaas open console and type
+
+    $ berks install
+
 
 #### Start and provision VM
 
