@@ -1,0 +1,23 @@
+{
+    "development": {
+        "username": "root",
+        "password": "root",
+        "database": "ci",
+        "host": "127.0.0.1",
+        "dialect": "mysql"
+    },
+    "test": {
+        "username": "root",
+        "password": "root",
+        "database": "ci",
+        "host": "127.0.0.1",
+        "dialect": "mysql"
+    },
+    "production": {
+        "username": "ciadmin",
+        "password": "ci777admin",
+        "database": "ci",
+        "host": "ci.curd3gwbhzuj.eu-west-1.rds.amazonaws.com",
+        "dialect": "mysql"
+    }
+}

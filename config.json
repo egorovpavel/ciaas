@@ -1,0 +1,20 @@
+{
+    "development": {
+        "app": {
+            "port": 3000
+        },
+        "redis": {
+            "host": "127.0.0.1",
+            "port": "6379"
+        }
+    },
+    "production": {
+        "app": {
+            "port": 80
+        },
+        "redis": {
+            "host": "ci.u43szi.0001.euw1.cache.amazonaws.com",
+            "port": "6379"
+        }
+    }
+}
