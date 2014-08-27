@@ -30,11 +30,15 @@ ChefDK & Berkshelf
     $ berks -v
     3.1.3
 
-Now install vagrant plugin for berkshelf support:
+Now install vagrant plugin for berkshelf and  ominibus support:
 
     $ vagrant plugin install vagrant-berkshelf --plugin-version 2.0.1
     Installing the 'vagrant-berkshelf' plugin. This can take a few minutes...
     Installed the plugin 'vagrant-berkshelf (2.0.1)!'
+
+    $ vagrant plugin install vagrant-omnibus
+    Installing the 'vagrant-omnibus' plugin. This can take a few minutes...
+    Installed the plugin 'vagrant-omnibus (1.4.1)'!
 
 Next install cookbook recipes using berkshelf. Inside /cookbooks/ciaas open console and type
 

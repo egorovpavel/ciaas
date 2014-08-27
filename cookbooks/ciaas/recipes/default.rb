@@ -14,3 +14,8 @@ end
 execute "install_grunt-cli" do
     command "sudo npm install -g grunt-cli"
 end
+
+execute "npm-install-worker" do
+	cwd '/vagrant/app/worker'
+    command "sudo npm install"
+end
