@@ -1,0 +1,32 @@
+<div class="editor">
+    <div class="project-nav">
+        <ul>
+            <li class="active"><a href="/dashboard">Editor</a></li>
+        </ul>
+    </div>
+    <div>
+        <form method="post">
+            <div class="ctrl">
+                <label for="lang">Language</label>
+                <select ng-model="item.config.language" id="lang">
+                    <option>nodejs</option>
+                </select>
+            </div>
+            <div class="ctrl">
+                <label for="repo_uri">Reposity</label>
+                <input ng-model="item.reposity.uri" id="repo_uri" type="text"/>
+            </div>
+            <div class="ctrl">
+                <label for="repo_name">Reposity Name</label>
+                <input ng-model="item.reposity.name" id="repo_name" type="text"/>
+            </div>
+            <div class="ctrl">
+                <label for="commands">Commands</label>
+                <textarea ng-model="item.payload.commands" rows="10" id="commands" name="commands"></textarea>
+            </div>
+            <div class="action">
+                <button ng-click="build(item)" ng-disabled="!item.payload.commands || !item.reposity.uri" class="primary">Build</button>
+            </div>
+        </form>
+    </div>
+</div>

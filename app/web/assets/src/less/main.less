@@ -1,0 +1,128 @@
+.content {
+  margin-top: 60px;
+  padding-top: 30px;
+}
+
+.editor {
+  .make-row();
+}
+
+td {
+  form {
+    margin: 0px;
+  }
+}
+
+.table tbody > tr > td.vert-align {
+  vertical-align: bottom;
+}
+
+form {
+  margin-top: 10px;
+  .ctrl {
+    margin: 10px;
+    textarea {
+      .form-control;
+      height: 200px;
+      font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+      font-size: 13px;
+    }
+    input {
+      .form-control;
+    }
+    select {
+      .form-control;
+    }
+  }
+  .action {
+    .form-group;
+    .pull-right;
+    margin-top: 1em;
+    button {
+      .btn;
+      .btn-lg;
+    }
+    button.primary {
+      .btn-primary;
+    }
+    button.cancel {
+      .btn-default;
+    }
+  }
+}
+
+.output {
+  .form-control;
+  margin-top: 10px;
+  height: auto;
+  color: #FFF;
+  min-height: 200px;
+  background-color: #000;
+  font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+  font-size: 13px;
+}
+
+header {
+  div {
+    .navbar;
+    .navbar-default;
+    .navbar-fixed-top;
+    div {
+      .container;
+    }
+  }
+}
+
+.project-nav {
+  ul {
+    .nav;
+    .nav-tabs;
+  }
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  background-color: #EBE200;
+  -webkit-animation: rotateplane 1.2s infinite ease-in-out;
+  animation: rotateplane 1.2s infinite ease-in-out;
+  float: left;
+  margin: 2px 8px 0px 0px;
+  border-radius: 50%;
+}
+
+@-webkit-keyframes rotateplane {
+  0% {
+    -webkit-transform: perspective(120px)
+  }
+  50% {
+    -webkit-transform: perspective(120px) rotateY(180deg)
+  }
+  100% {
+    -webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg)
+  }
+}
+
+@keyframes rotateplane {
+  0% {
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
+  }
+  100% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+  }
+}
+
+.btn-group-nowrap, .btn-group-nowrap .btn {
+  white-space: nowrap !important;
+  float: none;
+}
+
+dl dd {
+  margin-bottom: 15px;
+}

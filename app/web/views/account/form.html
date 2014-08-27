@@ -1,0 +1,50 @@
+{%extends '../common/layout.html'%}
+
+{%block center_column%}
+<legend>
+    {%if account.id%}
+    Edit account
+    <small>{{account.username}}</small>
+    {%else%}
+    Create account
+    {%endif%}
+</legend>
+<div class="row">
+    <div class="col-lg-12">
+        <form method="post">
+            <div class="form-group {%if errors.username%}has-error has-feedback{%endif%}">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" rows="1" name="account[username]" id="username"
+                       value="{{account.username|default('')}}"/>
+                {%if errors.username%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
+                <span class="help-block">{{errors.username|default('')}}</span>
+            </div>
+            <div class="form-group {%if errors.full_name%}has-error has-feedback{%endif%}">
+                <label for="full_name">Full Name</label>
+                <input type="text" class="form-control" rows="1" name="account[full_name]" id="full_name"
+                       value="{{account.full_name|default('')}}"/>
+                {%if errors.full_name%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
+                <span class="help-block">{{errors.full_name|default('')}}</span>
+            </div>
+            {%if !account.id%}
+            <div class="form-group {%if errors.email%}has-error has-feedback{%endif%}">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" rows="1" name="account[email]" id="email"
+                       value="{{account.email|default('')}}"/>
+                {%if errors.email%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
+                <span class="help-block">{{errors.email|default('')}}</span>
+            </div>
+            {%endif%}
+            <div class="form-group {%if errors.password%}has-error has-feedback{%endif%}">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" rows="1" name="account[password]" id="password"/>
+                {%if errors.password%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
+                <span class="help-block">{{errors.password|default('')}}</span>
+            </div>
+            <div class="form-group {%if errors.username%}has-error{%endif%}">
+                <button type="submit" class="btn btn-primary pull-right">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+{%endblock%}

@@ -1,0 +1,41 @@
+{%extends '../common/layout.html'%}
+
+{%block center_column%}
+<form action="/project" method="post">
+    <div style="margin-bottom: 20px;">
+        <label style="display:block; color:#333; font-size: 14px; font-weight:bold;">Project Name</label>
+        <textarea class="form-control" rows="1" name = "proj_name"></textarea>
+    </div>
+    <div style="margin-bottom: 20px;">
+        <label style="display:block;color:#333;font-size: 14px;font-weight:bold;">Languages</label>
+        <div style="margin:10px 0px;">
+            <label class="checkbox"><input type="checkbox" name="lang_nodejs"/> Node</label>
+            <label class="checkbox"><input type="checkbox" name="lang_java"/> Java</label>
+            <label class="checkbox"><input type="checkbox" name="lang_php"/> PHP</label>
+        </div>
+    </div>
+    <div style="margin-bottom: 20px;">
+        <label style="display:block;color:#333;font-size: 14px;font-weight:bold;">Dependencies</label>
+        <div style="margin:10px 0px;">
+            <label class="checkbox"><input type="checkbox" name="dep_redis"/> Redis</label>
+            <label class="checkbox"><input type="checkbox" name="dep_mysql"/> MySql</label>
+            <label class="checkbox"><input type="checkbox" name="dep_sqlite"/> SQLite</label>
+        </div>
+    </div>
+    <div style="margin-bottom: 20px;">
+        <label style="display:block; color:#333; font-size: 14px; font-weight:bold;">Commands</label>
+        <textarea class="form-control" rows="6" name = "commands"></textarea>
+    </div>
+    <div style="margin-bottom: 20px;">
+        <label style="display:block; color:#333; font-size: 14px; font-weight:bold;">Artifacts</label>
+        <textarea class="form-control" rows="6" name = "artifacts"></textarea>
+    </div>
+    <div style="margin-bottom: 20px;">
+        <label style="display:block; color:#333; font-size: 14px; font-weight:bold;">Repository Url</label>
+        <textarea class="form-control" rows="6" name = "repository_url"></textarea>
+    </div>
+    <div class="form-actions-custom" style="padding-left:0px; margin-left:0px; margin-top:50px;">
+        <button type="submit" class="btn btn-default">Save</button>
+    </div>
+</form>
+{%endblock%}
