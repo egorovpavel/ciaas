@@ -8,7 +8,7 @@ module.exports = {
             return migration.removeColumn('Accounts', 'full_name');
         }).then(function () {
 
-        }).finnaly(function () {
+        }).finally(function () {
             done();
         });
 

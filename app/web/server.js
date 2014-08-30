@@ -8,9 +8,6 @@ var controllers_path = __dirname + '/controllers';
 var config = require('./config.json')[process.env.NODE_ENV || 'development'];
 var passport = require('passport');
 
-console.log(process.env);
-console.log(config);
-
 var app = express();
 app.http().io();
 app.set('env', process.env.NODE_ENV || 'development');

@@ -14,18 +14,6 @@ module.exports = function (sequelize, DataTypes) {
             },
             unique: true
         },
-        full_name: {
-            type: DataTypes.STRING,
-            validate: {
-                notEmpty: {
-                    msg: "Full name cant be empty"
-                },
-                is: {
-                    args: ["^[a-z ]+$", 'i'],
-                    msg: "Full name must be alpha"
-                }
-            }
-        },
         email: {
             type: DataTypes.STRING,
             validate: {
