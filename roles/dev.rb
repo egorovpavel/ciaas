@@ -9,6 +9,7 @@ run_list(
     "recipe[mysql::server]",
     "recipe[redisio]",
     "recipe[redisio::enable]",
+    "recipe[packer]",
     "recipe[ciaas]",
 )
 

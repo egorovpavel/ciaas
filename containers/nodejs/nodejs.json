@@ -1,0 +1,16 @@
+{
+	"builders" : [
+		{
+			"type": "docker",
+			"image": "egorovpavel/ci-base",
+			"pull" : true,
+			"export_path": "nodejs.tar"
+		}
+	],
+	"provisioners": [
+		{
+			"type": "chef-solo",
+			"cookbook_paths": ["berks-cookbooks"]
+		}
+	]
+}
