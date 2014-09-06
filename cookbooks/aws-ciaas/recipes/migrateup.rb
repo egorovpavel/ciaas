@@ -7,6 +7,6 @@
 # 
 #
 execute "npm-migrateUp" do
-	cwd '/vagrant/app/web'
+	cwd '/srv/www/ciaas_web'
     command 'npm run-script migrateUp'
 end
