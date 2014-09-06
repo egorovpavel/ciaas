@@ -50,7 +50,7 @@ var Worker = function () {
         var script = prepareScript(item.item);
 
         docker.createContainer({
-            Image: 'dockerfile/nodejs',
+            Image: item.item.container.primary,
             AttachStdin: false,
             AttachStdout: true,
             AttachStderr: true,

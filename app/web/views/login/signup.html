@@ -1,40 +1,22 @@
 {%extends '../common/layout.html'%}
 
-
-{% block navBar %}
-<li><a href="/">Back</a></li>
-<li><a href="/login">Sign In</a></li>
-{% endblock %}
-
 {%block center_column%}
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
-            <h3>Sign Up with an existing account</h3>
-            <a href="/auth/github" class="btn btn-default">Github</a>
-        </div>
-        <div class="col-md-8">
-            <h3>Create account</h3>
-
+        <div class="form-signin">
+            <h3>Sign up</h3>
             <form method="post" role="form" action="/signup">
                 <div class="form-group {%if errors.username%}has-error has-feedback{%endif%}">
                     <label for="username">Username</label>
-                    <input type="text" class="form-control" rows="1" name="account[username]" id="username"
+                    <input type="text" class="form-control" rows="1" name="account[username]" placeholder="Username" id="username"
                            value="{{account.username|default('')}}"/>
                     {%if errors.username%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
                     <span class="help-block">{{errors.username|default('')}}</span>
                 </div>
-                <div class="form-group {%if errors.full_name%}has-error has-feedback{%endif%}">
-                    <label for="full_name">Full Name</label>
-                    <input type="text" class="form-control" rows="1" name="account[full_name]" id="full_name"
-                           value="{{account.full_name|default('')}}"/>
-                    {%if errors.full_name%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
-                    <span class="help-block">{{errors.full_name|default('')}}</span>
-                </div>
                 {%if !account.id%}
                 <div class="form-group {%if errors.email%}has-error has-feedback{%endif%}">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" rows="1" name="account[email]" id="email"
+                    <input type="email" class="form-control" rows="1" name="account[email]" placeholder="Email" id="email"
                            value="{{account.email|default('')}}"/>
                     {%if errors.email%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
                     <span class="help-block">{{errors.email|default('')}}</span>
@@ -42,12 +24,20 @@
                 {%endif%}
                 <div class="form-group {%if errors.password%}has-error has-feedback{%endif%}">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control" rows="1" name="account[password]" id="password"/>
+                    <input type="password" class="form-control" rows="1" name="account[password]" placeholder="Password" id="password"/>
                     {%if errors.password%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
                     <span class="help-block">{{errors.password|default('')}}</span>
                 </div>
-                <div class="form-group {%if errors.username%}has-error{%endif%}">
-                    <button type="submit" class="btn btn-primary pull-right">Save</button>
+                <div class="form-group {%if errors.repassword%}has-error has-feedback{%endif%}">
+                    <label for="repassword">Retype Password</label>
+                    <input type="password" class="form-control" rows="1" name="account[repassword]" placeholder="Retype Password" id="repassword"/>
+                    {%if errors.password%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
+                    <span class="help-block">{{errors.repassword|default('')}}</span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">Sign up</button>
+                    <div class="or divider">or</div>
+                    <a href="/auth/github" type="submit" class="btn btn-default btn-block">Sign in with <strong>GitHub</strong></a>
                 </div>
             </form>
         </div>

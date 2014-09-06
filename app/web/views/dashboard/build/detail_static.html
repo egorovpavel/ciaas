@@ -1,0 +1,32 @@
+{%extends '../../common/layout.html'%}
+
+{%block center_column%}
+<div class="editor">
+    <div class="row-fluid">
+        <div class="col-lg-12">
+            <legend>
+                Project <a href="/dashboard/account/{{account.username}}/project/{{project.id}}/build/">{{project.name}}</a>
+            </legend>
+            <div>
+                {%if build.status_result == "SUCCESS"%}
+                <div class="alert alert-success">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    Build #{{build.build_id}} successful
+                </div>
+                {%endif%}
+                {%if build.status_result != "SUCCESS"%}
+                <div class="alert alert-danger">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    Build #{{build.build_id}} failed
+                </div>
+                {%endif%}
+                <div id="container" class="output">
+                    {%for line in log%}
+                    <div>{{line|safe}}</div>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

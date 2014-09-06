@@ -1,4 +1,4 @@
-{%extends '../common/layout.html'%}
+{%extends '../../common/layout.html'%}
 
 {%block center_column%}
 <form method="POST">
@@ -15,7 +15,7 @@
             <button type="submit" class="btn btn-primary">
                 Delete
             </button>
-            <a href="/account/{{account.username}}/project" class="btn">Cancel</a>
+            <a href="/dashboard/account/{{account.username}}/project" class="btn">Cancel</a>
         </div>
     </fieldset>
 </form>

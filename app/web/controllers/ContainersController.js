@@ -1,11 +1,12 @@
 'use strict';
-
+var Authorization = require('./../common/Authorization');
 function ContainerController(app) {
     var Containers = app.get("repos").ContainersRepo;
 
-    app.get('/container', function (req, res) {
+    app.get('/dashboard/container',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Containers.all().then(function (containers) {
-            res.render('container/list.html', {
+            res.render('dashboard/container/list.html', {
+                req : req,
                 containers: containers
             });
         }).catch(function (err) {
@@ -18,13 +19,14 @@ function ContainerController(app) {
         });
     });
 
-    app.get('/container/create', function (req, res) {
-        res.render('container/form.html');
+    app.get('/dashboard/container/create',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
+        res.render('dashboard/container/form.html',{req : req});
     });
 
-    app.get('/container/:id', function (req, res) {
+    app.get('/dashboard/container/:id',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Containers.get(req.param('id')).then(function (container) {
-            res.render('container/detail.html', {
+            res.render('dashboard/container/detail.html', {
+                req : req,
                 container: container
             });
         })
@@ -39,9 +41,10 @@ function ContainerController(app) {
             });
     });
 
-    app.get('/container/:id/edit', function (req, res) {
+    app.get('/dashboard/container/:id/edit',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Containers.get(req.param('id')).then(function (container) {
-            res.render('container/form.html', {
+            res.render('dashboard/container/form.html', {
+                req : req,
                 container: container
             });
         })
@@ -56,10 +59,10 @@ function ContainerController(app) {
             });
     });
 
-    app.post('/container/:id/edit', function (req, res) {
+    app.post('/dashboard/container/:id/edit',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Containers.update(req.param('id'), req.body.container)
             .then(function (container) {
-                res.redirect('/container/' + container.id);
+                res.redirect('/dashboard/container/' + container.id);
             })
             .catch(function (err) {
                 if (err) {
@@ -71,7 +74,8 @@ function ContainerController(app) {
                     }
                     console.log(err);
                     req.body.container.id = "dummy";
-                    res.render('container/form.html', {
+                    res.render('dashboard/container/form.html', {
+                        req : req,
                         errors: err,
                         container: req.body.container
                     });
@@ -82,11 +86,11 @@ function ContainerController(app) {
             });
     });
 
-    app.post('/container/create', function (req, res) {
+    app.post('/dashboard/container/create',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         console.log(req.body.container);
         Containers.create(req.body.container)
             .then(function (container) {
-                res.redirect('/container/' + container.id);
+                res.redirect('/dashboard/container/' + container.id);
             })
             .catch(function (err) {
                 if (err) {
@@ -96,7 +100,8 @@ function ContainerController(app) {
                         };
                     }
                     console.log("ERROR", err);
-                    res.render('container/form.html', {
+                    res.render('dashboard/container/form.html', {
+                        req : req,
                         errors: err,
                         container: req.body.container
                     });
@@ -107,10 +112,11 @@ function ContainerController(app) {
             });
     });
 
-    app.get('/container/:id/delete', function (req, res) {
+    app.get('/dashboard/container/:id/delete',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Containers.get(req.param('id'))
             .then(function (container) {
-                res.render('container/delete.html', {
+                res.render('dashboard/container/delete.html', {
+                    req : req,
                     container: container
                 });
             })
@@ -125,10 +131,10 @@ function ContainerController(app) {
             });
     });
 
-    app.post('/container/:id/delete', function (req, res) {
+    app.post('/dashboard/container/:id/delete',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Containers.delete(req.param('id'))
             .then(function (container) {
-                res.redirect('/container');
+                res.redirect('/dashboard/container');
             })
             .catch(function (err) {
                 if (err) {

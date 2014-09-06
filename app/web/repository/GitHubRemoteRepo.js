@@ -13,31 +13,69 @@ var GitHubRemoteRepo = function () {
 	});
 
 
-	var authorizeAccess = function(){
+	var getAllRepos = function(token){
 		var promise = Promise.pending();
 		github.authenticate({
 		    type: "oauth",
-		    key: "f6bf18dd474f62e7ccc0",
-		    secret: "01c08580bb27243720e338213150b54357b53a1d"
+		    token: token
 		});
-		github.authorization.create({
-		    scopes: ["user", "public_repo", "repo", "write:repo_hook"],
-		    note: "what this auth is for",
-		    note_url: "http://url-to-this-auth-app"
-		}, function(err, res) {
+		github.repos.getAll({},function(err,data){
 			if(err){
 				promise.reject(err);
+			}else{
+				promise.resolve(data);
 			}
-		    if (res.token) {
-		        console.log(res.token);
-		        promise.resolve(res.token);
-		    }
+		});
+		return promise.promise;
+	};
+
+	var getRepo = function(token,user,repo){
+		var promise = Promise.pending();
+		github.authenticate({
+		    type: "oauth",
+		    token: token
+		});
+		github.repos.get({
+			user : user,
+			repo : repo
+		},function(err,data){
+			if(err){
+				promise.reject(err);
+			}else{
+				promise.resolve(data);
+			}
+		});
+		return promise.promise;
+	};
+
+	var registerHook = function(token,user,repo){
+		var promise = Promise.pending();
+		github.authenticate({
+		    type: "oauth",
+		    token: token
+		});
+		github.repos.createHook({
+			user : user,
+			repo : repo,
+			name : "ciaasHook",
+			active : true,
+			config : {
+				"url": "http://localhost/hooks",
+      			"content_type": "json"
+			}
+		},function(err,data){
+			if(err){
+				promise.reject(err);
+			}else{
+				promise.resolve(data);
+			}
 		});
 		return promise.promise;
 	};
 
 	return {
-		authorizeAccess : authorizeAccess
+		getAllRepos : getAllRepos,
+		getRepo : getRepo
 	}
 }();
 

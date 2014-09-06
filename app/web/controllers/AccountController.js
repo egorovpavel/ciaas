@@ -1,11 +1,11 @@
 'use strict';
-
+var Authorization = require('./../common/Authorization');
 function AccountController(app) {
     var Accounts = app.get("repos").AccountsRepo;
-
-    app.get('/account', function (req, res) {
+    app.get('/dashboard/account', Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Accounts.all().then(function (accounts) {
-            res.render('account/list.html', {
+            res.render('dashboard/account/list.html', {
+                req : req,
                 accounts: accounts
             });
         }).catch(function (err) {
@@ -18,13 +18,14 @@ function AccountController(app) {
         });
     });
 
-    app.get('/account/create', function (req, res) {
-        res.render('account/form.html');
+    app.get('/dashboard/account/create', Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
+        res.render('dashboard/account/form.html',{req : req});
     });
 
-    app.get('/account/:username', function (req, res) {
+    app.get('/dashboard/account/:username', Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Accounts.getByUsername(req.param('username')).then(function (account) {
-            res.render('account/detail.html', {
+            res.render('dashboard/account/detail.html', {
+                req : req,
                 account: account
             });
         })
@@ -39,9 +40,10 @@ function AccountController(app) {
             });
     });
 
-    app.get('/account/:username/edit', function (req, res) {
+    app.get('/dashboard/account/:username/edit', Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Accounts.getByUsername(req.param('username')).then(function (account) {
-            res.render('account/form.html', {
+            res.render('dashboard/account/form.html', {
+                req : req,
                 account: account
             });
         })
@@ -56,10 +58,10 @@ function AccountController(app) {
             });
     });
 
-    app.post('/account/:username/edit', function (req, res) {
+    app.post('/dashboard/account/:username/edit', Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Accounts.update(req.param('username'), req.body.account)
             .then(function (account) {
-                res.redirect('/account/' + account.username);
+                res.redirect('/dashboard/account/' + account.username);
             })
             .catch(function (err) {
                 if (err) {
@@ -71,7 +73,8 @@ function AccountController(app) {
                     }
                     console.log(err);
                     req.body.account.id = "dummy";
-                    res.render('account/form.html', {
+                    res.render('dashboard/account/form.html', {
+                        req : req,
                         errors: err,
                         account: req.body.account
                     });
@@ -82,10 +85,10 @@ function AccountController(app) {
             });
     });
 
-    app.post('/account/create', function (req, res) {
+    app.post('/dashboard/account/create', Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Accounts.create(req.body.account)
             .then(function (account) {
-                res.redirect('/account/' + account.username);
+                res.redirect('/dashboard/account/' + account.username);
             })
             .catch(function (err) {
                 if (err) {
@@ -96,7 +99,8 @@ function AccountController(app) {
                         err[key] = [key + " already exists"];
                     }
                     console.log(err);
-                    res.render('account/form.html', {
+                    res.render('dashboard/account/form.html', {
+                        req : req,
                         errors: err,
                         account: req.body.account
                     });
@@ -107,10 +111,11 @@ function AccountController(app) {
             });
     });
 
-    app.get('/account/:username/delete', function (req, res) {
+    app.get('/dashboard/account/:username/delete', Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Accounts.getByUsername(req.param('username'))
             .then(function (account) {
-                res.render('account/delete.html', {
+                res.render('dashboard/account/delete.html', {
+                    req : req,
                     account: account
                 });
             })
@@ -125,10 +130,10 @@ function AccountController(app) {
             });
     });
 
-    app.post('/account/:username/delete', function (req, res) {
+    app.post('/dashboard/account/:username/delete', Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Accounts.delete(req.param('username'))
             .then(function (account) {
-                res.redirect('/account');
+                res.redirect('/dashboard/account');
             })
             .catch(function (err) {
                 if (err) {

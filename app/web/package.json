@@ -20,6 +20,7 @@
   "homepage": "https://github.com/egorovpavel/web",
   "dependencies": {
     "ansi-to-html": "^0.2.0",
+    "bcrypt": "^0.8.0",
     "bluebird": "^2.1.2",
     "bull": "^0.1.6",
     "connect": "^2.15.0",

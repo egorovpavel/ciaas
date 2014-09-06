@@ -1,21 +1,16 @@
 'use strict';
 var Authorization = require('./../common/Authorization');
-function ProjectController(app) {
+function UserProjectsController(app) {
 
     var Projects = app.get("repos").ProjectsRepo;
     var Accounts = app.get("repos").AccountsRepo;
     var GitHubRemote = app.get("repos").GitHubRemoteRepo;
     var Containers = app.get("repos").ContainersRepo;
 
-    app.get('/dashboard/account/:username/project',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
-        var acc;
-        Accounts.getByUsername(req.param('username')).then(function (account) {
-            acc = account;
-            return  Projects.all(account);
-        }).then(function (projects) {
-            res.render('dashboard/project/list.html', {
+    app.get('/projects',Authorization.isAuthenticated, function (req, res) {
+        Projects.all(req.user).then(function (projects) {
+            res.render('project/list.html', {
                 req : req,
-                account: acc,
                 projects: projects
             });
         }).catch(function (err) {
@@ -28,7 +23,7 @@ function ProjectController(app) {
         });
     });
 
-    app.post('/dashboard/account/:username/project/create',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
+    app.post('/projects/create',Authorization.isAuthenticated, function (req, res) {
         Accounts.getByUsername(req.param('username')).then(function (account) {
             return Projects.create(account, req.body.project);
         }).then(function () {
@@ -54,11 +49,11 @@ function ProjectController(app) {
         });
     });
 
-    app.get('/dashboard/account/:username/project/create',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
-        Containers.getPrimary().then(function (containers) {
-            res.render('dashboard/project/form.html', {
+    app.get('/projects/create',Authorization.isAuthenticated, function (req, res) {
+        GitHubRemote.getAllRepos(req.user.token).then(function(repos){
+            res.render('project/new.html', {
                 req : req,
-                containers: containers
+                repos : repos
             });
         }).catch(function (err) {
             if (err) {
@@ -68,10 +63,52 @@ function ProjectController(app) {
         }).finally(function () {
             console.log("ACCOUNT DONE");
         });
-
     });
 
-    app.get('/dashboard/account/:username/project/:id/delete',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
+    app.get('/projects/create/:repo',Authorization.isAuthenticated, function (req, res) {
+        var repositories;
+        GitHubRemote.getRepo(req.user.token, req.user.username,req.params.repo).then(function(repos){
+            repositories = repos;
+            return Containers.getPrimary();  
+        }).then(function (containers) {
+            res.render('project/new_config.html', {
+                req : req,
+                containers: containers,
+                repos : repositories
+            });
+        }).catch(function (err) {
+            if (err) {
+                console.log(err);
+                res.status(500);
+            }
+        }).finally(function () {
+            console.log("ACCOUNT DONE");
+        });
+    });
+
+
+
+    app.post('/projects/create/:repo',Authorization.isAuthenticated, function (req, res) {
+        var project;
+        GitHubRemote.getRepo(req.user.token, req.user.username,req.params.repo).then(function(repo){
+            project = req.body.project;
+            project.name = repo.name;
+            project.repo_url = repo.clone_url;
+            console.log(project);
+            return Projects.create(req.user, project);
+        }).then(function (containers) {
+            res.redirect('/projects');
+        }).catch(function (err) {
+            if (err) {
+                console.log(err);
+                res.status(500);
+            }
+        }).finally(function () {
+            console.log("ACCOUNT DONE");
+        });
+    });
+
+    app.get('/projects/:id/delete',Authorization.isAuthenticated, function (req, res) {
         var acc;
         Accounts.getByUsername(req.param('username'))
             .then(function (account) {
@@ -96,7 +133,7 @@ function ProjectController(app) {
             });
     });
 
-    app.post('/dashboard/account/:username/project/:id/delete',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
+    app.post('/projects/:id/delete',Authorization.isAuthenticated, function (req, res) {
         Projects.delete(req.param('id'))
             .then(function () {
                 res.redirect('/dashboard/account/' + req.param('username') + '/project');
@@ -112,7 +149,7 @@ function ProjectController(app) {
             });
     });
 
-    app.get('/dashboard/account/:username/project/:id/edit',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
+    app.get('/projects/:id/edit',Authorization.isAuthenticated, function (req, res) {
         var _containers;
         var _account;
         Accounts.getByUsername(req.param('username')).then(function (account) {
@@ -140,7 +177,7 @@ function ProjectController(app) {
             });
     });
 
-    app.post('/dashboard/account/:username/project/:id/edit',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
+    app.post('/projects/:id/edit',Authorization.isAuthenticated, function (req, res) {
         var _account;
         Accounts.getByUsername(req.param('username')).then(function (account) {
             _account = account;
@@ -172,7 +209,7 @@ function ProjectController(app) {
         });
     });
 
-    app.get('/dashboard/account/:username/project/:id',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
+    app.get('/projects/:id',Authorization.isAuthenticated, function (req, res) {
         var _account;
         Accounts.getByUsername(req.param('username')).then(function (account) {
             _account = account;
@@ -195,4 +232,4 @@ function ProjectController(app) {
 
 }
 
-module.exports = ProjectController;
+module.exports = UserProjectsController;

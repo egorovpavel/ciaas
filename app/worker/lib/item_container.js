@@ -80,6 +80,7 @@ Container.prototype._write = function (chunk, enc, cb) {
     var lines = this.parse(chunk);
     if (this.callback && lines) {
         _.each(lines, function (l) {
+            console.log("PARSE:",l);
             this.callback({
                 id: this.id,
                 line: this.lineNum++,
@@ -89,5 +90,6 @@ Container.prototype._write = function (chunk, enc, cb) {
     }
     cb();
 };
+
 
 module.exports = Container;

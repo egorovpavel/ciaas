@@ -2,17 +2,17 @@
 var ConvertAsci = require('ansi-to-html');
 var _ = require('lodash');
 var redis = require('redis');
+var Authorization = require('./../common/Authorization');
 function BuildController(app) {
     var convert = new ConvertAsci();
     var Projects = app.get("repos").ProjectsRepo;
     var Accounts = app.get("repos").AccountsRepo;
-    console.log("---------------------------BuildController",[app.get('redisPort'), app.get('redisHost')]);
     var Builds = app.get("repos").BuildsRepo;
     var BuildQueue = app.get("repos").BuildQueueRepo(app.get('redisPort'), app.get('redisHost'));
     var redisFeedSubscriber = redis.createClient(app.get('redisPort'), app.get('redisHost'));
 
-    app.get('/account/:username/project/:id/build', function (req, res) {
-        var viewbag = {};
+    app.get('/dashboard/account/:username/project/:id/build',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
+        var viewbag = {req:req};
         Accounts.getByUsername(req.param('username')).then(function (account) {
             viewbag.account = account;
             return  Projects.get(req.param('id'));
@@ -32,8 +32,7 @@ function BuildController(app) {
         });
     });
 
-    app.io.route('rt.build.feed', function (req) {
-
+    app.io.route('rt.build.feed',Authorization.isAuthenticated, function (req) {
         var id = req.data._id;
         var OutputFeed = app.get("repos").OutputFeedRepo(app.get('redisPort'), app.get('redisHost'));
         redisFeedSubscriber.on('message', function (channel, message) {
@@ -42,6 +41,7 @@ function BuildController(app) {
                 redisFeedSubscriber.unsubscribe("channel_result_" + id);
                 redisFeedSubscriber.unsubscribe("channel_" + id);
             } else if(channel == "channel_" + id) {
+                console.log("_");
                 OutputFeed.transform(id, message, function (channelName, message) {
                     req.io.emit(channelName, message);
                 });
@@ -51,7 +51,7 @@ function BuildController(app) {
         redisFeedSubscriber.subscribe("channel_result_" + id);
 
     });
-    app.post('/account/:username/project/:id/build', function (req, res) {
+    app.post('/dashboard/account/:username/project/:id/build',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         var _buildid;
         var _project;
         var _id;
@@ -84,7 +84,7 @@ function BuildController(app) {
             };
             return BuildQueue.add(job);
         }).then(function (build) {
-            res.redirect('/account/' + req.param('username') + '/project/' + req.param('id') + "/build/" + _buildid);
+            res.redirect('/dashboard/account/' + req.param('username') + '/project/' + req.param('id') + "/build/" + _buildid);
         }).catch(function (err) {
             if (err) {
                 res.status(500);
@@ -94,8 +94,8 @@ function BuildController(app) {
         });
     });
 
-    app.get('/account/:username/project/:id/build/:num', function (req, res) {
-        var viewbag = {};
+    app.get('/dashboard/account/:username/project/:id/build/:num',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
+        var viewbag = {req:req};
         Accounts.getByUsername(req.param('username')).then(function (account) {
             viewbag.account = account;
             return  Projects.get(req.param('id'));
@@ -105,7 +105,6 @@ function BuildController(app) {
             return Builds.get(project, req.param('num'));
         }).then(function (build) {
             viewbag.build = build;
-
             if (build.status_exec == 'COMPLETE') {
                 viewbag.log = [];
                 _.each(build.log_build, function (l) {
@@ -117,9 +116,9 @@ function BuildController(app) {
                     }
                 });
                 console.log("COMPLETE", viewbag);
-                res.render('build/detail_static.html', viewbag);
+                res.render('dashboard/build/detail_static.html', viewbag);
             } else {
-                res.render('build/detail.html', viewbag);
+                res.render('dashboard/build/detail.html', viewbag);
             }
         }).catch(function (err) {
             if (err) {

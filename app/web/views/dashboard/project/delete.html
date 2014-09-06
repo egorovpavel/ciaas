@@ -1,21 +1,21 @@
-{%extends '../common/layout.html'%}
+{%extends '../../common/layout.html'%}
 
 {%block center_column%}
 <form method="POST">
     <fieldset>
         <legend>
             Delete
-            <small>{{container.name}}</small>
+            <small>{{project.name}}</small>
         </legend>
         <p>
-            Container "{{container.name}}" will be deleted. Are you sure?
+            Project "{{project.name}}" will be deleted. Are you sure?
         </p>
 
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">
                 Delete
             </button>
-            <a href="/container" class="btn">Cancel</a>
+            <a href="/dashboard/account/{{account.username}}/project" class="btn">Cancel</a>
         </div>
     </fieldset>
 </form>

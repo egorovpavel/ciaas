@@ -1,0 +1,23 @@
+{%extends '../../common/layout.html'%}
+
+{%block center_column%}
+    <div class="row-fluid">
+        <div class="col-lg-12">
+            <legend>
+                Details of container
+                <small>{{container.username}}</small>
+            </legend>
+            <div>
+                <h4>{{container.username}}</h4>
+                <dl>
+                    <dt>Name</dt>
+                    <dd>{{container.name}}</dd>
+                    <dt>Type</dt>
+                    <dd>{{container.type}}</dd>
+                    <dt>Description</dt>
+                    <dd>{{container.description}}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+{%endblock%}

@@ -2,7 +2,7 @@
 	"builders" : [
 		{
 			"type": "docker",
-			"image": "egorovpavel/ci-base",
+			"image": "egorovpavel/ciaas-docker-base",
 			"pull" : true,
 			"export_path": "nodejs.tar"
 		}
@@ -10,7 +10,8 @@
 	"provisioners": [
 		{
 			"type": "chef-solo",
-			"cookbook_paths": ["berks-cookbooks"]
+			"cookbook_paths": ["containers/berks-cookbooks","containers/cookbooks"],
+			"run_list" : ["git","nodejs","container-nodejs"]
 		}
 	]
 }

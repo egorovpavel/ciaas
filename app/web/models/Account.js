@@ -28,11 +28,21 @@ module.exports = function (sequelize, DataTypes) {
         },
         password: {
             type: DataTypes.STRING,
+            allowNull : true,
             validate: {
                 notEmpty: {
                     msg: "Password cant be empty"
                 }
             }
+        },
+        token: {
+            type: DataTypes.STRING,
+            allowNull : true
+        },
+        admin : {
+            type: DataTypes.BOOLEAN,
+            defaultValue : false,
+            allowNull : false
         }
     }, {
         paranoid: true,
@@ -45,6 +55,7 @@ module.exports = function (sequelize, DataTypes) {
         classMethods: {
             associate: function (models) {
                 Account.hasMany(models.Project);
+                Account.hasMany(models.Profile);
             }
         }
     });

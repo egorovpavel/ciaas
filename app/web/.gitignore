@@ -8,6 +8,7 @@
 bin/
 tmp/
 *.tmp
+*.tar
 *.bak
 *.swp
 *~.nib
