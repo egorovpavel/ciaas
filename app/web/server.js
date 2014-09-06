@@ -11,8 +11,8 @@ var bcrypt = require('bcrypt');
 
 var GitHubStrategy = require('passport-github').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
-var GITHUB_CLIENT_ID = "bd50fa6daf6a89fbf00e";
-var GITHUB_CLIENT_SECRET = "45fa3e239b03d97c1624adf908dd1e6dfd895404";
+var GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID || "bd50fa6daf6a89fbf00e";
+var GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET || "45fa3e239b03d97c1624adf908dd1e6dfd895404";
 
 
 var app = express();
