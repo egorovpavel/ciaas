@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: ciaas
-# Recipe:: default
+# Recipe:: migrateup
 #
 # Copyright (C) 2014 
 #

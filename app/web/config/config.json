@@ -14,10 +14,6 @@
         "dialect": "mysql"
     },
     "production": {
-        "username": "ciadmin",
-        "password": "ci777admin",
-        "database": "ci",
-        "host": "ci.curd3gwbhzuj.eu-west-1.rds.amazonaws.com",
-        "dialect": "mysql"
+        "use_env_variable": "DATABASE_URL"
     }
 }
