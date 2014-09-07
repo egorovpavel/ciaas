@@ -13,6 +13,7 @@ var GitHubStrategy = require('passport-github').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID || "bd50fa6daf6a89fbf00e";
 var GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET || "45fa3e239b03d97c1624adf908dd1e6dfd895404";
+var GITHUB_REDIRECT =  process.env.GITHUB_REDIRECT || "http://localhost/auth/github/callback";
 
 
 var app = express();
@@ -67,7 +68,7 @@ passport.deserializeUser(function (id, done) {
 passport.use(new GitHubStrategy({
         clientID: GITHUB_CLIENT_ID,
         clientSecret: GITHUB_CLIENT_SECRET,
-        callbackURL: "http://localhost/auth/github/callback"
+        callbackURL: GITHUB_REDIRECT
     },
     function (accessToken, refreshToken, profile, done) {
         Accounts.getByEmail(profile._json.email).then(function (account) {
