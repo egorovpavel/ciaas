@@ -136,8 +136,6 @@ module.exports = {
     }).then(function(){
     	return migration.dropTable('Projects');
     }).then(function(){
-    	return migration.dropTable('Profiles');
-    }).then(function(){
     	return migration.dropTable('Accounts');
     }).finally(function(){
     	done();
