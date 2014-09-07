@@ -7,6 +7,6 @@
 # 
 #
 execute "npm-migrateUp" do
-	cwd '/srv/www/ciaas_web'
+	cwd '/srv/www/ciaas_web/current'
     command 'npm run-script migrateUp'
 end
