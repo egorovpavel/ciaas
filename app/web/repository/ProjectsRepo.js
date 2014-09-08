@@ -23,8 +23,6 @@ var ProjectsRepo = function () {
     var updateProject = function (id, projectProperties) {
         return getById(id).then(function (project) {
             var promise = Promise.pending();
-            project.name = projectProperties.name;
-            project.repo_url = projectProperties.repo_url;
             project.command = projectProperties.command;
             var errors = project.validate();
             if (errors) {

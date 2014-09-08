@@ -7,7 +7,7 @@
 # 
 #
 log "message" do
-  message "Executing migrateup"
+  message "Executing migrateup using URL:" + node['URL']
   level :info
 end
 execute "npm-migrateUp" do

@@ -116,7 +116,7 @@ function UserProjectsController(app) {
                 return Projects.get(req.param('id'))
             })
             .then(function (project) {
-                res.render('dashboard/project/delete.html', {
+                res.render('project/delete.html', {
                     req : req,
                     account: acc,
                     project: project
@@ -136,7 +136,7 @@ function UserProjectsController(app) {
     app.post('/projects/:id/delete',Authorization.isAuthenticated, function (req, res) {
         Projects.delete(req.param('id'))
             .then(function () {
-                res.redirect('/dashboard/account/' + req.param('username') + '/project');
+                res.redirect('/projects');
             })
             .catch(function (err) {
                 if (err) {
@@ -149,41 +149,32 @@ function UserProjectsController(app) {
             });
     });
 
-    app.get('/projects/:id/edit',Authorization.isAuthenticated, function (req, res) {
+    app.get('/projects/:id/config',Authorization.isAuthenticated, function (req, res) {
         var _containers;
-        var _account;
-        Accounts.getByUsername(req.param('username')).then(function (account) {
-            _account = account;
-            return Containers.getPrimary();
-        }).then(function (containers) {
+        Containers.getPrimary().then(function (containers) {
             _containers = containers;
             return Projects.get(req.param('id'));
         }).then(function (project) {
-            console.log(project);
-            res.render('dashboard/project/form.html', {
+            res.render('project/config.html', {
                 req : req,
                 containers: _containers,
                 project: project,
-                account: _account
+                account: req.user
             });
         }).catch(function (err) {
-            console.log(err);
             if (err) {
                 res.status(404);
             }
         })
-            .finally(function () {
-                console.log("ACCOUNT DONE");
-            });
+        .finally(function () {
+            console.log("ACCOUNT DONE");
+        });
     });
 
-    app.post('/projects/:id/edit',Authorization.isAuthenticated, function (req, res) {
+    app.post('/projects/:id/config',Authorization.isAuthenticated, function (req, res) {
         var _account;
-        Accounts.getByUsername(req.param('username')).then(function (account) {
-            _account = account;
-            return Projects.update(req.param('id'), req.body.project);
-        }).then(function () {
-            res.redirect('/dashboard/account/' + req.param('username') + '/project');
+        Projects.update(req.param('id'), req.body.project).then(function () {
+            res.redirect('/projects');
         }).catch(function (err) {
             if (err) {
                 if (err.code && err.code == 'ER_DUP_ENTRY') {
@@ -195,10 +186,10 @@ function UserProjectsController(app) {
                 req.body.project.id = "dummy";
 
                 Containers.getPrimary().then(function (containers) {
-                    res.render('dashboard/project/form.html', {
+                    res.render('/project/config.html', {
                         req : req,
                         errors: err,
-                        account: _account,
+                        account: req.user,
                         containers: containers,
                         project: req.body.project
                     });
@@ -208,28 +199,6 @@ function UserProjectsController(app) {
             console.log("ACCOUNT DONE");
         });
     });
-
-    app.get('/projects/:id',Authorization.isAuthenticated, function (req, res) {
-        var _account;
-        Accounts.getByUsername(req.param('username')).then(function (account) {
-            _account = account;
-            return Projects.get(req.param('id'));
-        }).then(function (project) {
-            res.render('dashboard/project/detail.html', {
-                req : req,
-                account: _account,
-                project: project
-            });
-        }).catch(function (err) {
-            console.log(err);
-            if (err) {
-                res.status(500);
-            }
-        }).finally(function () {
-            console.log("ACCOUNT DONE");
-        });
-    });
-
 }
 
 module.exports = UserProjectsController;

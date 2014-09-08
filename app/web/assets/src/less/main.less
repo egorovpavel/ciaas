@@ -1,10 +1,11 @@
 body {
   background-color: #F0F2EB;
+  font-family: 'Roboto','Helvetica Neue', 'Helvetica', Arial, sans-serif !important;
+  font-weight: 400;
 }
 
 .content {
-  margin-top: 60px;
-  padding-top: 30px;
+  margin-top: 20px;
 }
 
 .editor {
@@ -184,4 +185,31 @@ table.table{
     .middle {
       vertical-align: middle;
     } 
+}
+
+
+/*
+* Secondary header
+* 
+*/
+
+.secondary-header {
+  background-color: @secondary-accent;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin-top: 50px;
+  h2{
+    line-height: 1em;
+    padding: 10px 0px;
+    margin: 0px;
+    font-weight: 300;
+    color:  @secondary-accent-invert
+  }
+  .btn {
+    .border-radius(0px);
+    font-weight: 300;
+    background-color: transparent;
+    color: @secondary-accent-invert;
+    border: 2px solid @secondary-accent-invert;
+  }
 }

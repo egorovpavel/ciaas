@@ -51,6 +51,7 @@ function BuildController(app) {
         redisFeedSubscriber.subscribe("channel_result_" + id);
 
     });
+    
     app.post('/dashboard/account/:username/project/:id/build',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         var _buildid;
         var _project;
