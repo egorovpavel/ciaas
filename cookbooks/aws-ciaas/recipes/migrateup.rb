@@ -12,7 +12,7 @@ log "message" do
 end
 execute "npm-migrateUp" do
 	cwd '/srv/www/ciaas_web/current'
-    command 'npm run-script migrateUp'
+    command './node_modules/.bin/sequelize -m -U ' + node['URL']
 end
 log "message" do
   message "Finishing executing migrateup"
