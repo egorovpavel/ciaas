@@ -5831,9 +5831,17 @@ header div div:after,
   content: "\e200";
 }
 body {
-  background-color: #F0F2EB;
+  background-color: #f0f2eb;
   font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', Arial, sans-serif !important;
   font-weight: 400;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  color: #f34f41;
+  text-decoration: none;
 }
 .content {
   margin-top: 20px;
@@ -6018,6 +6026,13 @@ form .action button {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  background-clip: padding-box;
+  font-weight: 300;
+  background-color: transparent;
+  color: #99a382;
+  border: 2px solid #99a382;
   padding: 10px 16px;
   font-size: 18px;
   line-height: 1.33;
@@ -6325,6 +6340,9 @@ header div div > .navbar-collapse {
     margin-left: 0;
   }
 }
+header div .navbar-collapse.in {
+  margin-top: 50px;
+}
 .project-nav ul {
   margin-bottom: 0;
   padding-left: 0;
@@ -6436,6 +6454,15 @@ header div div > .navbar-collapse {
     border-bottom-color: #ffffff;
   }
 }
+.btn {
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  background-clip: padding-box;
+  font-weight: 300;
+  background-color: transparent;
+  color: #99a382;
+  border: 2px solid #99a382;
+}
 .spinner {
   width: 16px;
   height: 16px;
@@ -6516,11 +6543,37 @@ dl dd {
 * tables
 * 
 */
-table.table td {
-  padding-left: 1em;
+.zebra-rows .t-row {
+  border-bottom: 1px solid #c9cebd;
+  padding-bottom: 1em;
 }
-table.table .middle {
-  vertical-align: middle;
+.zebra-rows .t-row:hover,
+.zebra-rows .t-row:nth-child(odd) {
+  background-color: #ffffff;
+}
+.zebra-rows .t-row:nth-child(odd) {
+  background-color: #e1e4da;
+}
+.zebra-rows .main-col {
+  padding: 1em 2em;
+}
+.zebra-rows .main-col .repo-name {
+  text-transform: uppercase;
+}
+.zebra-rows .main-col p.text-muted {
+  overflow: hidden;
+}
+.zebra-rows .action-col {
+  padding: 1em 2em;
+}
+.zebra-rows .action-col .btn {
+  color: #b3b3b3;
+  border-color: #cccccc;
+  margin-bottom: 0.5em;
+}
+.zebra-rows .action-col .btn:hover {
+  color: #FFF;
+  border-color: #c9cebd;
 }
 /*
 * Secondary header
@@ -6538,6 +6591,7 @@ table.table .middle {
   margin: 0px;
   font-weight: 300;
   color: #e1e4da;
+  letter-spacing: -1px;
 }
 .secondary-header .btn {
   -webkit-border-radius: 0px;

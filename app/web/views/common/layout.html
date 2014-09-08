@@ -12,11 +12,17 @@
 <header>
     <nav role="navigation">
         <div>
-            <a class="navbar-brand" href="/home">CI</a>
-
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/"><i class="glyphicon glyphicon-cloud"></i></a>
+            </div>
             <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="/">Home</a></li>
+                <ul class="nav navbar-nav pull-right">
                     {% if req.user.admin %}
                         <li><a href="/dashboard/account">Accounts</a></li>
                         <li><a href="/dashboard/container">Containers</a></li>
@@ -25,8 +31,6 @@
                             <li><a href="/projects">Projects</a></li>
                         {% endif %}
                     {% endif %}
-                </ul>
-                <ul class="nav navbar-nav pull-right">
                     {% if not req.user %}
                         <li><a href="/login">Sign in</a></li>
                         <li><a href="/signup">Sign up</a></li>
@@ -55,6 +59,7 @@
 </footer>
 {% block js %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 {% endblock %}
 </body>
 </html>

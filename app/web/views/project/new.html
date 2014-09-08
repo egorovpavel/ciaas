@@ -18,20 +18,18 @@
 {% endblock %}
 {%block center_column%}
 <div class="row-fluid">
-    <div class="col-lg-12">
-        <table class="table table-striped">
-            {% for repo in repos%}
-                <tr>
-                    <td width="100%">
-                        <h4>{{repo.owner.login}} / <strong>{{repo.name}}</strong></h4>
-                        <p class="text-muted"><small>{{repo.clone_url}}</small></p>
-                    </td>
-                    <td class="middle">
-                        <a href="/projects/create/{{repo.name}}" class="btn btn-default">Select</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+    <div class="col-lg-12 zebra-rows">
+        {% for repo in repos%}
+            <div class="t-row row-fluid clearfix">
+                <div class="main-col col-lg-10">
+                    <h4>{{repo.owner.login}} / <strong>{{repo.name}}</strong></h4>
+                    <p class="text-muted"><small>{{repo.clone_url}}</small></p>
+                </div>
+                <div class="action-col col-lg-2">
+                    <a href="/projects/create/{{repo.name}}" class="btn btn-lg btn-block btn-primary">Select</a>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 </div>
 {%endblock%}

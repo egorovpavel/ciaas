@@ -1,7 +1,16 @@
 body {
-  background-color: #F0F2EB;
+  background-color: @base-color;
   font-family: 'Roboto','Helvetica Neue', 'Helvetica', Arial, sans-serif !important;
   font-weight: 400;
+}
+
+a{
+  color: inherit;
+  text-decoration: none;  
+}
+a:hover{
+  color: lighten(#F02311, 10%);
+  text-decoration: none;
 }
 
 .content {
@@ -75,6 +84,9 @@ header {
     div {
       .container;
     }
+    .navbar-collapse.in{
+      margin-top: 50px;
+    }
   }
 }
 
@@ -84,7 +96,13 @@ header {
     .nav-tabs;
   }
 }
-
+.btn {
+    .border-radius(0px);
+    font-weight: 300;
+    background-color: transparent;
+    color: darken(@secondary-accent-invert,30%);
+    border: 2px solid darken(@secondary-accent-invert,30%);
+}
 .spinner {
   width: 16px;
   height: 16px;
@@ -178,13 +196,38 @@ dl dd {
 * 
 */
 
-table.table{
-    td{
-      padding-left: 1em;
+.zebra-rows{
+  .t-row{
+    border-bottom: 1px solid darken(@table-bg-accent, 10%);
+    padding-bottom: 1em;
+  }
+  .t-row:hover, .t-row:nth-child(odd){
+    background-color: lighten(@base-color, 10%);
+  }
+  .t-row:nth-child(odd){
+    background-color: @table-bg-accent;
+  }
+  .main-col{
+    padding: 1em 2em;
+    .repo-name{
+      text-transform: uppercase;
     }
-    .middle {
-      vertical-align: middle;
-    } 
+    p.text-muted{
+      overflow: hidden;
+    }
+  }
+  .action-col{
+    padding: 1em 2em;
+    .btn{
+      color: lighten(@secondary-accent, 50%);
+      border-color: lighten(@secondary-accent,60%);
+      margin-bottom: 0.5em;
+    }
+    .btn:hover{
+      color : #FFF;
+      border-color: darken(@table-bg-accent,10%);
+    }
+  }
 }
 
 
@@ -203,7 +246,8 @@ table.table{
     padding: 10px 0px;
     margin: 0px;
     font-weight: 300;
-    color:  @secondary-accent-invert
+    color:  @secondary-accent-invert;
+    letter-spacing: -1px;
   }
   .btn {
     .border-radius(0px);
@@ -212,4 +256,5 @@ table.table{
     color: @secondary-accent-invert;
     border: 2px solid @secondary-accent-invert;
   }
+
 }

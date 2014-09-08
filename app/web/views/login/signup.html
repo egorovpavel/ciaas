@@ -1,10 +1,25 @@
 {%extends '../common/layout.html'%}
-
+{% block secondary-header %}
+<div class="content secondary-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row-fluid clearfix">
+                    <div class="col-lg-12">
+                        <h2>
+                            Sign up
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+{% endblock %}
 {%block center_column%}
 <div class="container">
     <div class="row">
         <div class="form-signin">
-            <h3>Sign up</h3>
             <form method="post" role="form" action="/signup">
                 <div class="form-group {%if errors.username%}has-error has-feedback{%endif%}">
                     <label for="username">Username</label>
