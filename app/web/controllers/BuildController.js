@@ -32,7 +32,7 @@ function BuildController(app) {
         });
     });
 
-    app.io.route('rt.build.feed',Authorization.isAuthenticated, function (req) {
+    app.io.route('rt.build.feed', function (req) {
         var id = req.data._id;
         var OutputFeed = app.get("repos").OutputFeedRepo(app.get('redisPort'), app.get('redisHost'));
         redisFeedSubscriber.on('message', function (channel, message) {
@@ -51,7 +51,7 @@ function BuildController(app) {
         redisFeedSubscriber.subscribe("channel_result_" + id);
 
     });
-    
+
     app.post('/dashboard/account/:username/project/:id/build',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         var _buildid;
         var _project;

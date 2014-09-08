@@ -230,6 +230,44 @@ dl dd {
   }
 }
 
+.build-list{
+  .build-id{
+    min-height: 100px;
+    a{
+      vertical-align: middle;
+      text-align: center;
+      width: 50px;
+      display: block;
+      height: 50px;
+      border-radius: 100%;
+      span{
+        font-size: 100%;
+        color: #FFF;
+        font-weight: 300;
+        line-height: 47px;
+      }
+    }
+    .build-success{
+      background-color: @btn-success-bg;
+    }
+    .build-failed{
+      background-color: @btn-danger-bg;
+    }
+    .build-progress{
+      background-color: @btn-warning-bg;
+    }
+  }
+  .build-state{
+    min-height: 100px;
+  }
+  .build-time, .build-state{
+    color: darken(@table-bg-accent,30%);
+    font-size: 12px;
+    div{
+      color: darken(@table-bg-accent,40%);
+    }
+  }
+}
 
 /*
 * Secondary header
