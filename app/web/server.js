@@ -74,8 +74,7 @@ passport.use(new GitHubStrategy({
         clientSecret: GITHUB_CLIENT_SECRET,
         callbackURL: GITHUB_REDIRECT
     },
-    function (req,accessToken, refreshToken, profile, done) {
-        console.log("REQUEST:", req);
+    function (accessToken, refreshToken, profile, done) {
         if(profile._json.email){
             Accounts.getByEmail(profile._json.email).then(function (account) {
                 if(account){
@@ -98,7 +97,6 @@ passport.use(new GitHubStrategy({
                 }
             });
         }else{
-            req.flash('error','No public email specified in your github accout.')
             done(null,null);
         }
     }
