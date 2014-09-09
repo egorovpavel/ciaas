@@ -27,7 +27,7 @@ function LoginController(app) {
     }),function (req, res) {});
 
     app.post('/login',
-        passport.authenticate('local', { successRedirect: '/',failureRedirect: '/login',failureFlash: false })
+        passport.authenticate('local', { successRedirect: '/projects',failureRedirect: '/login',failureFlash: false })
     );
 
     app.post('/signup',function (req, res) {

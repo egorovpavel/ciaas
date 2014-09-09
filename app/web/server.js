@@ -1,4 +1,5 @@
 "use strict";
+var logger = require('./common/logger')(process.env.NODE_ENV || 'development');
 var express = require('express.io');
 var http = require('http');
 var swig = require('swig');
@@ -119,10 +120,13 @@ fs.readdirSync(controllers_path).forEach(function (file) {
     require(controllers_path + '/' + file)(app);
 });
 
+logger.info("HI");
 app.listen(app.get('port'),function () {
-    console.log("Express server listening on port " + app.get('port'));
+    logger.info("Express server listening on port " + app.get('port'));
 });
 
-
+app.on('error',function(){
+    logger.error("Uncaught exception: " + err);
+})
 
 return app;
