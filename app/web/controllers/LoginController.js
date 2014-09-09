@@ -32,7 +32,7 @@ function LoginController(app) {
 
     app.post('/signup',function (req, res) {
         Accounts.create(req.body.account).then(function (account) {
-            res.redirect('/account/' + account.username);
+            res.redirect('/projects');
         }).catch(function (err) {
             if (err) {
                 if (err.code && err.code == 'ER_DUP_ENTRY') {
