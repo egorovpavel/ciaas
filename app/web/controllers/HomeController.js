@@ -1,7 +1,7 @@
 'use strict';
 
 var HomeController = function (app) {
-
+	var logger = app.get('logger');
     app.get('/', function (req, res) {
         res.render('home/home.html',{req:req});
     });

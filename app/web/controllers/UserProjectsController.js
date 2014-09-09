@@ -1,7 +1,7 @@
 'use strict';
 var Authorization = require('./../common/Authorization');
 function UserProjectsController(app) {
-
+    var logger = app.get('logger');
     var Projects = app.get("repos").ProjectsRepo;
     var Accounts = app.get("repos").AccountsRepo;
     var GitHubRemote = app.get("repos").GitHubRemoteRepo;
@@ -15,11 +15,11 @@ function UserProjectsController(app) {
             });
         }).catch(function (err) {
             if (err) {
-                console.log(err);
+                logger.log(err);
                 res.status(404);
             }
         }).finally(function () {
-            console.log("ACCOUNT LIST");
+            logger.log("ACCOUNT LIST");
         });
     });
 
@@ -45,7 +45,7 @@ function UserProjectsController(app) {
                 })
             }
         }).finally(function () {
-            console.log("ACCOUNT DONE");
+            logger.log("ACCOUNT DONE");
         });
     });
 
@@ -57,11 +57,11 @@ function UserProjectsController(app) {
             });
         }).catch(function (err) {
             if (err) {
-                console.log(err);
+                logger.log(err);
                 res.status(500);
             }
         }).finally(function () {
-            console.log("ACCOUNT DONE");
+            logger.log("ACCOUNT DONE");
         });
     });
 
@@ -78,11 +78,11 @@ function UserProjectsController(app) {
             });
         }).catch(function (err) {
             if (err) {
-                console.log(err);
+                logger.log(err);
                 res.status(500);
             }
         }).finally(function () {
-            console.log("ACCOUNT DONE");
+            logger.log("ACCOUNT DONE");
         });
     });
 
@@ -94,17 +94,17 @@ function UserProjectsController(app) {
             project = req.body.project;
             project.name = repo.name;
             project.repo_url = repo.clone_url;
-            console.log(project);
+            logger.log(project);
             return Projects.create(req.user, project);
         }).then(function (containers) {
             res.redirect('/projects');
         }).catch(function (err) {
             if (err) {
-                console.log(err);
+                logger.log(err);
                 res.status(500);
             }
         }).finally(function () {
-            console.log("ACCOUNT DONE");
+            logger.log("ACCOUNT DONE");
         });
     });
 
@@ -124,12 +124,12 @@ function UserProjectsController(app) {
             })
             .catch(function (err) {
                 if (err) {
-                    console.log(err);
+                    logger.log(err);
                     res.status(404);
                 }
             })
             .finally(function () {
-                console.log("ACCOUNT delete show");
+                logger.log("ACCOUNT delete show");
             });
     });
 
@@ -140,12 +140,12 @@ function UserProjectsController(app) {
             })
             .catch(function (err) {
                 if (err) {
-                    console.log(err);
+                    logger.log(err);
                     res.status(501);
                 }
             })
             .finally(function () {
-                console.log("ACCOUNT deleteed");
+                logger.log("ACCOUNT deleteed");
             });
     });
 
@@ -167,7 +167,7 @@ function UserProjectsController(app) {
             }
         })
         .finally(function () {
-            console.log("ACCOUNT DONE");
+            logger.log("ACCOUNT DONE");
         });
     });
 
@@ -182,7 +182,7 @@ function UserProjectsController(app) {
                         repo_url: ["Project for this repository already exists"]
                     };
                 }
-                console.log(err);
+                logger.log(err);
                 req.body.project.id = "dummy";
 
                 Containers.getPrimary().then(function (containers) {
@@ -196,7 +196,7 @@ function UserProjectsController(app) {
                 });
             }
         }).finally(function () {
-            console.log("ACCOUNT DONE");
+            logger.log("ACCOUNT DONE");
         });
     });
 }

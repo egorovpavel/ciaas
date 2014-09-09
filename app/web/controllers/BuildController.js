@@ -4,6 +4,7 @@ var _ = require('lodash');
 var redis = require('redis');
 var Authorization = require('./../common/Authorization');
 function BuildController(app) {
+    var logger = app.get('logger');
     var convert = new ConvertAsci();
     var Projects = app.get("repos").ProjectsRepo;
     var Accounts = app.get("repos").AccountsRepo;
@@ -24,11 +25,11 @@ function BuildController(app) {
             res.render('build/list.html', viewbag);
         }).catch(function (err) {
             if (err) {
-                console.log(err);
+                logger.log(err);
                 res.status(404);
             }
         }).finally(function () {
-            console.log("BUILDS LIST");
+            logger.log("BUILDS LIST");
         });
     });
 
@@ -41,7 +42,7 @@ function BuildController(app) {
                 redisFeedSubscriber.unsubscribe("channel_result_" + id);
                 redisFeedSubscriber.unsubscribe("channel_" + id);
             } else if(channel == "channel_" + id) {
-                console.log("_");
+                logger.log("_");
                 OutputFeed.transform(id, message, function (channelName, message) {
                     req.io.emit(channelName, message);
                 });
@@ -91,7 +92,7 @@ function BuildController(app) {
                 res.status(500);
             }
         }).finally(function () {
-            console.log("build DONE");
+            logger.log("build DONE");
         });
     });
 
@@ -102,7 +103,7 @@ function BuildController(app) {
             return  Projects.get(req.param('id'));
         }).then(function (project) {
             viewbag.project = project;
-            console.log(viewbag);
+            logger.log(viewbag);
             return Builds.get(project, req.param('num'));
         }).then(function (build) {
             viewbag.build = build;
@@ -110,24 +111,24 @@ function BuildController(app) {
                 viewbag.log = [];
                 _.each(build.log_build, function (l) {
                     if (/\r/.test(l) && /\r/.test(viewbag.log[viewbag.log.length - 1])) {
-                        console.log("pop");
+                        logger.log("pop");
                         viewbag.log.pop();
                     } else {
                         viewbag.log.push(convert.toHtml(l));
                     }
                 });
-                console.log("COMPLETE", viewbag);
+                logger.log("COMPLETE", viewbag);
                 res.render('dashboard/build/detail_static.html', viewbag);
             } else {
                 res.render('dashboard/build/detail.html', viewbag);
             }
         }).catch(function (err) {
             if (err) {
-                console.log(err);
+                logger.log(err);
                 res.status(404);
             }
         }).finally(function () {
-            console.log("ACCOUNT LIST");
+            logger.log("ACCOUNT LIST");
         });
     });
 

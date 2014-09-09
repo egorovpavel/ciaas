@@ -1,7 +1,7 @@
 'use strict';
 var Authorization = require('./../common/Authorization');
 function ProjectController(app) {
-
+    var logger = app.get('logger');
     var Projects = app.get("repos").ProjectsRepo;
     var Accounts = app.get("repos").AccountsRepo;
     var GitHubRemote = app.get("repos").GitHubRemoteRepo;
@@ -20,11 +20,11 @@ function ProjectController(app) {
             });
         }).catch(function (err) {
             if (err) {
-                console.log(err);
+                logger.log(err);
                 res.status(404);
             }
         }).finally(function () {
-            console.log("ACCOUNT LIST");
+            logger.log("ACCOUNT LIST");
         });
     });
 
@@ -50,7 +50,7 @@ function ProjectController(app) {
                 })
             }
         }).finally(function () {
-            console.log("ACCOUNT DONE");
+            logger.log("ACCOUNT DONE");
         });
     });
 
@@ -62,11 +62,11 @@ function ProjectController(app) {
             });
         }).catch(function (err) {
             if (err) {
-                console.log(err);
+                logger.log(err);
                 res.status(500);
             }
         }).finally(function () {
-            console.log("ACCOUNT DONE");
+            logger.log("ACCOUNT DONE");
         });
 
     });
@@ -87,12 +87,12 @@ function ProjectController(app) {
             })
             .catch(function (err) {
                 if (err) {
-                    console.log(err);
+                    logger.log(err);
                     res.status(404);
                 }
             })
             .finally(function () {
-                console.log("ACCOUNT delete show");
+                logger.log("ACCOUNT delete show");
             });
     });
 
@@ -103,12 +103,12 @@ function ProjectController(app) {
             })
             .catch(function (err) {
                 if (err) {
-                    console.log(err);
+                    logger.log(err);
                     res.status(501);
                 }
             })
             .finally(function () {
-                console.log("ACCOUNT deleteed");
+                logger.log("ACCOUNT deleteed");
             });
     });
 
@@ -122,7 +122,7 @@ function ProjectController(app) {
             _containers = containers;
             return Projects.get(req.param('id'));
         }).then(function (project) {
-            console.log(project);
+            logger.log(project);
             res.render('dashboard/project/form.html', {
                 req : req,
                 containers: _containers,
@@ -130,13 +130,13 @@ function ProjectController(app) {
                 account: _account
             });
         }).catch(function (err) {
-            console.log(err);
+            logger.log(err);
             if (err) {
                 res.status(404);
             }
         })
             .finally(function () {
-                console.log("ACCOUNT DONE");
+                logger.log("ACCOUNT DONE");
             });
     });
 
@@ -154,7 +154,7 @@ function ProjectController(app) {
                         repo_url: ["Project for this repository already exists"]
                     };
                 }
-                console.log(err);
+                logger.log(err);
                 req.body.project.id = "dummy";
 
                 Containers.getPrimary().then(function (containers) {
@@ -168,7 +168,7 @@ function ProjectController(app) {
                 });
             }
         }).finally(function () {
-            console.log("ACCOUNT DONE");
+            logger.log("ACCOUNT DONE");
         });
     });
 
@@ -184,12 +184,12 @@ function ProjectController(app) {
                 project: project
             });
         }).catch(function (err) {
-            console.log(err);
+            logger.log(err);
             if (err) {
                 res.status(500);
             }
         }).finally(function () {
-            console.log("ACCOUNT DONE");
+            logger.log("ACCOUNT DONE");
         });
     });
 

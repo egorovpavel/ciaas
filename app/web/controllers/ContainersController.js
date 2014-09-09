@@ -1,6 +1,7 @@
 'use strict';
 var Authorization = require('./../common/Authorization');
 function ContainerController(app) {
+    var logger = app.get('logger');
     var Containers = app.get("repos").ContainersRepo;
 
     app.get('/dashboard/container',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
@@ -11,11 +12,11 @@ function ContainerController(app) {
             });
         }).catch(function (err) {
             if (err) {
-                console.log(err);
+                logger.log(err);
                 res.status(501);
             }
         }).finally(function () {
-            console.log("ACCOUNT LIST");
+            logger.log("ACCOUNT LIST");
         });
     });
 
@@ -31,13 +32,13 @@ function ContainerController(app) {
             });
         })
             .catch(function (err) {
-                console.log(err);
+                logger.log(err);
                 if (err) {
                     res.status(501);
                 }
             })
             .finally(function () {
-                console.log("ACCOUNT DONE");
+                logger.log("ACCOUNT DONE");
             });
     });
 
@@ -49,13 +50,13 @@ function ContainerController(app) {
             });
         })
             .catch(function (err) {
-                console.log(err);
+                logger.log(err);
                 if (err) {
                     res.status(404);
                 }
             })
             .finally(function () {
-                console.log("ACCOUNT DONE");
+                logger.log("ACCOUNT DONE");
             });
     });
 
@@ -72,7 +73,7 @@ function ContainerController(app) {
                             name: ["container with this name already exists"]
                         };
                     }
-                    console.log(err);
+                    logger.log(err);
                     req.body.container.id = "dummy";
                     res.render('dashboard/container/form.html', {
                         req : req,
@@ -82,12 +83,12 @@ function ContainerController(app) {
                 }
             })
             .finally(function () {
-                console.log("ACCOUNT DONE");
+                logger.log("ACCOUNT DONE");
             });
     });
 
     app.post('/dashboard/container/create',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
-        console.log(req.body.container);
+        logger.log(req.body.container);
         Containers.create(req.body.container)
             .then(function (container) {
                 res.redirect('/dashboard/container/' + container.id);
@@ -99,7 +100,7 @@ function ContainerController(app) {
                             name: ["container with this name already exists"]
                         };
                     }
-                    console.log("ERROR", err);
+                    logger.log("ERROR", err);
                     res.render('dashboard/container/form.html', {
                         req : req,
                         errors: err,
@@ -108,7 +109,7 @@ function ContainerController(app) {
                 }
             })
             .finally(function () {
-                console.log("ACCOUNT DONE");
+                logger.log("ACCOUNT DONE");
             });
     });
 
@@ -122,12 +123,12 @@ function ContainerController(app) {
             })
             .catch(function (err) {
                 if (err) {
-                    console.log(err);
+                    logger.log(err);
                     res.status(404);
                 }
             })
             .finally(function () {
-                console.log("ACCOUNT delete show");
+                logger.log("ACCOUNT delete show");
             });
     });
 
@@ -138,12 +139,12 @@ function ContainerController(app) {
             })
             .catch(function (err) {
                 if (err) {
-                    console.log(err);
+                    logger.log(err);
                     res.status(501);
                 }
             })
             .finally(function () {
-                console.log("ACCOUNT deleteed");
+                logger.log("ACCOUNT deleteed");
             });
     });
 

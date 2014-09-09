@@ -3,6 +3,7 @@
 var passport = require('passport');
 
 function LoginController(app) {
+    var logger = app.get('logger');
     var Accounts = app.get("repos").AccountsRepo;
 
     app.get('/login', function (req, res) {
@@ -46,7 +47,7 @@ function LoginController(app) {
                 });
             }
         }).finally(function () {
-            console.log("ACCOUNT DONE");
+            logger.log("ACCOUNT DONE");
         });
     });
 

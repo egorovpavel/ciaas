@@ -4,6 +4,7 @@ var _ = require('lodash');
 var redis = require('redis');
 var Authorization = require('./../common/Authorization');
 function UserBuildController(app) {
+    var logger = app.get('logger');
     var convert = new ConvertAsci();
     var Projects = app.get("repos").ProjectsRepo;
     var Accounts = app.get("repos").AccountsRepo;
@@ -21,11 +22,11 @@ function UserBuildController(app) {
             res.render('build/list.html', viewbag);
         }).catch(function (err) {
             if (err) {
-                console.log(err);
+                logger.log(err);
                 res.status(404);
             }
         }).finally(function () {
-            console.log("BUILDS LIST");
+            logger.log("BUILDS LIST");
         });
     });
     
@@ -68,7 +69,7 @@ function UserBuildController(app) {
                 res.status(500);
             }
         }).finally(function () {
-            console.log("build DONE");
+            logger.log("build DONE");
         });
     });
 
@@ -83,24 +84,24 @@ function UserBuildController(app) {
                 viewbag.log = [];
                 _.each(build.log_build, function (l) {
                     if (/\r/.test(l) && /\r/.test(viewbag.log[viewbag.log.length - 1])) {
-                        console.log("pop");
+                        logger.log("pop");
                         viewbag.log.pop();
                     } else {
                         viewbag.log.push(convert.toHtml(l));
                     }
                 });
-                console.log("COMPLETE", viewbag);
+                logger.log("COMPLETE", viewbag);
                 res.render('build/detail_static.html', viewbag);
             } else {
                 res.render('build/detail.html', viewbag);
             }
         }).catch(function (err) {
             if (err) {
-                console.log(err);
+                logger.log(err);
                 res.status(404);
             }
         }).finally(function () {
-            console.log("ACCOUNT LIST");
+            logger.log("ACCOUNT LIST");
         });
     });
 

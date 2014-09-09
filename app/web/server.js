@@ -36,6 +36,7 @@ app.configure('production', function () {
     app.set('redisHost', config.redis.host);
 });
 app.set('view engine', 'html');
+app.set('logger', logger);
 app.set('views', __dirname + '/views');
 app.use('/app/partials', express.static(__dirname + '/views/angular'));
 app.use('/app', express.static(__dirname + '/assets/dist'));
@@ -138,3 +139,4 @@ app.on('error',function(){
 })
 
 return app;
+
