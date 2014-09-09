@@ -6,10 +6,6 @@ module.exports = function (sequelize, DataTypes) {
             validate: {
                 notEmpty: {
                     msg: "Username cant be empty"
-                },
-                is: {
-                    args: ["^[a-z\-A-Z0-9]+$", 'i'],
-                    msg: "Username must be alpha"
                 }
             },
             unique: true

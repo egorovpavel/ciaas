@@ -6,7 +6,9 @@ function LoginController(app) {
     var Accounts = app.get("repos").AccountsRepo;
 
     app.get('/login', function (req, res) {
-        res.render('login/login.html',{req:req});
+        //var error = req.flash('error').length > 0 ? req.pop() : null;
+
+        res.render('login/login.html',{req:req, error : req.flash('error')});
     });
 
     app.get('/logout', function (req, res) {
@@ -19,15 +21,12 @@ function LoginController(app) {
     });
 
     // GET /auth/github
-    app.get('/auth/github',passport.authenticate('github'),function (req, res) {});
-
-    app.get('/auth/github/project',passport.authenticate('github',{
-        scope: ['write:repo_hook','repo'],
-        state: 'newproject'
+    app.get('/auth/github',passport.authenticate('github',{
+        scope: ['write:repo_hook','repo']
     }),function (req, res) {});
 
     app.post('/login',
-        passport.authenticate('local', { successRedirect: '/projects',failureRedirect: '/login',failureFlash: false })
+        passport.authenticate('local', { successRedirect: '/projects',failureRedirect: '/login',failureFlash: true })
     );
 
     app.post('/signup',function (req, res) {
@@ -52,8 +51,8 @@ function LoginController(app) {
     });
 
     // GET /auth/github/callback
-    app.get('/auth/github/callback',passport.authenticate('github', { failureRedirect: '/login' }),function (req, res) {
-        res.redirect('/');
+    app.get('/auth/github/callback',passport.authenticate('github', { failureRedirect: '/login',failureFlash: true}),function (req, res) {
+        res.redirect('/projects');
     });
 
 };

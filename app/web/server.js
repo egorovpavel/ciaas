@@ -8,6 +8,7 @@ var db = require('./models');
 var controllers_path = __dirname + '/controllers';
 var config = require('./config.json')[process.env.NODE_ENV || 'development'];
 var passport = require('passport');
+var flash = require('connect-flash');
 var bcrypt = require('bcrypt');
 
 var GitHubStrategy = require('passport-github').Strategy;
@@ -47,6 +48,7 @@ app.use(express.methodOverride());
 app.use(express.session({ secret: 'keyboard cat' }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 var repos_path = __dirname + '/repository';
 var repos = {};
@@ -71,27 +73,33 @@ passport.use(new GitHubStrategy({
         clientSecret: GITHUB_CLIENT_SECRET,
         callbackURL: GITHUB_REDIRECT
     },
-    function (accessToken, refreshToken, profile, done) {
-        Accounts.getByEmail(profile._json.email).then(function (account) {
-            if(account){
-                Accounts.update(account.username, {
-                    token : accessToken
-                },true).then(function(account){
-                    done(null, account);    
-                });
-            }else{
-                Accounts.create({
-                    username : profile._json.login,
-                    email: profile._json.email,
-                    password: null,
-                    token : accessToken
-                },true).then(function (account) {
-                    done(null, account);  
-                }).finally(function () {
-                    console.log("ACCOUNT DONE");
-                });
-            }
-        });
+    function (req,accessToken, refreshToken, profile, done) {
+        console.log("REQUEST:", req);
+        if(profile._json.email){
+            Accounts.getByEmail(profile._json.email).then(function (account) {
+                if(account){
+                    Accounts.update(account.username, {
+                        token : accessToken
+                    },true).then(function(account){
+                        done(null, account);    
+                    });
+                }else{
+                    Accounts.create({
+                        username : profile._json.login,
+                        email: profile._json.email,
+                        password: null,
+                        token : accessToken
+                    },true).then(function (account) {
+                        done(null, account);  
+                    }).finally(function () {
+                        console.log("ACCOUNT DONE");
+                    });
+                }
+            });
+        }else{
+            req.flash('error','No public email specified in your github accout.')
+            done(null,null);
+        }
     }
 ));
 passport.use(new LocalStrategy(
