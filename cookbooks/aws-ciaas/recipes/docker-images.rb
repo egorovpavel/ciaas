@@ -11,7 +11,7 @@ log "message" do
   level :info
 end
 
-execute "check-docker" do
+execute "check-docker	" do
     command 'sudo docker ps'
 end
 node['IMAGES'].each do |image|
