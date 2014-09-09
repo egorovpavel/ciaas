@@ -47,7 +47,7 @@ function LoginController(app) {
                 });
             }
         }).finally(function () {
-            logger.log("ACCOUNT DONE");
+            logger.info("ACCOUNT DONE");
         });
     });
 

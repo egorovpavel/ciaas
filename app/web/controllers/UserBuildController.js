@@ -22,11 +22,11 @@ function UserBuildController(app) {
             res.render('build/list.html', viewbag);
         }).catch(function (err) {
             if (err) {
-                logger.log(err);
+                logger.info(err);
                 res.status(404);
             }
         }).finally(function () {
-            logger.log("BUILDS LIST");
+            logger.info("BUILDS LIST");
         });
     });
     
@@ -69,7 +69,7 @@ function UserBuildController(app) {
                 res.status(500);
             }
         }).finally(function () {
-            logger.log("build DONE");
+            logger.info("build DONE");
         });
     });
 
@@ -84,24 +84,24 @@ function UserBuildController(app) {
                 viewbag.log = [];
                 _.each(build.log_build, function (l) {
                     if (/\r/.test(l) && /\r/.test(viewbag.log[viewbag.log.length - 1])) {
-                        logger.log("pop");
+                        logger.info("pop");
                         viewbag.log.pop();
                     } else {
                         viewbag.log.push(convert.toHtml(l));
                     }
                 });
-                logger.log("COMPLETE", viewbag);
+                logger.info("COMPLETE", viewbag);
                 res.render('build/detail_static.html', viewbag);
             } else {
                 res.render('build/detail.html', viewbag);
             }
         }).catch(function (err) {
             if (err) {
-                logger.log(err);
+                logger.info(err);
                 res.status(404);
             }
         }).finally(function () {
-            logger.log("ACCOUNT LIST");
+            logger.info("ACCOUNT LIST");
         });
     });
 

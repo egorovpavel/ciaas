@@ -12,11 +12,11 @@ function ContainerController(app) {
             });
         }).catch(function (err) {
             if (err) {
-                logger.log(err);
+                logger.info(err);
                 res.status(501);
             }
         }).finally(function () {
-            logger.log("ACCOUNT LIST");
+            logger.info("ACCOUNT LIST");
         });
     });
 
@@ -32,13 +32,13 @@ function ContainerController(app) {
             });
         })
             .catch(function (err) {
-                logger.log(err);
+                logger.info(err);
                 if (err) {
                     res.status(501);
                 }
             })
             .finally(function () {
-                logger.log("ACCOUNT DONE");
+                logger.info("ACCOUNT DONE");
             });
     });
 
@@ -50,13 +50,13 @@ function ContainerController(app) {
             });
         })
             .catch(function (err) {
-                logger.log(err);
+                logger.info(err);
                 if (err) {
                     res.status(404);
                 }
             })
             .finally(function () {
-                logger.log("ACCOUNT DONE");
+                logger.info("ACCOUNT DONE");
             });
     });
 
@@ -73,7 +73,7 @@ function ContainerController(app) {
                             name: ["container with this name already exists"]
                         };
                     }
-                    logger.log(err);
+                    logger.info(err);
                     req.body.container.id = "dummy";
                     res.render('dashboard/container/form.html', {
                         req : req,
@@ -83,12 +83,12 @@ function ContainerController(app) {
                 }
             })
             .finally(function () {
-                logger.log("ACCOUNT DONE");
+                logger.info("ACCOUNT DONE");
             });
     });
 
     app.post('/dashboard/container/create',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
-        logger.log(req.body.container);
+        logger.info(req.body.container);
         Containers.create(req.body.container)
             .then(function (container) {
                 res.redirect('/dashboard/container/' + container.id);
@@ -100,7 +100,7 @@ function ContainerController(app) {
                             name: ["container with this name already exists"]
                         };
                     }
-                    logger.log("ERROR", err);
+                    logger.info("ERROR", err);
                     res.render('dashboard/container/form.html', {
                         req : req,
                         errors: err,
@@ -109,7 +109,7 @@ function ContainerController(app) {
                 }
             })
             .finally(function () {
-                logger.log("ACCOUNT DONE");
+                logger.info("ACCOUNT DONE");
             });
     });
 
@@ -123,12 +123,12 @@ function ContainerController(app) {
             })
             .catch(function (err) {
                 if (err) {
-                    logger.log(err);
+                    logger.info(err);
                     res.status(404);
                 }
             })
             .finally(function () {
-                logger.log("ACCOUNT delete show");
+                logger.info("ACCOUNT delete show");
             });
     });
 
@@ -139,12 +139,12 @@ function ContainerController(app) {
             })
             .catch(function (err) {
                 if (err) {
-                    logger.log(err);
+                    logger.info(err);
                     res.status(501);
                 }
             })
             .finally(function () {
-                logger.log("ACCOUNT deleteed");
+                logger.info("ACCOUNT deleteed");
             });
     });
 

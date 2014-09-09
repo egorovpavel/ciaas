@@ -15,11 +15,11 @@ function UserProjectsController(app) {
             });
         }).catch(function (err) {
             if (err) {
-                logger.log(err);
+                logger.info(err);
                 res.status(404);
             }
         }).finally(function () {
-            logger.log("ACCOUNT LIST");
+            logger.info("ACCOUNT LIST");
         });
     });
 
@@ -45,7 +45,7 @@ function UserProjectsController(app) {
                 })
             }
         }).finally(function () {
-            logger.log("ACCOUNT DONE");
+            logger.info("ACCOUNT DONE");
         });
     });
 
@@ -57,11 +57,11 @@ function UserProjectsController(app) {
             });
         }).catch(function (err) {
             if (err) {
-                logger.log(err);
+                logger.info(err);
                 res.status(500);
             }
         }).finally(function () {
-            logger.log("ACCOUNT DONE");
+            logger.info("ACCOUNT DONE");
         });
     });
 
@@ -78,11 +78,11 @@ function UserProjectsController(app) {
             });
         }).catch(function (err) {
             if (err) {
-                logger.log(err);
+                logger.info(err);
                 res.status(500);
             }
         }).finally(function () {
-            logger.log("ACCOUNT DONE");
+            logger.info("ACCOUNT DONE");
         });
     });
 
@@ -94,17 +94,17 @@ function UserProjectsController(app) {
             project = req.body.project;
             project.name = repo.name;
             project.repo_url = repo.clone_url;
-            logger.log(project);
+            logger.info(project);
             return Projects.create(req.user, project);
         }).then(function (containers) {
             res.redirect('/projects');
         }).catch(function (err) {
             if (err) {
-                logger.log(err);
+                logger.info(err);
                 res.status(500);
             }
         }).finally(function () {
-            logger.log("ACCOUNT DONE");
+            logger.info("ACCOUNT DONE");
         });
     });
 
@@ -124,12 +124,12 @@ function UserProjectsController(app) {
             })
             .catch(function (err) {
                 if (err) {
-                    logger.log(err);
+                    logger.info(err);
                     res.status(404);
                 }
             })
             .finally(function () {
-                logger.log("ACCOUNT delete show");
+                logger.info("ACCOUNT delete show");
             });
     });
 
@@ -140,12 +140,12 @@ function UserProjectsController(app) {
             })
             .catch(function (err) {
                 if (err) {
-                    logger.log(err);
+                    logger.info(err);
                     res.status(501);
                 }
             })
             .finally(function () {
-                logger.log("ACCOUNT deleteed");
+                logger.info("ACCOUNT deleteed");
             });
     });
 
@@ -167,7 +167,7 @@ function UserProjectsController(app) {
             }
         })
         .finally(function () {
-            logger.log("ACCOUNT DONE");
+            logger.info("ACCOUNT DONE");
         });
     });
 
@@ -182,7 +182,7 @@ function UserProjectsController(app) {
                         repo_url: ["Project for this repository already exists"]
                     };
                 }
-                logger.log(err);
+                logger.info(err);
                 req.body.project.id = "dummy";
 
                 Containers.getPrimary().then(function (containers) {
@@ -196,7 +196,7 @@ function UserProjectsController(app) {
                 });
             }
         }).finally(function () {
-            logger.log("ACCOUNT DONE");
+            logger.info("ACCOUNT DONE");
         });
     });
 }

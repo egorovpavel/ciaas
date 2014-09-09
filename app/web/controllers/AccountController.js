@@ -11,11 +11,11 @@ function AccountController(app) {
             });
         }).catch(function (err) {
             if (err) {
-                logger.log(err);
+                logger.info(err);
                 res.responseError(501);
             }
         }).finally(function () {
-            logger.log("ACCOUNT LIST");
+            logger.info("ACCOUNT LIST");
         });
     });
 
@@ -31,13 +31,13 @@ function AccountController(app) {
             });
         })
             .catch(function (err) {
-                logger.log(err);
+                logger.info(err);
                 if (err) {
                     res.responseError(501);
                 }
             })
             .finally(function () {
-                logger.log("ACCOUNT DONE");
+                logger.info("ACCOUNT DONE");
             });
     });
 
@@ -49,13 +49,13 @@ function AccountController(app) {
             });
         })
             .catch(function (err) {
-                logger.log(err);
+                logger.info(err);
                 if (err) {
                     res.status(404);
                 }
             })
             .finally(function () {
-                logger.log("ACCOUNT DONE");
+                logger.info("ACCOUNT DONE");
             });
     });
 
@@ -72,7 +72,7 @@ function AccountController(app) {
                             username: ["User with this name already exists"]
                         };
                     }
-                    logger.log(err);
+                    logger.info(err);
                     req.body.account.id = "dummy";
                     res.render('dashboard/account/form.html', {
                         req : req,
@@ -82,7 +82,7 @@ function AccountController(app) {
                 }
             })
             .finally(function () {
-                logger.log("ACCOUNT DONE");
+                logger.info("ACCOUNT DONE");
             });
     });
 
@@ -93,13 +93,13 @@ function AccountController(app) {
             })
             .catch(function (err) {
                 if (err) {
-                    logger.log();
+                    logger.info();
                     if (err.code && err.code == 'ER_DUP_ENTRY') {
                         var key = err.message.indexOf("for key 'email'") > 0 ? "email" : "username";
                         err = {};
                         err[key] = [key + " already exists"];
                     }
-                    logger.log(err);
+                    logger.info(err);
                     res.render('dashboard/account/form.html', {
                         req : req,
                         errors: err,
@@ -108,7 +108,7 @@ function AccountController(app) {
                 }
             })
             .finally(function () {
-                logger.log("ACCOUNT DONE");
+                logger.info("ACCOUNT DONE");
             });
     });
 
@@ -122,12 +122,12 @@ function AccountController(app) {
             })
             .catch(function (err) {
                 if (err) {
-                    logger.log(err);
+                    logger.info(err);
                     res.responseError(501);
                 }
             })
             .finally(function () {
-                logger.log("ACCOUNT delete show");
+                logger.info("ACCOUNT delete show");
             });
     });
 
@@ -138,12 +138,12 @@ function AccountController(app) {
             })
             .catch(function (err) {
                 if (err) {
-                    logger.log(err);
+                    logger.info(err);
                     res.responseError(501);
                 }
             })
             .finally(function () {
-                logger.log("ACCOUNT deleteed");
+                logger.info("ACCOUNT deleteed");
             });
     });
 

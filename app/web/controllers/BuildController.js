@@ -25,11 +25,11 @@ function BuildController(app) {
             res.render('build/list.html', viewbag);
         }).catch(function (err) {
             if (err) {
-                logger.log(err);
+                logger.info(err);
                 res.status(404);
             }
         }).finally(function () {
-            logger.log("BUILDS LIST");
+            logger.info("BUILDS LIST");
         });
     });
 
@@ -42,7 +42,7 @@ function BuildController(app) {
                 redisFeedSubscriber.unsubscribe("channel_result_" + id);
                 redisFeedSubscriber.unsubscribe("channel_" + id);
             } else if(channel == "channel_" + id) {
-                logger.log("_");
+                logger.info("_");
                 OutputFeed.transform(id, message, function (channelName, message) {
                     req.io.emit(channelName, message);
                 });
@@ -92,7 +92,7 @@ function BuildController(app) {
                 res.status(500);
             }
         }).finally(function () {
-            logger.log("build DONE");
+            logger.info("build DONE");
         });
     });
 
@@ -103,7 +103,7 @@ function BuildController(app) {
             return  Projects.get(req.param('id'));
         }).then(function (project) {
             viewbag.project = project;
-            logger.log(viewbag);
+            logger.info(viewbag);
             return Builds.get(project, req.param('num'));
         }).then(function (build) {
             viewbag.build = build;
@@ -111,24 +111,24 @@ function BuildController(app) {
                 viewbag.log = [];
                 _.each(build.log_build, function (l) {
                     if (/\r/.test(l) && /\r/.test(viewbag.log[viewbag.log.length - 1])) {
-                        logger.log("pop");
+                        logger.info("pop");
                         viewbag.log.pop();
                     } else {
                         viewbag.log.push(convert.toHtml(l));
                     }
                 });
-                logger.log("COMPLETE", viewbag);
+                logger.info("COMPLETE", viewbag);
                 res.render('dashboard/build/detail_static.html', viewbag);
             } else {
                 res.render('dashboard/build/detail.html', viewbag);
             }
         }).catch(function (err) {
             if (err) {
-                logger.log(err);
+                logger.info(err);
                 res.status(404);
             }
         }).finally(function () {
-            logger.log("ACCOUNT LIST");
+            logger.info("ACCOUNT LIST");
         });
     });
 
