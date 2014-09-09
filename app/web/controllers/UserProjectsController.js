@@ -25,9 +25,9 @@ function UserProjectsController(app) {
 
 
     app.get('/projects/create',Authorization.isAuthenticated, function (req, res) {
-        logger.console.log("USER TOKEN:" ,req.user.token);
+        logger.log("USER TOKEN:" ,req.user.token);
         GitHubRemote.getAllRepos(req.user.token).then(function(repos){
-            logger.console.log("ALL REPOS:" ,repos);
+            logger.log("ALL REPOS:" ,repos);
             res.render('project/new.html', {
                 req : req,
                 repos : repos
