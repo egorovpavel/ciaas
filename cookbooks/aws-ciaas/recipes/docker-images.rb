@@ -10,6 +10,10 @@ log "message" do
   message "Exporting dokerimages"
   level :info
 end
+
+execute "check-docker" do
+    command 'sudo docker ps'
+end
 node['IMAGES'].each do |image|
 	execute "export-nodejs-image" do
 	    command 'sudo docker import '+image['URL']+' '+image['NAME']
