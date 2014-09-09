@@ -12,7 +12,7 @@ log "message" do
 end
 
 execute "check-docker	" do
-    command 'sudo docker ps'
+    command 'sudo service docker start'
 end
 node['IMAGES'].each do |image|
 	execute "export-nodejs-image" do
