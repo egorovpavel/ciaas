@@ -3,7 +3,6 @@
 var HomeController = function (app) {
 
     app.get('/', function (req, res) {
-    	throw new Error("HUi");
         res.render('home/home.html',{req:req});
     });
 
