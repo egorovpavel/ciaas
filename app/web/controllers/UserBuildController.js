@@ -66,6 +66,7 @@ function UserBuildController(app) {
             res.redirect('/projects/' + req.param('id') + "/build/" + _buildid);
         }).catch(function (err) {
             if (err) {
+                logger.error(err);
                 res.status(500);
             }
         }).finally(function () {

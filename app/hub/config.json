@@ -12,7 +12,7 @@
     },
     "production": {
     	"redis" : {
-	        "host": "ci.u43szi.0001.euw1.cache.amazonaws.com",
+	        "host": "ci-redis.u43szi.0001.euw1.cache.amazonaws.com",
 	        "port": "6379"
         },
 	    "mysql" : {
