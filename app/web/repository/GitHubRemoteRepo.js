@@ -19,7 +19,7 @@ var GitHubRemoteRepo = function () {
 		    type: "oauth",
 		    token: token
 		});
-		github.repos.getAll({},function(err,data){
+		github.repos.getAll({type: "owner"},function(err,data){
 			if(err){
 				promise.reject(err);
 			}else{

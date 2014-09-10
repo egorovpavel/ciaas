@@ -6170,6 +6170,10 @@ form .action button.cancel .badge {
   -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   -ms-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  background-clip: padding-box;
+  border: 0px;
   margin-top: 10px;
   height: auto;
   color: #FFF;
@@ -6639,4 +6643,24 @@ dl dd {
   background-color: transparent;
   color: #e1e4da;
   border: 2px solid #e1e4da;
+}
+.build-status-header {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.build-status-header .meta {
+  line-height: 1em;
+  padding: 10px 0px;
+  margin: 0px;
+  font-weight: 300;
+  color: #e1e4da;
+}
+.build-status-header.build-success {
+  background-color: #5cb85c;
+}
+.build-status-header.build-progress {
+  background-color: #f0ad4e;
+}
+.build-status-header.build-fail {
+  background-color: #d9534f;
 }

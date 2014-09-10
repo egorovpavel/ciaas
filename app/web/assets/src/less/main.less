@@ -67,6 +67,8 @@ form {
 
 .output {
   .form-control;
+  .border-radius(0px);
+  border: 0px;
   margin-top: 10px;
   height: auto;
   color: #FFF;
@@ -295,4 +297,26 @@ dl dd {
     border: 2px solid @secondary-accent-invert;
   }
 
+}
+
+
+.build-status-header {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  .meta{
+    line-height: 1em;
+    padding: 10px 0px;
+    margin: 0px;
+    font-weight: 300;
+    color:  @secondary-accent-invert;
+  }
+}
+.build-status-header.build-success{
+    background-color: @btn-success-bg;
+}
+.build-status-header.build-progress{
+    background-color: @btn-warning-bg;
+}
+.build-status-header.build-fail{
+    background-color: @btn-danger-bg;
 }
