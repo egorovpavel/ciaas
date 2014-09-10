@@ -3,7 +3,7 @@
 var HooksController = function(app){
 	var logger = app.get('logger');
     app.post('/hooks', function (req, res) {
-    	logger.info(request.body);
+    	logger.info(req.body);
         res.write('OK');
     });
 };
