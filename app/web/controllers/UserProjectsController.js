@@ -73,7 +73,9 @@ function UserProjectsController(app) {
             project.repo_url = repo.clone_url;
             logger.info(project);
             return Projects.create(req.user, project);
-        }).then(function (containers) {
+        }).then(function(project){
+            return GitHubRemote.registerHook(req.user.token, req.user.username,req.params.repo);
+        }).then(function () {
             res.redirect('/projects');
         }).catch(function (err) {
             if (err) {

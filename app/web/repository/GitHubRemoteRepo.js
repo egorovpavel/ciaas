@@ -57,11 +57,15 @@ var GitHubRemoteRepo = function () {
 		github.repos.createHook({
 			user : user,
 			repo : repo,
-			name : "ciaasHook",
+			name : "web",
 			active : true,
+			events: [
+			    "push",
+			    "pull_request"
+		    ],
 			config : {
-				"url": "http://localhost/hooks",
-      			"content_type": "json"
+				url : "http://cipsisel.com/hooks",
+      			content_type : "json"
 			}
 		},function(err,data){
 			if(err){
@@ -75,7 +79,8 @@ var GitHubRemoteRepo = function () {
 
 	return {
 		getAllRepos : getAllRepos,
-		getRepo : getRepo
+		getRepo : getRepo,
+		registerHook: registerHook
 	}
 }();
 

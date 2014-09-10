@@ -2,7 +2,8 @@
 
 var HooksController = function(app){
 	var logger = app.get('logger');
-    app.get('/hooks', function (req, res) {
+    app.post('/hooks', function (req, res) {
+    	logger.info(request.body);
         res.write('OK');
     });
 };
