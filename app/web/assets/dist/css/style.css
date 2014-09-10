@@ -5844,6 +5844,18 @@ a:hover {
   margin-left: -15px;
   margin-right: -15px;
 }
+.navbar-toggle {
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  background-clip: padding-box;
+  border: 2px solid #c9cebd;
+}
+.navbar-toggle .icon-bar {
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  background-clip: padding-box;
+  border: 1px solid #c9cebd;
+}
 td form {
   margin: 0px;
 }
