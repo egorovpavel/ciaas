@@ -5844,6 +5844,17 @@ a:hover {
   margin-left: -15px;
   margin-right: -15px;
 }
+@media (max-width: 767px) {
+  .navbar-collapse {
+    background-color: #000;
+    color: #FFF;
+  }
+}
+@media (max-width: 767px) {
+  .navbar-collapse .menu li {
+    display: block;
+  }
+}
 .navbar-toggle {
   -webkit-border-radius: 0px;
   border-radius: 0px;
@@ -6438,8 +6449,8 @@ dl dd {
   padding: 1em 2em;
 }
 .zebra-rows .action-col .btn {
-  color: #b3b3b3;
-  border-color: #cccccc;
+  color: #999999;
+  border-color: #b3b3b3;
   margin-bottom: 0.5em;
 }
 .zebra-rows .action-col .btn:hover {

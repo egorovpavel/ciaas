@@ -20,6 +20,21 @@ a:hover{
 .editor {
   .make-row();
 }
+
+.navbar-collapse{
+  @media (max-width: @screen-xs-max) {
+    background-color: #000;
+    color: #FFF;
+  }
+  .menu{
+     @media (max-width: @screen-xs-max) {
+        li{
+          display: block;
+        }
+      }
+  }
+}
+
 .navbar-toggle{
   .border-radius(0px);
   border: 2px solid darken(@table-bg-accent,10%);
@@ -214,8 +229,8 @@ dl dd {
   .action-col{
     padding: 1em 2em;
     .btn{
-      color: lighten(@secondary-accent, 50%);
-      border-color: lighten(@secondary-accent,60%);
+      color: lighten(@secondary-accent, 40%);
+      border-color: lighten(@secondary-accent,50%);
       margin-bottom: 0.5em;
     }
     .btn:hover{
