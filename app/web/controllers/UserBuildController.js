@@ -91,7 +91,7 @@ function UserBuildController(app) {
                         viewbag.log.push(convert.toHtml(l));
                     }
                 });
-                logger.info("COMPLETE", viewbag);
+                logger.info("COMPLETE" + viewbag);
                 res.render('build/detail_static.html', viewbag);
             } else {
                 res.render('build/detail.html', viewbag);
