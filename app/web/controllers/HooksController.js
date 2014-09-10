@@ -7,7 +7,10 @@ var HooksController = function(app){
     var BuildQueue = app.get("repos").BuildQueueRepo(app.get('redisPort'), app.get('redisHost'));
 
     app.post('/hooks/:projectid', function (req, res) {
+    	var _project;
+    	var _id,_buildid;
         Projects.get(req.param('projectid')).then(function (project) {
+        	logger.info("project");
             _project = project;
             return Builds.open(project);
         }).then(function (build) {

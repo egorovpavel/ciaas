@@ -1,14 +1,15 @@
 {%extends '../common/layout.html'%}
 {% block secondary-header %}
-<div class="content secondary-header">
+<div class="secondary-header">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="row-fluid clearfix">
                     <div class="col-lg-12">
-                        <h2>
-                            <a href="/projects">Projects</a> / {{repos.name}}
-                        </h2>
+                        <ol class="breadcrumb">
+                            <li class=""><a href="/projects">Projects</a></li>
+                            <li class="active">{{repos.name}}</li>
+                        </ol>
                     </div>
                 </div>
             </div>

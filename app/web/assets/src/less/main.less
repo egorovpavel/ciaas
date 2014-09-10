@@ -78,20 +78,6 @@ form {
   font-size: 13px;
 }
 
-header {
-  div {
-    .navbar;
-    .navbar-default;
-    .navbar-fixed-top;
-    div {
-      .container;
-    }
-    .navbar-collapse.in{
-      margin-top: 50px;
-    }
-  }
-}
-
 .project-nav {
   ul {
     .nav;
@@ -280,7 +266,6 @@ dl dd {
   background-color: @secondary-accent;
   padding-top: 30px;
   padding-bottom: 30px;
-  margin-top: 50px;
   h2{
     line-height: 1em;
     padding: 10px 0px;
@@ -296,7 +281,38 @@ dl dd {
     color: @secondary-accent-invert;
     border: 2px solid @secondary-accent-invert;
   }
-
+  @media (max-width: @screen-xs-max) {
+    .action-button{
+      margin-top: 20px;
+    }
+  }
+  .breadcrumb{
+    background-color: transparent;
+    border: 0px;
+    .border-radius(0px);
+    font-size: 20px;
+    margin-bottom: 0px;
+    padding: 0px;
+    text-transform: uppercase;
+    @media (max-width: @screen-xs-max) {
+        li{
+          display: block;
+        }
+        li:before{
+          content: '';
+          padding: 0px;
+        }
+    }
+    a{
+      color: @secondary-accent-invert;
+    }
+    .badge{
+      line-height: inherit;
+      font-size: inherit;
+      font-weight: 300;
+      .border-radius(100%);
+    }
+  }
 }
 
 

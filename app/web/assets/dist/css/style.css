@@ -5655,10 +5655,6 @@ button.close {
 .modal-footer:after,
 .editor:before,
 .editor:after,
-header div:before,
-header div:after,
-header div div:before,
-header div div:after,
 .project-nav ul:before,
 .project-nav ul:after {
   content: " ";
@@ -5679,8 +5675,6 @@ header div div:after,
 .panel-body:after,
 .modal-footer:after,
 .editor:after,
-header div:after,
-header div div:after,
 .project-nav ul:after {
   clear: both;
 }
@@ -6208,145 +6202,6 @@ fieldset[disabled] .output {
 textarea.output {
   height: auto;
 }
-header div {
-  position: relative;
-  min-height: 50px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
-  background-color: #f8f8f8;
-  border-color: #e7e7e7;
-  position: fixed;
-  right: 0;
-  left: 0;
-  z-index: 1030;
-  top: 0;
-  border-width: 0 0 1px;
-}
-@media (min-width: 768px) {
-  header div {
-    border-radius: 4px;
-  }
-}
-header div .navbar-brand {
-  color: #777777;
-}
-header div .navbar-brand:hover,
-header div .navbar-brand:focus {
-  color: #5e5e5e;
-  background-color: transparent;
-}
-header div .navbar-text {
-  color: #777777;
-}
-header div .navbar-nav > li > a {
-  color: #777777;
-}
-header div .navbar-nav > li > a:hover,
-header div .navbar-nav > li > a:focus {
-  color: #333333;
-  background-color: transparent;
-}
-header div .navbar-nav > .active > a,
-header div .navbar-nav > .active > a:hover,
-header div .navbar-nav > .active > a:focus {
-  color: #555555;
-  background-color: #e7e7e7;
-}
-header div .navbar-nav > .disabled > a,
-header div .navbar-nav > .disabled > a:hover,
-header div .navbar-nav > .disabled > a:focus {
-  color: #cccccc;
-  background-color: transparent;
-}
-header div .navbar-toggle {
-  border-color: #dddddd;
-}
-header div .navbar-toggle:hover,
-header div .navbar-toggle:focus {
-  background-color: #dddddd;
-}
-header div .navbar-toggle .icon-bar {
-  background-color: #888888;
-}
-header div .navbar-collapse,
-header div .navbar-form {
-  border-color: #e7e7e7;
-}
-header div .navbar-nav > .open > a,
-header div .navbar-nav > .open > a:hover,
-header div .navbar-nav > .open > a:focus {
-  background-color: #e7e7e7;
-  color: #555555;
-}
-@media (max-width: 767px) {
-  header div .navbar-nav .open .dropdown-menu > li > a {
-    color: #777777;
-  }
-  header div .navbar-nav .open .dropdown-menu > li > a:hover,
-  header div .navbar-nav .open .dropdown-menu > li > a:focus {
-    color: #333333;
-    background-color: transparent;
-  }
-  header div .navbar-nav .open .dropdown-menu > .active > a,
-  header div .navbar-nav .open .dropdown-menu > .active > a:hover,
-  header div .navbar-nav .open .dropdown-menu > .active > a:focus {
-    color: #555555;
-    background-color: #e7e7e7;
-  }
-  header div .navbar-nav .open .dropdown-menu > .disabled > a,
-  header div .navbar-nav .open .dropdown-menu > .disabled > a:hover,
-  header div .navbar-nav .open .dropdown-menu > .disabled > a:focus {
-    color: #cccccc;
-    background-color: transparent;
-  }
-}
-header div .navbar-link {
-  color: #777777;
-}
-header div .navbar-link:hover {
-  color: #333333;
-}
-@media (min-width: 768px) {
-  header div {
-    border-radius: 0;
-  }
-}
-header div div {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-@media (min-width: 768px) {
-  header div div {
-    width: 750px;
-  }
-}
-@media (min-width: 992px) {
-  header div div {
-    width: 970px;
-  }
-}
-@media (min-width: 1200px) {
-  header div div {
-    width: 1170px;
-  }
-}
-header div div > .navbar-header,
-header div div > .navbar-collapse {
-  margin-right: -15px;
-  margin-left: -15px;
-}
-@media (min-width: 768px) {
-  header div div > .navbar-header,
-  header div div > .navbar-collapse {
-    margin-right: 0;
-    margin-left: 0;
-  }
-}
-header div .navbar-collapse.in {
-  margin-top: 50px;
-}
 .project-nav ul {
   margin-bottom: 0;
   padding-left: 0;
@@ -6625,7 +6480,6 @@ dl dd {
   background-color: #333333;
   padding-top: 30px;
   padding-bottom: 30px;
-  margin-top: 50px;
 }
 .secondary-header h2 {
   line-height: 1em;
@@ -6643,6 +6497,42 @@ dl dd {
   background-color: transparent;
   color: #e1e4da;
   border: 2px solid #e1e4da;
+}
+@media (max-width: 767px) {
+  .secondary-header .action-button {
+    margin-top: 20px;
+  }
+}
+.secondary-header .breadcrumb {
+  background-color: transparent;
+  border: 0px;
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  background-clip: padding-box;
+  font-size: 20px;
+  margin-bottom: 0px;
+  padding: 0px;
+  text-transform: uppercase;
+}
+@media (max-width: 767px) {
+  .secondary-header .breadcrumb li {
+    display: block;
+  }
+  .secondary-header .breadcrumb li:before {
+    content: '';
+    padding: 0px;
+  }
+}
+.secondary-header .breadcrumb a {
+  color: #e1e4da;
+}
+.secondary-header .breadcrumb .badge {
+  line-height: inherit;
+  font-size: inherit;
+  font-weight: 300;
+  -webkit-border-radius: 100%;
+  border-radius: 100%;
+  background-clip: padding-box;
 }
 .build-status-header {
   padding-top: 30px;

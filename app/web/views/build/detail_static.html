@@ -1,17 +1,20 @@
 {%extends '../common/layout.html'%}
 {% block secondary-header %}
-<div class="content secondary-header">
+<div class="secondary-header">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="row-fluid clearfix">
                     <div class="col-lg-10 col-xs-12">
-                        <h2>
-                            <a href="/projects">Projects</a> / <a href="/projects/{{project.id}}/build">History</a> / <a href="/projects/{{project.id}}/config">{{project.name}} </a>/ Build #{{build.id}}
-                        </h2>
+                        <ol class="breadcrumb">
+                            <li class=""><a href="/projects">Projects</a></li>
+                            <li class=""><a href="/projects/{{project.id}}/build">History</a></li>
+                            <li class=""><a href="/projects/{{project.id}}/config">{{project.name}}</a></li>
+                            <li class="active">Build <span class="badge badge-default">{{build.id}}</span></li>
+                        </ol>
                     </div>
                     <div class="col-lg-2 col-xs-12">
-                        <form method="post" action="/projects/{{project.id}}/build">
+                        <form method="post" action="/projects/{{project.id}}/build"  class="action-button">
                             <button href="/projects/create" class="btn btn-primary btn-block btn-lg">
                                 <i class="glyphicon glyphicon-flash"></i>
                                 Build
