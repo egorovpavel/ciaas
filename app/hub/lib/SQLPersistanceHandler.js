@@ -3,10 +3,10 @@
 var Sequelize = require('sequelize');
 
 var PersistanceHandler = function(sqlConfig){
-	var db = new Sequelize(sqlConfig.db, process.env.MYSQL_USER || 'root', process.env.MYSQL_PASS || 'root', {
+	var db = new Sequelize(process.env.MYSQL_DB || 'ci', process.env.MYSQL_USER || 'root', process.env.MYSQL_PASS || 'root', {
         dialect: 'mysql',
-        port: sqlConfig.port,
-        host: sqlConfig.host
+        port: process.env.MYSQL_PORT || '3306',
+        host: process.env.MYSQL_HOST || 'localhost'
     });
 
 	var closeBuild = function(id, buildId, fullLog, fullResult, started, finished){

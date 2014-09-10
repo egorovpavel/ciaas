@@ -4,7 +4,7 @@
 
 angular.module('CI.services', []).
     factory('iosocket', function (socketFactory) {
-        var myIoSocket = io.connect('http://localhost');
+        var myIoSocket = io.connect('/');
 
         var mySocket = socketFactory({
             ioSocket: myIoSocket
