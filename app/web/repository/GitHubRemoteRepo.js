@@ -48,7 +48,7 @@ var GitHubRemoteRepo = function () {
 		return promise.promise;
 	};
 
-	var registerHook = function(token,user,repo){
+	var registerHook = function(token,user,repo, projectid){
 		var promise = Promise.pending();
 		github.authenticate({
 		    type: "oauth",
@@ -64,7 +64,7 @@ var GitHubRemoteRepo = function () {
 			    "pull_request"
 		    ],
 			config : {
-				url : "http://cipsisel.com/hooks",
+				url : "http://cipsisel.com/hooks/"+projectid,
       			content_type : "json"
 			}
 		},function(err,data){

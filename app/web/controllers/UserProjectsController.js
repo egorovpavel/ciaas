@@ -74,7 +74,7 @@ function UserProjectsController(app) {
             logger.info(project);
             return Projects.create(req.user, project);
         }).then(function(project){
-            return GitHubRemote.registerHook(req.user.token, req.user.username,req.params.repo);
+            return GitHubRemote.registerHook(req.user.token, req.user.username,req.params.repo,project.id);
         }).then(function () {
             res.redirect('/projects');
         }).catch(function (err) {
