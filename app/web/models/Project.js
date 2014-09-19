@@ -31,6 +31,17 @@ module.exports = function (sequelize, DataTypes) {
         },
         artifact_path: DataTypes.STRING
     }, {
+        instanceMethods: {
+            lastBuildStatus : function(){
+                return this.builds[this.builds.length -1].status_result;
+            },
+            lastBuildId : function(){
+                return this.builds[this.builds.length -1].build_id;
+            },
+            isInProgress : function(){
+                return this.builds[this.builds.length -1].status_result == null;
+            }
+        },
         classMethods: {
             associate: function (models) {
                 Project.belongsTo(models.Account);

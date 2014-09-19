@@ -11,7 +11,7 @@
 		{
 			"type": "chef-solo",
 			"cookbook_paths": ["containers/berks-cookbooks","containers/cookbooks"],
-			"run_list" : ["git","nodejs","container-nodejs"]
+			"run_list" : ["git","nodejs","build-essential","container-nodejs"]
 		}
 	]
 }

@@ -13,7 +13,7 @@ function UserBuildController(app) {
     var redisFeedSubscriber = redis.createClient(app.get('redisPort'), app.get('redisHost'));
 
     app.get('/projects/:id/build',Authorization.isAuthenticated, function (req, res) {
-        var viewbag = {req:req};
+        var viewbag = {};
         Projects.get(req.param('id')).then(function (project) {
             viewbag.project = project;
             return Builds.all(project)
@@ -75,7 +75,7 @@ function UserBuildController(app) {
     });
 
     app.get('/projects/:id/build/:num',Authorization.isAuthenticated, function (req, res) {
-        var viewbag = {req:req};
+        var viewbag = {};
         Projects.get(req.param('id')).then(function (project) {
             viewbag.project = project;
             return Builds.get(project, req.param('num'));

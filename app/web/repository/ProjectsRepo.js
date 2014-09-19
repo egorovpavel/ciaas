@@ -36,7 +36,7 @@ var ProjectsRepo = function () {
     };
 
     var getAll = function (account) {
-        return db.Project.findAll({include: [db.Container], where: {AccountId: account.id}});
+        return db.Project.findAll({include: [db.Container,{ model : db.Build, attributes:["build_id","status_result"]}], where: {AccountId: account.id}});
     };
 
     var getById = function (id) {

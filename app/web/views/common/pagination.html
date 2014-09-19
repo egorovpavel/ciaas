@@ -1,0 +1,9 @@
+{% macro pagination(total, perpage,current) %}
+	{% if total / perpage > 1%}
+	<ul class="pagination">
+		{% for page in buildPages(total,perpage,current,req())%}
+			<li {%if page.current%}class="active"{%endif%}><a href="?{{page.path}}">{{page.num}}</a></li>
+		{%endfor%}
+	</ul>
+	{%endif%}
+{% endmacro %}

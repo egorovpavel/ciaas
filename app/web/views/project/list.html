@@ -34,17 +34,42 @@
                 <div class="t-row row-fluid clearfix">
                     <div class="main-col col-lg-8">
                         <h4 class="repo-name">{{project.name}}</h4>
-                        <span class="label label-default">{{project.container.name}}</span>
-                        <p class="text-muted"><small>{{project.repo_url}}</small></p>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="text-muted">Container : </div> 
+                                <span>
+                                    {{project.container.name}}
+                                </span>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="text-muted">Status : </div> 
+                                {%if project.lastBuildStatus() == 'SUCCESS'%}
+                                    <span class="label label-success">
+                                        Build {{project.lastBuildId()}} passing
+                                    </span>
+                                {%endif%}
+                                {%if project.lastBuildStatus() == 'FAILED'%}
+                                    <span class="label label-danger">
+                                        Build {{project.lastBuildId()}} failing
+                                    </span>
+                                {%endif%}
+                                {%if project.isInProgress()%}
+                                    <span class="label label-warning">
+                                        Build {{project.lastBuildId()}} in progress...
+                                    </span>
+                                {%endif%}
+                            </div>
+                        </div>
                     </div>
                     <div class="action-col col-lg-4">
                         <form method="post" action="/projects/{{project.id}}/build">
                             <div class="pull-right">
-
-                                <button class="btn btn-primary">
-                                    <span class="glyphicon glyphicon-flash"></span>
-                                    Build
-                                </button>
+                                {%if not project.isInProgress()%}
+                                    <button class="btn btn-primary">
+                                        <span class="glyphicon glyphicon-flash"></span>
+                                        Build
+                                    </button>
+                                {%endif%}
                                 <a class="btn btn-info"
                                    href="/projects/{{project.id}}/build"><i
                                         class="glyphicon glyphicon-time"></i> History</a>

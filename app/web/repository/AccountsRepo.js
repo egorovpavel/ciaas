@@ -62,11 +62,10 @@ var AccountsRepo = function () {
             return getByUsername(username);
         }).then(function (account) {
             var promise = Promise.pending();
-            var validationOptions = null;
             account.username = accountProperties.username || account.username;
             account.token = accountProperties.token || account.token;
             if (accountProperties.password) {
-                account.password = hash;
+                account.password = hashedpassword;
             }
             if(!nopassword){
                 var errors = account.validate({skip:["password"]});
@@ -74,7 +73,6 @@ var AccountsRepo = function () {
                 var errors = account.validate();
             }
             if (errors) {
-                console.log("ERRORS:",errors);
                 promise.reject(errors);
                 return promise.promise;
             }
@@ -82,8 +80,11 @@ var AccountsRepo = function () {
         });
     };
 
-    var getAll = function () {
-        return db.Account.findAll();
+    var getAll = function (page) {
+        return db.Account.findAndCountAll({
+            offset : (page-1 || 0) * 10,
+            limit : 10
+        });
     };
 
     var getById = function (id) {

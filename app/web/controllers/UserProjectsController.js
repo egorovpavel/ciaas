@@ -10,7 +10,6 @@ function UserProjectsController(app) {
     app.get('/projects',Authorization.isAuthenticated, function (req, res) {
         Projects.all(req.user).then(function (projects) {
             res.render('project/list.html', {
-                req : req,
                 projects: projects
             });
         }).catch(function (err) {
@@ -29,7 +28,6 @@ function UserProjectsController(app) {
         GitHubRemote.getAllRepos(req.user.token).then(function(repos){
             logger.log("ALL REPOS:" ,repos);
             res.render('project/new.html', {
-                req : req,
                 repos : repos
             });
         }).catch(function (err) {
@@ -49,7 +47,6 @@ function UserProjectsController(app) {
             return Containers.getPrimary();  
         }).then(function (containers) {
             res.render('project/new_config.html', {
-                req : req,
                 containers: containers,
                 repos : repositories
             });
@@ -76,6 +73,7 @@ function UserProjectsController(app) {
         }).then(function(project){
             return GitHubRemote.registerHook(req.user.token, req.user.username,req.params.repo,project.id);
         }).then(function () {
+            req.flash("notifications",{status : "success", message : "Project " + project.name + " created successfully."});
             res.redirect('/projects');
         }).catch(function (err) {
             if (err) {
@@ -96,7 +94,6 @@ function UserProjectsController(app) {
             })
             .then(function (project) {
                 res.render('project/delete.html', {
-                    req : req,
                     account: acc,
                     project: project
                 });
@@ -115,6 +112,7 @@ function UserProjectsController(app) {
     app.post('/projects/:id/delete',Authorization.isAuthenticated, function (req, res) {
         Projects.delete(req.param('id'))
             .then(function () {
+                req.flash("notifications",{status : "success", message : "Project deleted successfully."});
                 res.redirect('/projects');
             })
             .catch(function (err) {
@@ -135,7 +133,6 @@ function UserProjectsController(app) {
             return Projects.get(req.param('id'));
         }).then(function (project) {
             res.render('project/config.html', {
-                req : req,
                 containers: _containers,
                 project: project,
                 account: req.user
@@ -154,8 +151,10 @@ function UserProjectsController(app) {
     app.post('/projects/:id/config',Authorization.isAuthenticated, function (req, res) {
         var _account;
         Projects.update(req.param('id'), req.body.project).then(function () {
+            req.flash("notifications", {status : "success", message : "Project updated successfully."});
             res.redirect('/projects');
         }).catch(function (err) {
+            console.log(err);
             if (err) {
                 if (err.code && err.code == 'ER_DUP_ENTRY') {
                     err = {
@@ -166,8 +165,7 @@ function UserProjectsController(app) {
                 req.body.project.id = "dummy";
 
                 Containers.getPrimary().then(function (containers) {
-                    res.render('/project/config.html', {
-                        req : req,
+                    res.render('project/config.html', {
                         errors: err,
                         account: req.user,
                         containers: containers,

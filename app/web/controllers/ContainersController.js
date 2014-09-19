@@ -7,13 +7,12 @@ function ContainerController(app) {
     app.get('/dashboard/container',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Containers.all().then(function (containers) {
             res.render('dashboard/container/list.html', {
-                req : req,
                 containers: containers
             });
         }).catch(function (err) {
             if (err) {
                 logger.info(err);
-                res.status(501);
+                res.sendStatus(501);
             }
         }).finally(function () {
             logger.info("ACCOUNT LIST");
@@ -21,38 +20,19 @@ function ContainerController(app) {
     });
 
     app.get('/dashboard/container/create',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
-        res.render('dashboard/container/form.html',{req : req});
-    });
-
-    app.get('/dashboard/container/:id',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
-        Containers.get(req.param('id')).then(function (container) {
-            res.render('dashboard/container/detail.html', {
-                req : req,
-                container: container
-            });
-        })
-            .catch(function (err) {
-                logger.info(err);
-                if (err) {
-                    res.status(501);
-                }
-            })
-            .finally(function () {
-                logger.info("ACCOUNT DONE");
-            });
+        res.render('dashboard/container/form.html');
     });
 
     app.get('/dashboard/container/:id/edit',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Containers.get(req.param('id')).then(function (container) {
             res.render('dashboard/container/form.html', {
-                req : req,
                 container: container
             });
         })
             .catch(function (err) {
                 logger.info(err);
                 if (err) {
-                    res.status(404);
+                    res.sendStatus(404);
                 }
             })
             .finally(function () {
@@ -63,7 +43,8 @@ function ContainerController(app) {
     app.post('/dashboard/container/:id/edit',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Containers.update(req.param('id'), req.body.container)
             .then(function (container) {
-                res.redirect('/dashboard/container/' + container.id);
+                req.flash("notifications",{status : "success", message : "Container " + container.name + " updated successfully."});
+                res.redirect('/dashboard/container/');
             })
             .catch(function (err) {
                 if (err) {
@@ -75,8 +56,8 @@ function ContainerController(app) {
                     }
                     logger.info(err);
                     req.body.container.id = "dummy";
+                    app.set("notifications",{status : "error", message : "Unable to save container "});
                     res.render('dashboard/container/form.html', {
-                        req : req,
                         errors: err,
                         container: req.body.container
                     });
@@ -91,7 +72,8 @@ function ContainerController(app) {
         logger.info(req.body.container);
         Containers.create(req.body.container)
             .then(function (container) {
-                res.redirect('/dashboard/container/' + container.id);
+                req.flash("notifications",{status : "success", message : "Container " + container.name + " created successfully."});
+                res.redirect('/dashboard/container');
             })
             .catch(function (err) {
                 if (err) {
@@ -101,8 +83,8 @@ function ContainerController(app) {
                         };
                     }
                     logger.info("ERROR", err);
+                    app.set("notifications",{status : "error", message : "Unable to create container "});
                     res.render('dashboard/container/form.html', {
-                        req : req,
                         errors: err,
                         container: req.body.container
                     });
@@ -117,14 +99,13 @@ function ContainerController(app) {
         Containers.get(req.param('id'))
             .then(function (container) {
                 res.render('dashboard/container/delete.html', {
-                    req : req,
                     container: container
                 });
             })
             .catch(function (err) {
                 if (err) {
                     logger.info(err);
-                    res.status(404);
+                    res.status(404).send();
                 }
             })
             .finally(function () {
@@ -135,12 +116,13 @@ function ContainerController(app) {
     app.post('/dashboard/container/:id/delete',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Containers.delete(req.param('id'))
             .then(function (container) {
+                req.flash("notifications",{status : "success", message : "Container deleted successfully."});
                 res.redirect('/dashboard/container');
             })
             .catch(function (err) {
                 if (err) {
                     logger.info(err);
-                    res.status(501);
+                    res.status(501).send();
                 }
             })
             .finally(function () {

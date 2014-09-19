@@ -14,7 +14,6 @@ function ProjectController(app) {
             return  Projects.all(account);
         }).then(function (projects) {
             res.render('dashboard/project/list.html', {
-                req : req,
                 account: acc,
                 projects: projects
             });
@@ -42,7 +41,6 @@ function ProjectController(app) {
                 }
                 Containers.getPrimary().then(function (containers) {
                     res.render('dashboard/project/form.html', {
-                        req : req,
                         errors: err,
                         containers: containers,
                         project: req.body.project
@@ -56,10 +54,7 @@ function ProjectController(app) {
 
     app.get('/dashboard/account/:username/project/create',Authorization.isAuthenticated,Authorization.isAdmin, function (req, res) {
         Containers.getPrimary().then(function (containers) {
-            res.render('dashboard/project/form.html', {
-                req : req,
-                containers: containers
-            });
+            res.render('dashboard/project/form.html', {containers: containers});
         }).catch(function (err) {
             if (err) {
                 logger.info(err);
@@ -80,7 +75,6 @@ function ProjectController(app) {
             })
             .then(function (project) {
                 res.render('dashboard/project/delete.html', {
-                    req : req,
                     account: acc,
                     project: project
                 });
@@ -124,7 +118,6 @@ function ProjectController(app) {
         }).then(function (project) {
             logger.info(project);
             res.render('dashboard/project/form.html', {
-                req : req,
                 containers: _containers,
                 project: project,
                 account: _account
@@ -159,7 +152,6 @@ function ProjectController(app) {
 
                 Containers.getPrimary().then(function (containers) {
                     res.render('dashboard/project/form.html', {
-                        req : req,
                         errors: err,
                         account: _account,
                         containers: containers,
@@ -179,7 +171,6 @@ function ProjectController(app) {
             return Projects.get(req.param('id'));
         }).then(function (project) {
             res.render('dashboard/project/detail.html', {
-                req : req,
                 account: _account,
                 project: project
             });

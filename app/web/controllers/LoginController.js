@@ -1,15 +1,14 @@
 'use strict';
 
 var passport = require('passport');
-
+var Authorization = require('./../common/Authorization');
 function LoginController(app) {
     var logger = app.get('logger');
     var Accounts = app.get("repos").AccountsRepo;
 
-    app.get('/login', function (req, res) {
-        //var error = req.flash('error').length > 0 ? req.pop() : null;
-
-        res.render('login/login.html',{req:req, error : req.flash('error')});
+    app.get('/login',Authorization.isGuest, function (req, res) {
+        console.log("LOGINFLASH:",app.locals.getNotifications());
+        res.render('login/login.html');
     });
 
     app.get('/logout', function (req, res) {
@@ -17,20 +16,20 @@ function LoginController(app) {
         res.redirect('/');
     });
 
-    app.get('/signup', function (req, res) {
-        res.render('login/signup.html',{req:req});
+    app.get('/signup',Authorization.isGuest, function (req, res) {
+        res.render('login/signup.html');
     });
 
     // GET /auth/github
-    app.get('/auth/github',passport.authenticate('github',{
+    app.get('/auth/github',Authorization.isGuest,passport.authenticate('github',{
         scope: ['write:repo_hook','repo']
     }),function (req, res) {});
 
-    app.post('/login',
-        passport.authenticate('local', { successRedirect: '/projects',failureRedirect: '/login',failureFlash: true })
+    app.post('/login',Authorization.isGuest,
+        passport.authenticate('local', { successRedirect: '/projects',failureRedirect: '/login',successFlash:true, failureFlash: true })
     );
 
-    app.post('/signup',function (req, res) {
+    app.post('/signup',Authorization.isGuest,function (req, res) {
         Accounts.create(req.body.account).then(function (account) {
             res.redirect('/projects');
         }).catch(function (err) {
@@ -41,7 +40,6 @@ function LoginController(app) {
                     err[key] = [key + " already exists"];
                 }
                 res.render('login/signup.html', {
-                    req : req,
                     errors: err,
                     account: req.body.account
                 });
@@ -52,7 +50,7 @@ function LoginController(app) {
     });
 
     // GET /auth/github/callback
-    app.get('/auth/github/callback',passport.authenticate('github', { failureRedirect: '/login',failureFlash: true}),function (req, res) {
+    app.get('/auth/github/callback',Authorization.isGuest,passport.authenticate('github', { failureRedirect: '/login',successFlash:true,failureFlash: true}),function (req, res) {
         res.redirect('/projects');
     });
 

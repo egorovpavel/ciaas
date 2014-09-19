@@ -1,13 +1,13 @@
 'use strict';
-
+var Authorization = require('./../common/Authorization');
 var HomeController = function (app) {
 	var logger = app.get('logger');
-    app.get('/', function (req, res) {
-        res.render('home/home.html',{req:req});
+    app.get('/',Authorization.isGuest, function (req, res) {
+        res.render('home/home.html');
     });
 
-    app.get('/about', function (req, res) {
-        res.render('login/about.html',{req:req});
+    app.get('/about',Authorization.isGuest, function (req, res) {
+        res.render('login/about.html');
     });
 
 };

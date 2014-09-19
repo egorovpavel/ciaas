@@ -31,8 +31,11 @@ var ContainersRepo = function () {
         });
     };
 
-    var getAll = function () {
-        return db.Container.findAll();
+    var getAll = function (page) {
+        return db.Container.findAndCountAll({
+            offset : (page-1 || 0) * 10,
+            limit : 10
+        });
     };
 
     var getById = function (id) {

@@ -10,6 +10,7 @@ var config = require('./config.json')[process.env.NODE_ENV || 'development'];
 var passport = require('passport');
 var flash = require('connect-flash');
 var bcrypt = require('bcrypt');
+var querystring = require('querystring');
 
 var GitHubStrategy = require('passport-github').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
@@ -51,6 +52,54 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+
+app.use(function(req, res, next) {
+    app.set('error', req.flash('error'));
+    app.set('success', req.flash('success'));
+    app.set('notifications', req.flash('notifications'));
+    app.set('req', req);
+    next();
+});
+
+app.locals.buildPages = function(total,perpage,current,req){
+    var pages = [];
+    var q = req.query || {};
+    for(var i = 1; i <= total / perpage; ++i){
+        q.page = i;
+        pages.push({
+            num : i,
+            current : i == current,
+            path : querystring.stringify(q)
+        });
+    }
+    console.log("PAGES",pages);
+    return pages;
+};
+app.locals.req = function(){
+    if(app.get('req')){
+        return app.get('req');
+    }
+    return null;
+}
+app.locals.getNotifications = function(){
+    if(app.get('notifications') && app.get('notifications').length > 0){
+        return app.get('notifications')[0];
+    }
+    if(app.get('error') && app.get('error').length > 0){
+        return {
+            status : "error",
+            message : app.get('error')
+        };
+    }
+    if(app.get('success') && app.get('success').length > 0){
+        return {
+            status : "success",
+            message : app.get('success')
+        };
+    }
+    return null;
+}
+
 var repos_path = __dirname + '/repository';
 var repos = {};
 fs.readdirSync(repos_path).forEach(function (file) {
@@ -81,7 +130,7 @@ passport.use(new GitHubStrategy({
                     Accounts.update(account.username, {
                         token : accessToken
                     },true).then(function(account){
-                        done(null, account);    
+                        done(null, account, { message: 'Logged in' });    
                     });
                 }else{
                     Accounts.create({
@@ -90,7 +139,7 @@ passport.use(new GitHubStrategy({
                         password: null,
                         token : accessToken
                     },true).then(function (account) {
-                        done(null, account);  
+                        done(null, account, { message: 'Logged in' });  
                     }).finally(function () {
                         console.log("ACCOUNT DONE");
                     });
@@ -113,12 +162,12 @@ passport.use(new LocalStrategy(
             return Accounts.checkPassword(password || "", account.password);
         }).then(function(valid){
             if (valid) {
-                done(null, user);
+                done(null, user, { message: 'Logged in' });
             }else {
-                done(null, false);
+                done(null,null, { message: 'Incorrect email or password' });
             }
         }).catch(function(){
-            done(null, false);
+            done(null,null, { message: 'Incorrect email or password' });
         });
     }
 ));
@@ -127,7 +176,6 @@ fs.readdirSync(controllers_path).forEach(function (file) {
     require(controllers_path + '/' + file)(app);
 });
 
-logger.info("HI");
 app.listen(app.get('port'),function () {
     logger.info("Express server listening on port " + app.get('port'));
 });
