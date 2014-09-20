@@ -24,6 +24,8 @@ var ProjectsRepo = function () {
         return getById(id).then(function (project) {
             var promise = Promise.pending();
             project.command = projectProperties.command;
+            console.log("PROPERTIES",projectProperties);
+            project.default_branch = projectProperties.default_branch;
             var errors = project.validate();
             if (errors) {
                 promise.reject(errors);

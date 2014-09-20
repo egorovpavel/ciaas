@@ -29,17 +29,18 @@ module.exports = function (sequelize, DataTypes) {
                 }
             }
         },
-        artifact_path: DataTypes.STRING
+        artifact_path: DataTypes.STRING,
+        default_branch: DataTypes.STRING
     }, {
         instanceMethods: {
             lastBuildStatus : function(){
-                return this.builds[this.builds.length -1].status_result;
+                return this.builds.length > 0 ? this.builds[this.builds.length -1].status_result : null;
             },
             lastBuildId : function(){
-                return this.builds[this.builds.length -1].build_id;
+                return this.builds.length > 0 ? this.builds[this.builds.length -1].build_id : null;
             },
             isInProgress : function(){
-                return this.builds[this.builds.length -1].status_result == null;
+                return this.builds.length > 0 ? this.builds[this.builds.length -1].status_result == null : null;
             }
         },
         classMethods: {

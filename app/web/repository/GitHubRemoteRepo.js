@@ -29,6 +29,26 @@ var GitHubRemoteRepo = function () {
 		return promise.promise;
 	};
 
+	var getHeadCommitInfo = function(token,user,repo,branch){
+		var promise = Promise.pending();
+		github.authenticate({
+		    type: "oauth",
+		    token: token
+		});
+		github.repos.getBranch({
+			user : user,
+			repo : repo,
+			branch : branch
+		},function(err,data){
+			if(err){
+				promise.reject(err);		
+			}else{
+				promise.resolve(data);
+			}
+		});
+		return promise.promise;
+	};
+
 	var getRepo = function(token,user,repo){
 		var promise = Promise.pending();
 		github.authenticate({
@@ -42,7 +62,17 @@ var GitHubRemoteRepo = function () {
 			if(err){
 				promise.reject(err);
 			}else{
-				promise.resolve(data);
+				github.repos.getBranches({
+					user : user,
+					repo : repo
+				},function(err,branches){
+					if(err){
+						promise.reject(err);		
+					}else{
+						data.branches = branches;
+						promise.resolve(data);
+					}
+				})
 			}
 		});
 		return promise.promise;
@@ -80,7 +110,8 @@ var GitHubRemoteRepo = function () {
 	return {
 		getAllRepos : getAllRepos,
 		getRepo : getRepo,
-		registerHook: registerHook
+		registerHook: registerHook,
+		getHeadCommitInfo : getHeadCommitInfo
 	}
 }();
 

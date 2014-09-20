@@ -37,7 +37,7 @@ var Worker = function () {
         for (var idx in commands) {
             script[idx] = "echo '$ " + commands[idx] + "'; " + commands[idx] + " || exit 1;";
         }
-        var setup = config.skipSetup ? "" : "git clone "+config.reposity.uri+" && cd "+config.reposity.name+";";
+        var setup = config.skipSetup ? "" : "git clone "+config.reposity.uri+" -b "+config.reposity.branch+" && cd "+config.reposity.name+";";
         return "(" + setup + script.join('\n') + ")";
     };
 

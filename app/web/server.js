@@ -61,6 +61,10 @@ app.use(function(req, res, next) {
     next();
 });
 
+swig.setFilter('substring', function (input, count) {
+    return input && input.toString().substr(0, count);
+});
+
 app.locals.buildPages = function(total,perpage,current,req){
     var pages = [];
     var q = req.query || {};

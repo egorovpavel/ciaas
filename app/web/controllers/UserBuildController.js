@@ -10,6 +10,7 @@ function UserBuildController(app) {
     var Accounts = app.get("repos").AccountsRepo;
     var Builds = app.get("repos").BuildsRepo;
     var BuildQueue = app.get("repos").BuildQueueRepo(app.get('redisPort'), app.get('redisHost'));
+    var GitHubRemote = app.get("repos").GitHubRemoteRepo;
     var redisFeedSubscriber = redis.createClient(app.get('redisPort'), app.get('redisHost'));
 
     app.get('/projects/:id/build',Authorization.isAuthenticated, function (req, res) {
@@ -33,10 +34,18 @@ function UserBuildController(app) {
     app.post('/projects/:id/build',Authorization.isAuthenticated, function (req, res) {
         var _buildid;
         var _project;
+        var _branch;
         var _id;
         Projects.get(req.param('id')).then(function (project) {
             _project = project;
-            return Builds.open(project);
+            return GitHubRemote.getHeadCommitInfo(req.user.token,req.user.username,project.name, project.default_branch);
+        }).then(function(branch){
+            _branch = branch;
+            return Builds.open(_project,{
+                commit_id : branch.commit.sha,
+                commit_message : branch.commit.commit.message,
+                commit_author : branch.commit.commit.committer.name
+            });
         }).then(function (build) {
             _id = build.id;
             _buildid = build.build_id;
@@ -54,7 +63,8 @@ function UserBuildController(app) {
                 },
                 reposity: {
                     uri: _project.repo_url,
-                    name: _project.name
+                    name: _project.name,
+                    branch : _project.default_branch
                 },
                 skipSetup: false,
                 payload: {

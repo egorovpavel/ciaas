@@ -33,6 +33,16 @@
                 {%if errors.container%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
                 <span class="help-block">{{errors.container|default('')}}</span>
             </div>
+            <div class="form-group {%if errors.container%}has-error has-feedback{%endif%}">
+                <label for="branch">Default branch</label>
+                <select class="form-control" name="project[default_branch]" id="branch">
+                    {%for branch in repos.branches%}
+                        <option value="{{branch.name}}">{{branch.name}}</option>
+                    {%endfor%}
+                </select>
+                {%if errors.branch%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
+                <span class="help-block">{{errors.container|default('')}}</span>
+            </div>
             <div class="form-group {%if errors.command%}has-error has-feedback{%endif%}">
                 <label for="command">Commands</label>
                 <textarea rows="5" type="text" class="form-control" rows="1" name="project[command]" id="command">{{project.command|default('npm install && npm test')}}</textarea>

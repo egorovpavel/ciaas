@@ -42,6 +42,12 @@
                                 </span>
                             </div>
                             <div class="col-lg-4">
+                                <div class="text-muted">Branch : </div> 
+                                <span class="badge">
+                                    {{project.default_branch}}
+                                </span>
+                            </div>
+                            <div class="col-lg-4">
                                 <div class="text-muted">Status : </div> 
                                 {%if project.lastBuildStatus() == 'SUCCESS'%}
                                     <span class="label label-success">
@@ -56,6 +62,11 @@
                                 {%if project.isInProgress()%}
                                     <span class="label label-warning">
                                         Build {{project.lastBuildId()}} in progress...
+                                    </span>
+                                {%endif%}
+                                {%if project.lastBuildId() == null%}
+                                    <span class="label label-default">
+                                        Not build yet
                                     </span>
                                 {%endif%}
                             </div>

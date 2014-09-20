@@ -20,6 +20,18 @@ module.exports = function (sequelize, DataTypes) {
         },
         started: {
             type: DataTypes.DATE
+        },
+        branch : {
+            type: DataTypes.STRING  
+        },
+        commit_id : {
+            type: DataTypes.STRING  
+        },
+        commit_message : {
+            type: DataTypes.STRING  
+        },
+        commit_author : {
+            type: DataTypes.STRING  
         }
     }, {
         getterMethods: {

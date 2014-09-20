@@ -52,9 +52,10 @@
 
                             </div>
                             <div class="build-state main-col col-lg-3 col-xs-8">
-                                <div>Branch : <span>Master</span></div>
-                                <div>Committed by : <span>Pavel Egorov</span></div>
-                                <div>Message : <span>Fixed #12 issue</span></div>
+                                <div><span class="text-muted">Branch : </span><span class="badge">{{build.branch}}</span></div>
+                                <div><span class="text-muted">Commit SHA : </span><span>{{build.commit_id|substring(6)}}</span></div>
+                                <div><span class="text-muted">Committed by : </span><span>{{build.commit_author}}</span></div>
+                                <div><span class="text-muted">Message : </span><span>{{build.commit_message}}</span></div>
                             </div>
                             <div class="build-time main-col col-lg-2 col-xs-6">{%if build.status_exec == "COMPLETE"%}
                                     <span>Started : <div>{{build.started|date('Y-m-d H:i:s')}}</div></span>

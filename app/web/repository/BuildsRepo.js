@@ -4,13 +4,19 @@ var Promise = require('bluebird');
 
 var BuildsRepo = function () {
 
-    var openBuild = function (project) {
+    var openBuild = function (project,commit) {
         return db.Build.count({ where: ["ProjectId = ?", project.id] }).then(function (n) {
             var nextId = n + 1;
             var buildProperties = {
                 status_exec: "QUEUED",
-                build_id: nextId
+                build_id: nextId,
+                branch : project.default_branch,
+                commit_id : commit.commit_id,
+                commit_message : commit.commit_message,
+                commit_author : commit.commit_author
             };
+            console.log("COMMIT:", commit);
+            console.log("BUILD:", buildProperties);
             return db.Build.create(buildProperties);
         }).then(function (build) {
             return build.setProject(project);

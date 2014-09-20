@@ -24,7 +24,6 @@ function UserProjectsController(app) {
 
 
     app.get('/projects/create',Authorization.isAuthenticated, function (req, res) {
-        logger.log("USER TOKEN:" ,req.user.token);
         GitHubRemote.getAllRepos(req.user.token).then(function(repos){
             logger.log("ALL REPOS:" ,repos);
             res.render('project/new.html', {
@@ -128,13 +127,19 @@ function UserProjectsController(app) {
 
     app.get('/projects/:id/config',Authorization.isAuthenticated, function (req, res) {
         var _containers;
+        var _project;
         Containers.getPrimary().then(function (containers) {
             _containers = containers;
             return Projects.get(req.param('id'));
         }).then(function (project) {
+            _project = project;
+            return GitHubRemote.getRepo(req.user.token, req.user.username,project.name);
+        }).then(function(repo){
+            console.log(_project);
             res.render('project/config.html', {
                 containers: _containers,
-                project: project,
+                project: _project,
+                repo : repo,
                 account: req.user
             });
         }).catch(function (err) {
