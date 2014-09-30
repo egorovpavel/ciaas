@@ -32,8 +32,38 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row-fluid clearfix meta">
-                            <div class="col-lg-12 col-xs-12">
+                            <div class="col-lg-3 col-xs-12">
                                 Build #{{build.build_id}} successful
+                            </div>
+                            <div class="col-lg-3 col-xs-12">
+                                <div class="meta-head">Started : </div>
+                                <div class="meta-value">{{build.started|date('Y-m-d H:i:s')}}</div>
+                            </div>
+                            <div class="col-lg-3 col-xs-12">
+                                <div class="meta-head">Finished : </div>
+                                <div class="meta-value">{{build.finished|date('Y-m-d H:i:s')}}</div>
+                            </div>
+                            <div class="col-lg-3 col-xs-12">
+                                <div class="meta-head">Elapsed : </div>
+                                <div class="meta-value">{{build.elapsed()|date('H:i:s')}}</div>
+                            </div>
+                        </div>
+                        <div class="row-fluid clearfix meta">
+                            <div class="col-lg-3 col-xs-12">
+                                <div class="meta-head">Branch : </div>
+                                <div class="meta-value"><span class="badge"> <i class="fa fa-1 fa-code-fork"></i> {{build.branch}}</span></div>
+                            </div>
+                            <div class="col-lg-3 col-xs-12">
+                                <div class="meta-head">SHA : </div>
+                                <div class="meta-value">{{build.commit_id|substring(6)}}</div>
+                            </div>
+                            <div class="col-lg-3 col-xs-12">
+                                <div class="meta-head">Committed by : </div>
+                                <div class="meta-value"><i class="fa fa-1 fa-user"></i>  <span>{{build.commit_author}}</span></div>
+                            </div>
+                            <div class="col-lg-3 col-xs-12">
+                                <div class="meta-head">Message : </div>
+                                <div class="meta-value" >{{build.commit_message}}</div>
                             </div>
                         </div>
                     </div>
@@ -47,8 +77,38 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row-fluid clearfix meta">
-                            <div class="col-lg-12 col-xs-12">
+                            <div class="col-lg-3 col-xs-12">
                                 Build #{{build.build_id}} failed
+                            </div>
+                            <div class="col-lg-3 col-xs-12">
+                                <div class="meta-head">Started : </div>
+                                <div class="meta-value">{{build.started|date('Y-m-d H:i:s')}}</div>
+                            </div>
+                            <div class="col-lg-3 col-xs-12">
+                                <div class="meta-head">Finished : </div>
+                                <div class="meta-value">{{build.finished|date('Y-m-d H:i:s')}}</div>
+                            </div>
+                            <div class="col-lg-3 col-xs-12">
+                                <div class="meta-head">Elapsed : </div>
+                                <div class="meta-value">{{build.elapsed()|date('H:i:s')}}</div>
+                            </div>
+                        </div>
+                        <div class="row-fluid clearfix meta">
+                            <div class="col-lg-3 col-xs-12">
+                                <div class="meta-head">Branch : </div>
+                                <div class="meta-value"><span class="badge"> <i class="fa fa-1 fa-code-fork"></i> {{build.branch}}</span></div>
+                            </div>
+                            <div class="col-lg-3 col-xs-12">
+                                <div class="meta-head">SHA : </div>
+                                <div class="meta-value">{{build.commit_id|substring(6)}}</div>
+                            </div>
+                            <div class="col-lg-3 col-xs-12">
+                                <div class="meta-head">Committed by : </div>
+                                <div class="meta-value"><i class="fa fa-1 fa-user"></i>  <span>{{build.commit_author}}</span></div>
+                            </div>
+                            <div class="col-lg-3 col-xs-12">
+                                <div class="meta-head">Message : </div>
+                                <div class="meta-value" >{{build.commit_message}}</div>
                             </div>
                         </div>
                     </div>
@@ -64,7 +124,7 @@
             <div>
                 <div id="container" class="output">
                     {%for line in log%}
-                    <div>{{line|safe}}</div>
+                        <div>{{line|safe}}</div>
                     {%endfor%}
                 </div>
             </div>

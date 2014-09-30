@@ -8,12 +8,24 @@
 	    	"host": "127.0.0.1",
 	        "port": "3306",
 	        "db"  : "ci"
-	    }    
+	    },
+        "s3" : {
+
+    	},
+        "mysql"	: {
+
+        }
     },
     "production": {
     	"redis" : {
 	        "host": "ci-redis.u43szi.0001.euw1.cache.amazonaws.com",
 	        "port": "6379"
+        },
+        "s3" : {
+
+    	},
+        "mysql"	: {
+
         }
     }
 }

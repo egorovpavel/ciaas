@@ -87,15 +87,22 @@ function UserBuildController(app) {
     app.get('/projects/:id/build/:num',Authorization.isAuthenticated, function (req, res) {
         var viewbag = {};
         Projects.get(req.param('id')).then(function (project) {
+            console.log("PROJECT OK");
             viewbag.project = project;
             return Builds.get(project, req.param('num'));
-        }).then(function (build) {
+        }).then(function(build){
+            console.log("BUILD OK");
             viewbag.build = build;
+            return Builds.getLogs(build.id);
+        }).then(function (log) {
+            console.log("LOG:",log);
+            build.log_build = JSON.parse(log);
+            console.log("LOG PARSED:",build.log_build);
+            
             if (build.status_exec == 'COMPLETE') {
                 viewbag.log = [];
                 _.each(build.log_build, function (l) {
                     if (/\r/.test(l) && /\r/.test(viewbag.log[viewbag.log.length - 1])) {
-                        logger.info("pop");
                         viewbag.log.pop();
                     } else {
                         viewbag.log.push(convert.toHtml(l));
@@ -112,7 +119,7 @@ function UserBuildController(app) {
                 res.status(404);
             }
         }).finally(function () {
-            logger.info("ACCOUNT LIST");
+            logger.info("BUILD");
         });
     });
 

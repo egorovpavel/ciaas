@@ -17,10 +17,13 @@
   },
   "homepage": "https://github.com/egorovpavel/hub",
   "dependencies": {
+    "bluebird": "^2.3.2",
     "bull": "^0.1.6",
     "mysql": "^2.3.2",
     "redis": "^0.10.3",
+    "s3": "^4.2.0",
     "sequelize": "^1.7.9",
+    "temporary": "0.0.8",
     "winston": "^0.7.3"
   },
   "devDependencies": {

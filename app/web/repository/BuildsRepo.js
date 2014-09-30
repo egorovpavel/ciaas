@@ -1,8 +1,23 @@
 'use strict';
 var db = require('../models');
 var Promise = require('bluebird');
+var request = require('request');
 
 var BuildsRepo = function () {
+
+    var getLogs = function(id){
+        console.log("FETCHIG LOGS");
+        var promise = Promise.pending();
+        request('http://s3-eu-west-1.amazonaws.com/dev-results/build_'+id, function (err, response, body) {
+            console.log("RESPONSE");
+            if (!err && response.statusCode == 200) {
+                promise.resolve(body);
+            }else{
+                promise.reject(err);
+            }
+        });
+        return promise.promise;
+    };
 
     var openBuild = function (project,commit) {
         return db.Build.count({ where: ["ProjectId = ?", project.id] }).then(function (n) {
@@ -58,7 +73,8 @@ var BuildsRepo = function () {
         open: openBuild,
         close: closeBuild,
         all: getAll,
-        get: getById
+        get: getById,
+        getLogs:getLogs
     }
 }();
 

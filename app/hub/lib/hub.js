@@ -2,42 +2,83 @@
 var Queue = require('bull');
 var db = require('sequelize');
 var redis = require('redis');
+var util = require('util');
+var EventEmitter = require('events').EventEmitter;
+var Promise = require("bluebird");
 
-var Hub = function(redisConfig, persistanceHandler, notificationHandler,logger){
+var Hub = function(redisConfig,logger){
 	var resultQueue = Queue('result',redisConfig.port,redisConfig.host);
-	var statusQueue = Queue('status',redisConfig.port,redisConfig.host);
 	var redisClient =  redis.createClient(redisConfig.port,redisConfig.host);
+	var instance = this;
 
     // Generates key to be used as channel name
     var getKey = function (id) {
         return "report:build:" + id;
     };
 
-	var statusHandler = function(job, complete){
-		persistanceHandler.updateStatus(job.data).then(complete);
-	}
+    var getBuild = function(job){
+    	logger.info("BUILD-->");
+    	var promise = Promise.pending();
+		redisClient.lrange(getKey(job.data._id), 0, -1, function (err, entries) {
+			if(err){
+				promise.reject(err);
+			}else{
+				var build = {
+					id : job.data._id,
+					buildid : job.data.id,
+					status : job.data.status.StatusCode,
+					started : job.data.started,
+					finished : job.data.finished,
+					entries : entries
+				};
+				promise.resolve(build);
+			}
+		});
+		return promise.promise;
+    };
+
+    var emit = function (_event, data) {
+		var promise = Promise.pending();
+    	instance.emit(_event, data, function(err){
+    		if(err){
+    			promise.reject(err);
+    		}else{
+				promise.resolve(data);
+    		}
+    	});
+    	return promise.promise;
+    };
 
 	var resultHandler = function(job, complete){
-		logger.info("HANDLING", job.data);
-		var buildid = job.data.id;
-		var _id = job.data._id;
-		redisClient.lrange(getKey(_id), 0, -1, function (err, entries) {
-			logger.info("LINES",entries);
-			persistanceHandler.closeBuild(_id,buildid,entries,job.data.status.StatusCode,job.data.started, job.data.finished).then(function(){
-				complete();
-			});
+		logger.info("PROCESSING:",job.data);
+		getBuild(job).then(function(build){
+			logger.info("BUILD:",build);
+			return emit('build_completed', build);
+		}).then(function(build){
+			logger.info("BUILD_completed:",build);
+			return emit('build_notify', build);
+		}).then(function(build){
+			logger.info("BUILD_notify:",build);
+			complete();
+		}).catch(function(err){
+			logger.info("ERR:",err)
 		});
 	}
 
-	var startHandle = function(){
-		logger.info("STARTED");
-		resultQueue.process(resultHandler);
-		statusQueue.process(statusHandler);
-	};
-
 	return {
-		handle : startHandle
-	}
+		start : function(){
+			logger.info("STARTED");
+			resultQueue.process(resultHandler);
+		},
+		onPersist : function(callback){
+			instance.on('build_completed', callback);
+		},
+		onNotify : function(callback){
+			instance.on('build_notify', callback);
+		}
+	};
 };
+
+util.inherits(Hub, EventEmitter);
 
 module.exports = Hub;

@@ -30,6 +30,7 @@
     "lodash": "^2.4.1",
     "npid": "^0.4.0",
     "redis": "^0.10.3",
+    "stripcc": "^1.0.0",
     "winston": "^0.7.3"
   },
   "devDependencies": {
