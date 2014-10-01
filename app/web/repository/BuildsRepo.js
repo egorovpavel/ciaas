@@ -5,17 +5,24 @@ var request = require('request');
 
 var BuildsRepo = function () {
 
-    var getLogs = function(id){
-        console.log("FETCHIG LOGS");
+    var getLogs = function(id,buildstatus){
+        console.log("FETCHIG LOGS:",'https://s3-eu-west-1.amazonaws.com/dev-results/build_'+id);
         var promise = Promise.pending();
-        request('http://s3-eu-west-1.amazonaws.com/dev-results/build_'+id, function (err, response, body) {
-            console.log("RESPONSE");
-            if (!err && response.statusCode == 200) {
-                promise.resolve(body);
-            }else{
-                promise.reject(err);
-            }
-        });
+        if(buildstatus == "QUEUED" || buildstatus == "RUNNING"){
+            promise.resolve("");
+        }else{
+            request('http://s3-eu-west-1.amazonaws.com/dev-results/build_'+id, function (err, response, body) {
+                console.log("RESPONSE",response.statusCode);
+                if (!err && response.statusCode == 200) {
+                    promise.resolve(body);
+                }else if(!err && response.statusCode != 200){
+                    console.log("RESPONSE err",response.statusCode);
+                    promise.reject({message: response.statusCode});
+                }else{
+                    promise.reject(err);
+                }
+            });
+        }
         return promise.promise;
     };
 

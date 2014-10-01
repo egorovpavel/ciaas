@@ -44,11 +44,12 @@ util.inherits(Container, Writable);
 // Handles chunk of data. It will buffer it if line end not detected
 Container.prototype.parse = function (data) {
     var chars = [
-        {from: /\r\r/g, to: "\\r[#SPLIT#][#RETURN#]"},
+        {from: /\r\r/g, to: "\r[#SPLIT#][#RETURN#]"},
         {from: /\r\n/g, to: "[#SPLIT#]"},
         {from: /\n/g, to: "[#SPLIT#]"},
-        {from: /\r/g, to: "\\r[#RETURN#]"},
-        {from: /\r\s/g, to: " "}
+        {from: /\r/g, to: "\r[#RETURN#]"},
+        {from: /\r\s/g, to: " "},
+        {from: /\[0G/g, to: "\r[#RETURN#]"}
     ];
 
     var result = data.toString();
@@ -85,7 +86,7 @@ Container.prototype._write = function (chunk, enc, cb) {
             this.callback({
                 id: this.id,
                 line: this.lineNum++,
-                data: stripcc(l)
+                data: l
             });
         }, this);
     }

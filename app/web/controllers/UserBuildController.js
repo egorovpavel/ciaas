@@ -93,15 +93,15 @@ function UserBuildController(app) {
         }).then(function(build){
             console.log("BUILD OK");
             viewbag.build = build;
-            return Builds.getLogs(build.id);
+            return Builds.getLogs(build.log_build,build.status_exec);
         }).then(function (log) {
-            console.log("LOG:",log);
-            build.log_build = JSON.parse(log);
-            console.log("LOG PARSED:",build.log_build);
-            
-            if (build.status_exec == 'COMPLETE') {
+            console.log("ALMOST");
+            if (viewbag.build.status_exec == 'COMPLETE') {
+                console.log("RENDER LOG:", log);
+                var log_build = JSON.parse(log);
+                console.log("PARSED:", viewbag.log_build);
                 viewbag.log = [];
-                _.each(build.log_build, function (l) {
+                _.each(log_build, function (l) {
                     if (/\r/.test(l) && /\r/.test(viewbag.log[viewbag.log.length - 1])) {
                         viewbag.log.pop();
                     } else {
@@ -111,12 +111,21 @@ function UserBuildController(app) {
                 logger.info("COMPLETE" + viewbag);
                 res.render('build/detail_static.html', viewbag);
             } else {
+                console.log("RENDER");
                 res.render('build/detail.html', viewbag);
             }
         }).catch(function (err) {
             if (err) {
-                logger.info(err);
-                res.status(404);
+                if(err.message && err.message == '403'){
+                    console.log("102:", err);
+                    logger.info(err);
+                    res.redirect('/projects/' + req.param('id') + "/build/" + req.param('num'));
+                }else{
+                    console.log("FAIL:", err);
+                    logger.info(err);
+                    res.status(404);
+                    res.end();
+                }
             }
         }).finally(function () {
             logger.info("BUILD");

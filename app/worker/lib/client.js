@@ -77,7 +77,6 @@ var Client = function (host, port, log) {
         complete();
         resultQueue.add(result);
         var channel = "channel_result_" + result._id;
-        reportChannel.publish(channel, JSON.stringify(result));
     };
 
     // Handles the build process once new job order is available

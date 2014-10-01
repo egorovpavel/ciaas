@@ -14,7 +14,7 @@ var PersistanceHandler = function(sqlConfig,logger){
 			id : build.id,
 			started : new Date(build.started),
 			finished : new Date(build.finished),
-			log_build : build.buildid,
+			log_build : build.id,
 			log_result : JSON.stringify(build.status),
 			status_result : (build.status == 0) ? "SUCCESS" : ((build.status == 100) ? "TIMEOUT" : "FAILED")
 		}

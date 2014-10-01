@@ -17,7 +17,8 @@ var S3LogPersistanceHandler = function(config,logger){
 		  localFile: file.path,
 		  s3Params: {
 		    Bucket: process.env.S3_BUCKET || "dev-results",
-		    Key: "build_" + build.buildid
+		    Key: "build_" + build.id,
+		    ACL : "public-read"
 		  }
 		};
 

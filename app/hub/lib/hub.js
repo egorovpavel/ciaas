@@ -8,6 +8,8 @@ var Promise = require("bluebird");
 
 var Hub = function(redisConfig,logger){
 	var resultQueue = Queue('result',redisConfig.port,redisConfig.host);
+    // Instance of redis used for streaming of output from container during build execution
+    var reportChannel = redis.createClient(redisConfig.port,redisConfig.host);
 	var redisClient =  redis.createClient(redisConfig.port,redisConfig.host);
 	var instance = this;
 
@@ -59,6 +61,8 @@ var Hub = function(redisConfig,logger){
 			return emit('build_notify', build);
 		}).then(function(build){
 			logger.info("BUILD_notify:",build);
+			var channel = "channel_result_" + job.data._id;
+	        reportChannel.publish(channel, JSON.stringify(job.data.status));
 			complete();
 		}).catch(function(err){
 			logger.info("ERR:",err)
