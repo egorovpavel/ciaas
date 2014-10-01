@@ -7,8 +7,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 var S3LogPersistanceHandler = function(config,logger){
 	var client = s3.createClient({
 	  s3Options: {
-	    accessKeyId: process.env.AWS_KEY || 'AKIAIEMRTDTFJ7NCNQLA',
-	    secretAccessKey: process.env.AWS_SECRET || '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',
+	    accessKeyId: process.env.AWS_KEY,
+	    secretAccessKey: process.env.AWS_SECRET,
 	  }
 	});
 	var handle = function(build, done){
