@@ -4,14 +4,14 @@ var Promise = require('bluebird');
 var request = require('request');
 
 var BuildsRepo = function () {
-
+    var bucket = process.env.S3_BUCKET || "dev-results";
     var getLogs = function(id,buildstatus){
         console.log("FETCHIG LOGS:",'https://s3-eu-west-1.amazonaws.com/dev-results/build_'+id);
         var promise = Promise.pending();
         if(buildstatus == "QUEUED" || buildstatus == "RUNNING"){
             promise.resolve("");
         }else{
-            request('http://s3-eu-west-1.amazonaws.com/dev-results/build_'+id, function (err, response, body) {
+            request('http://s3-eu-west-1.amazonaws.com/' + bucket + '/build_'+id, function (err, response, body) {
                 console.log("RESPONSE",response.statusCode);
                 if (!err && response.statusCode == 200) {
                     promise.resolve(body);
