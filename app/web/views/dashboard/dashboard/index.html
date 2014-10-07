@@ -1,0 +1,68 @@
+{%extends '../../common/layout.html'%}
+
+{% block secondary-header %}
+<div class="secondary-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row-fluid clearfix">
+                    <div class="col-lg-12 col-xs-12">
+                        <ol class="breadcrumb">
+                            <li class=""><a href="/dashboard">Dashboard</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+{% endblock %}
+
+{%block center_column%}
+    <div class="row-fluid content dash">
+        <div class="col-lg-2 col-xs-6">
+            <div class="dash-counter">
+                <div class="dummy"></div>
+                <div class="inner">
+                    <div class="data">
+                        <span class="value">{{numProjects}}</span>
+                        <div class="legend">Projects</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-lg-offset-1  col-xs-6">
+            <div class="dash-counter">
+                <div class="dummy"></div>
+                <div class="inner">
+                    <div class="data">
+                        <span class="value">{{numAccounts}}</span>
+                        <div class="legend">Accounts</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-lg-offset-1  col-xs-6">
+            <div class="dash-counter">
+                <div class="dummy"></div>
+                <div class="inner">
+                    <div class="data">
+                        <span class="value">{{numBuilds}}</span>
+                        <div class="legend">Builds</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-lg-offset-1  col-xs-6">
+            <div class="dash-counter">
+                <div class="dummy"></div>
+                <div class="inner">
+                    <div class="data">
+                        <span class="value">{{numContainers}}</span>
+                        <div class="legend">Containers</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%endblock%}

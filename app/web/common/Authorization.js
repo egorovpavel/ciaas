@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 var AuthorizationMixin = {
 	isGuest : function(req,res,done){
 		if(!req.user){
@@ -15,7 +15,7 @@ var AuthorizationMixin = {
 		}
 	},
 	isAdmin : function(req,res,done){
-		if(req.user.admin){
+		if(req.user && req.user.admin){
 			done();
 		}else{
 			res.redirect('/login');

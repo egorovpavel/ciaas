@@ -31,7 +31,8 @@ var Hub = function(redisConfig,logger){
 					status : job.data.status.StatusCode,
 					started : job.data.started,
 					finished : job.data.finished,
-					entries : entries
+					entries : entries,
+                    reposity : job.data.reposity
 				};
 				promise.resolve(build);
 			}
@@ -67,7 +68,7 @@ var Hub = function(redisConfig,logger){
 		}).catch(function(err){
 			logger.info("ERR:",err)
 		});
-	}
+	};
 
 	return {
 		start : function(){

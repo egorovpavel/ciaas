@@ -51,11 +51,16 @@ var ProjectsRepo = function () {
         })
     };
 
+    var countAll = function () {
+        return db.Project.count();
+    };
+
     return {
         update: updateProject,
         create: addProjectToAccount,
         all: getAll,
         get: getById,
+        count : countAll,
         'delete': deleteProject
     }
 }();

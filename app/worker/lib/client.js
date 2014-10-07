@@ -74,9 +74,8 @@ var Client = function (host, port, log) {
     // - `complete` __function__ bull complete callback
     //
     var resultHandler = function (result, complete) {
-        complete();
         resultQueue.add(result);
-        var channel = "channel_result_" + result._id;
+        complete();
     };
 
     // Handles the build process once new job order is available
@@ -94,7 +93,7 @@ var Client = function (host, port, log) {
             job.data.status = result;
             job.data.finished = new Date().getTime();
             emitter.emit('complete', result);
-            log.info("job procesed");
+            log.info("job processed");
             resultHandler(job.data, complete);
         });
     };

@@ -45,7 +45,8 @@ var HooksController = function(app){
                 reposity: {
                     uri: _project.repo_url,
                     name: _project.name,
-                    branch : _project.default_branch
+                    branch : _project.default_branch,
+                    commit : _branch.commit
                 },
                 skipSetup: false,
                 payload: {

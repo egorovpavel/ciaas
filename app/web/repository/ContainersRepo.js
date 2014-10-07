@@ -46,6 +46,10 @@ var ContainersRepo = function () {
         return db.Container.findAll({where: {type: 'primary'}});
     };
 
+    var countAll = function () {
+        return db.Container.count();
+    };
+
     var destroy = function (id) {
         return getById(id).then(function (container) {
             return container.destroy();
@@ -57,6 +61,7 @@ var ContainersRepo = function () {
         create: createContainer,
         all: getAll,
         get: getById,
+        count : countAll,
         getPrimary: getPrimary,
         'delete': destroy
     }

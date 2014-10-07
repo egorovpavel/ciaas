@@ -23,11 +23,26 @@ function LoginController(app) {
     // GET /auth/github
     app.get('/auth/github',Authorization.isGuest,passport.authenticate('github',{
         scope: ['write:repo_hook','repo']
-    }),function (req, res) {});
+    }),function(req, res) {
+        if(req.user.admin){
+            res.redirect('/dashboard');
+        }else{
+            res.redirect('/projects');
+        }
+    });
 
     app.post('/login',Authorization.isGuest,
-        passport.authenticate('local', { successRedirect: '/projects',failureRedirect: '/login',successFlash:true, failureFlash: true })
-    );
+        passport.authenticate('local', {
+            failureRedirect: '/login',
+            successFlash:true,
+            failureFlash: true
+        }),function(req, res) {
+            if(req.user.admin){
+                res.redirect('/dashboard');
+            }else{
+                res.redirect('/projects');
+            }
+        });
 
     app.post('/signup',Authorization.isGuest,function (req, res) {
         Accounts.create(req.body.account).then(function (account) {

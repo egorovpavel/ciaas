@@ -313,9 +313,35 @@ dl dd {
   border: 1px solid lighten(@table-bg-accent, 10%);
   padding: 0px;
   .t-row{
+    position: relative;
     padding-bottom: 1em;
     border-bottom: 1px solid lighten(@table-bg-accent, 10%);
+    &:first-child .connector-up{
+      display: none !important;
+    }
+    &:last-child .connector-down{
+      display: none !important;
+    }
+    .connector-down{
+      .visible-lg;
+      position: absolute;
+      height: 70px;
+      width: 1px;
+      bottom: 0px;
+      left: 54px;
+      background-color: rgba(0, 0, 0, 0.10);
+    }
+    .connector-up{
+      .visible-lg;
+      position: absolute;
+      height: 50px;
+      width: 1px;
+      top: 0px;
+      left: 54px;
+      background-color: rgba(0, 0, 0, 0.10);
+    }
   }
+
   .main-col{
     padding: 1em 2em;
     .repo-name{
@@ -348,20 +374,28 @@ dl dd {
 }
 
 .build-list{
+  .t-row:first-child .build-id a{
+    width: 50px;
+    height: 50px;
+    span{
+      line-height: 47px;
+    }
+  }
   .build-id{
     min-height: 100px;
     a{
       vertical-align: middle;
+      margin: 0 auto;
       text-align: center;
-      width: 50px;
       display: block;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       border-radius: 100%;
       span{
         font-size: 100%;
         color: #FFF;
         font-weight: 300;
-        line-height: 47px;
+        line-height: 40px;
       }
     }
     .build-success{
@@ -507,9 +541,9 @@ dl dd {
 
 .pagination{
   li.active a{
-    border: 1px solid @secondary-accent-invert;
+    border: 1px solid #CCC;
     background-color: @secondary-accent-invert;
-    color:  @secondary-accent;
+    color:  #FFF;
   }
   li > a{
     .border-radius(0px);
@@ -517,5 +551,49 @@ dl dd {
   }
   li:last-child > a,li:last-child > span,li:first-child > a,li:first-child > span{
     .border-radius(0px);
+  }
+}
+
+.dash{
+  margin-top: 40px;
+  .dash-counter{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    .dummy{
+      margin-top: 100%;
+    }
+    .inner{
+      text-align: center;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border-radius: 50%;
+      border: 10px solid #EEE;
+      .data{
+        margin-top: 47%;
+        .value{
+          font-size: 70px;
+          line-height: 0px;
+          font-weight: 300;
+        }
+        .legend{
+          font-size: 15px;
+          font-weight: 300;
+        }
+        @media (max-width: @screen-xs-max) {
+          .value{
+            font-size: 40px !important;
+            line-height: 0px;
+          }
+          .legend{
+            font-size: 12px !important;;
+          }
+        }
+      }
+
+    }
   }
 }

@@ -6531,8 +6531,63 @@ dl dd {
   padding: 0px;
 }
 .zebra-rows .t-row {
+  position: relative;
   padding-bottom: 1em;
   border-bottom: 1px solid #e6e6e6;
+}
+.zebra-rows .t-row:first-child .connector-up {
+  display: none !important;
+}
+.zebra-rows .t-row:last-child .connector-down {
+  display: none !important;
+}
+.zebra-rows .t-row .connector-down {
+  display: none !important;
+  position: absolute;
+  height: 70px;
+  width: 1px;
+  bottom: 0px;
+  left: 54px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+@media (min-width: 1200px) {
+  .zebra-rows .t-row .connector-down {
+    display: block !important;
+  }
+  table.zebra-rows .t-row .connector-down {
+    display: table;
+  }
+  tr.zebra-rows .t-row .connector-down {
+    display: table-row !important;
+  }
+  th.zebra-rows .t-row .connector-down,
+  td.zebra-rows .t-row .connector-down {
+    display: table-cell !important;
+  }
+}
+.zebra-rows .t-row .connector-up {
+  display: none !important;
+  position: absolute;
+  height: 50px;
+  width: 1px;
+  top: 0px;
+  left: 54px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+@media (min-width: 1200px) {
+  .zebra-rows .t-row .connector-up {
+    display: block !important;
+  }
+  table.zebra-rows .t-row .connector-up {
+    display: table;
+  }
+  tr.zebra-rows .t-row .connector-up {
+    display: table-row !important;
+  }
+  th.zebra-rows .t-row .connector-up,
+  td.zebra-rows .t-row .connector-up {
+    display: table-cell !important;
+  }
 }
 .zebra-rows .main-col {
   padding: 1em 2em;
@@ -6563,22 +6618,30 @@ dl dd {
   color: #FFF;
   border-color: transparent;
 }
+.build-list .t-row:first-child .build-id a {
+  width: 50px;
+  height: 50px;
+}
+.build-list .t-row:first-child .build-id a span {
+  line-height: 47px;
+}
 .build-list .build-id {
   min-height: 100px;
 }
 .build-list .build-id a {
   vertical-align: middle;
+  margin: 0 auto;
   text-align: center;
-  width: 50px;
   display: block;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 100%;
 }
 .build-list .build-id a span {
   font-size: 100%;
   color: #FFF;
   font-weight: 300;
-  line-height: 47px;
+  line-height: 40px;
 }
 .build-list .build-id .build-success {
   background-color: #5cb85c;
@@ -6724,9 +6787,9 @@ dl dd {
   background-color: #d9534f;
 }
 .pagination li.active a {
-  border: 1px solid #cccccc;
+  border: 1px solid #CCC;
   background-color: #cccccc;
-  color: #727dca;
+  color: #FFF;
 }
 .pagination li > a {
   display: inline-block;
@@ -6792,4 +6855,46 @@ fieldset[disabled] .pagination li > a {
   -webkit-border-radius: 0px;
   border-radius: 0px;
   background-clip: padding-box;
+}
+.dash {
+  margin-top: 40px;
+}
+.dash .dash-counter {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.dash .dash-counter .dummy {
+  margin-top: 100%;
+}
+.dash .dash-counter .inner {
+  text-align: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 50%;
+  border: 10px solid #EEE;
+}
+.dash .dash-counter .inner .data {
+  margin-top: 47%;
+}
+.dash .dash-counter .inner .data .value {
+  font-size: 70px;
+  line-height: 0px;
+  font-weight: 300;
+}
+.dash .dash-counter .inner .data .legend {
+  font-size: 15px;
+  font-weight: 300;
+}
+@media (max-width: 767px) {
+  .dash .dash-counter .inner .data .value {
+    font-size: 40px !important;
+    line-height: 0px;
+  }
+  .dash .dash-counter .inner .data .legend {
+    font-size: 12px !important;
+  }
 }

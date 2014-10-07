@@ -69,6 +69,10 @@ var BuildsRepo = function () {
         });
     };
 
+    var countAll = function () {
+        return db.Build.count();
+    };
+
     var getById = function (project, id) {
         return db.Build.find({where: {
             ProjectId: project.id,
@@ -81,6 +85,7 @@ var BuildsRepo = function () {
         close: closeBuild,
         all: getAll,
         get: getById,
+        count : countAll,
         getLogs:getLogs
     }
 }();

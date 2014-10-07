@@ -99,6 +99,10 @@ var AccountsRepo = function () {
         return db.Account.find({where: {email: email}});
     };
 
+    var countAll = function () {
+        return db.Account.count();
+    };
+
     var softDelete = function (username) {
         return getByUsername(username).then(function (account) {
             return account.destroy();
@@ -113,6 +117,7 @@ var AccountsRepo = function () {
         hashPassword : hashPassword,
         checkPassword : checkPassword,
         getByUsername: getByUsername,
+        count : countAll,
         getByEmail: getByEmail,
         'delete': softDelete
     }

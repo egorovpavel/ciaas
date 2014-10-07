@@ -32,6 +32,8 @@
                 <div class="col-lg-12 zebra-rows build-list">
                     {% for build in builds%}
                         <div class="t-row row-fluid clearfix">
+                            <div class="connector-up"></div>
+                            <div class="connector-down"></div>
                             <div class="build-id main-col col-lg-1 col-xs-4">
                                 {%if build.status_exec == 'COMPLETE'%}
                                     {%if build.status_result == "SUCCESS"%}
@@ -49,7 +51,6 @@
                                         <span>{{build.build_id}}</span>
                                     </a>
                                 {%endif%}
-
                             </div>
                             <div class="build-state main-col col-lg-3 col-xs-8">
                                 <div><span class="text-muted">Branch : </span><span class="badge"> <i class="fa fa-1 fa-code-fork"></i> {{build.branch}}</span></div>
