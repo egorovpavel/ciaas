@@ -87,7 +87,7 @@ function UserBuildController(app) {
     });
 
     app.get('/projects/:id/build/:num',Authorization.isAuthenticated, function (req, res) {
-        var viewbag = {bucket:"https://s3-eu-west-1.amazonaws.com/dev-artifact"};
+        var viewbag = {bucket:"https://s3-eu-west-1.amazonaws.com/" + process.env.S3_BUCKET_ARTIFACT | "dev-artifact"};
         Projects.get(req.param('id')).then(function (project) {
             viewbag.project = project;
             return Builds.get(project, req.param('num'));
