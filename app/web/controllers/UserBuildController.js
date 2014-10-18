@@ -61,6 +61,7 @@ function UserBuildController(app) {
                 container: {
                     primary: container.name
                 },
+                artifact_path: _project.artifact_path,
                 reposity: {
                     uri: _project.repo_url,
                     name: _project.name,
@@ -69,7 +70,7 @@ function UserBuildController(app) {
                 },
                 skipSetup: false,
                 payload: {
-                    commands: _project.command.split("\n")
+                    commands: _project.command.split("\r\n")
                 }
             };
             return BuildQueue.add(job);
@@ -86,21 +87,16 @@ function UserBuildController(app) {
     });
 
     app.get('/projects/:id/build/:num',Authorization.isAuthenticated, function (req, res) {
-        var viewbag = {};
+        var viewbag = {bucket:"https://s3-eu-west-1.amazonaws.com/dev-artifact"};
         Projects.get(req.param('id')).then(function (project) {
-            console.log("PROJECT OK");
             viewbag.project = project;
             return Builds.get(project, req.param('num'));
         }).then(function(build){
-            console.log("BUILD OK");
             viewbag.build = build;
             return Builds.getLogs(build.log_build,build.status_exec);
         }).then(function (log) {
-            console.log("ALMOST");
             if (viewbag.build.status_exec == 'COMPLETE') {
-                console.log("RENDER LOG:", log);
                 var log_build = JSON.parse(log);
-                console.log("PARSED:", viewbag.log_build);
                 viewbag.log = [];
                 _.each(log_build, function (l) {
                     if (/\r/.test(l) && /\r/.test(viewbag.log[viewbag.log.length - 1])) {
@@ -116,18 +112,18 @@ function UserBuildController(app) {
                 res.render('build/detail.html', viewbag);
             }
         }).catch(function (err) {
-            if (err) {
-                if(err.message && err.message == '403'){
-                    console.log("102:", err);
-                    logger.info(err);
-                    res.redirect('/projects/' + req.param('id') + "/build/" + req.param('num'));
-                }else{
-                    console.log("FAIL:", err);
-                    logger.info(err);
-                    res.status(404);
-                    res.end();
-                }
+            if(err.message && err.message == '403'){
+                console.log("102:", err);
+                logger.info(err);
+                res.redirect('/projects/' + req.param('id') + "/build/" + req.param('num'));
+            }else{
+                console.log("FAIL:", err);
+                logger.info(err);
+                res.status(404);
+                res.end();
             }
+        }).error(function(err){
+            logger.error(err);
         }).finally(function () {
             logger.info("BUILD");
         });

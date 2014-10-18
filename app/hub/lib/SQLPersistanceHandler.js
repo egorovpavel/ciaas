@@ -15,11 +15,12 @@ var PersistanceHandler = function(sqlConfig,logger){
 			started : new Date(build.started),
 			finished : new Date(build.finished),
 			log_build : build.id,
+            artifact_path : build.artifact_name,
 			log_result : JSON.stringify(build.status),
 			status_result : (build.status == 0) ? "SUCCESS" : ((build.status == 100) ? "TIMEOUT" : "FAILED")
-		}
+		};
 		db.query(
-		    'UPDATE Builds SET started = :started, finished = :finished, log_build = :log_build, log_result = :log_result, status_exec = "COMPLETE", status_result = :status_result WHERE id = :id', null,
+		    'UPDATE Builds SET artifact_path = :artifact_path, started = :started, finished = :finished, log_build = :log_build, log_result = :log_result, status_exec = "COMPLETE", status_result = :status_result WHERE id = :id', null,
 	    	{ raw: true }, params
 	  	).then(function(){
 	  		done();

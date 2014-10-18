@@ -1,4 +1,5 @@
 'use strict';
+var tmp = require('temporary');
 // Build handler
 // =============
 //
@@ -31,13 +32,13 @@ var Worker = function () {
     //            },
     //             skipSetup : <boolean>
     //        }
-    var prepareScript = function (config) {
+    var prepareScript = function (config,checkoutpath) {
         var script = [];
         var commands = config.payload.commands;
         for (var idx in commands) {
-            script[idx] = "echo '$ " + commands[idx] + "'; " + commands[idx] + " || exit 1;";
+            script[idx] = "echo '\u001b[32m$ " + commands[idx] + "\u001b[0m'; " + commands[idx] + " || exit 1;";
         }
-        var setup = config.skipSetup ? "" : "git clone "+config.reposity.uri+" -b "+config.reposity.branch+" && cd "+config.reposity.name+";";
+        var setup = config.skipSetup ? "" : "cd "+checkoutpath+" && git clone "+config.reposity.uri+" -b "+config.reposity.branch+" .;";
         return "(" + setup + script.join('\n') + ")";
     };
 
@@ -46,8 +47,12 @@ var Worker = function () {
     // Arguments:
     // - `item` __Container__
     var processItem = function (item) {
-
-        var script = prepareScript(item.item);
+        var dir = new tmp.Dir();
+        var volumes = {};
+        var checkoutpath = "/home/"+item.item.reposity.name;
+        volumes[checkoutpath] = {};
+        console.log("VOLUMES:",volumes);
+        var script = prepareScript(item.item,checkoutpath);
 
         docker.createContainer({
             Image: item.item.container.primary,
@@ -55,8 +60,9 @@ var Worker = function () {
             AttachStdout: true,
             AttachStderr: true,
             Tty: true,
-            Cmd: ['/bin/sh', '-c', script],
+            Cmd: ['/bin/bash', '-c', script],
             OpenStdin: false,
+            Volumes : volumes,
             StdinOnce: false
         }, function (err, container) {
             if (err) {
@@ -71,25 +77,38 @@ var Worker = function () {
                 stream.pipe(item, {end: true});
 
 
-                container.start(function (err, data) {
+                container.start({
+                    'Binds': dir.path+":"+checkoutpath
+                },function (err, data) {
                     if (err) {
-                        item.emit('error', err);
+                        return item.emit('error', err);
                     }
-
-                    container.wait(function (err, data) {
-                        if (err) {
-                            item.emit('error', err);
-                        } else {
-                            item.emit('complete', data);
-                        }
-                    });
-                    setTimeout(function () {
+                    var timeout_handle = setTimeout(function () {
                         container.stop(function (err, data) {
                             item.emit('timeout', {
                                 StatusCode: 100
                             });
                         });
                     }, item.item.config.timeout);
+                    container.wait(function (err, data) {
+                        if (err) {
+                            item.emit('error', err);
+                            clearTimeout(timeout_handle);
+                        } else {
+                            clearTimeout(timeout_handle);
+                            var completeBuild = function(err,artifact_name){
+                                dir.rmdir();
+                                item.emit('complete', data, artifact_name);
+                            };
+                            if(!item.item.artifact_path){
+                                completeBuild();
+                            }else{
+                                var artifact_name = [item.item.reposity.name,item.item.id].join('_');
+                                item.emit('handle_artifact', dir.path+"/"+item.item.artifact_path, artifact_name,completeBuild);
+                            }
+                        }
+                    });
+
                 });
             });
         });

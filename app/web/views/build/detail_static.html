@@ -31,9 +31,21 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
+                        <div class="row-fluid">
+                            <div class="col-lg-12 col-xs-12">
+                                <h2>Build #{{build.build_id}} successful</h2>
+                            </div>
+                        </div>
                         <div class="row-fluid clearfix meta">
                             <div class="col-lg-3 col-xs-12">
-                                Build #{{build.build_id}} successful
+                                <div class="meta-head">Artifact : </div>
+                                <div class="meta-value">
+                                    {% if build.artifact_path != null%}
+                                         <a href="{{bucket}}/{{build.artifact_path}}"><i class="fa fa-2 fa-file-archive-o"></i> {{build.artifact_path}}</a>
+                                    {%else%}
+                                        no artifact produced
+                                    {%endif%}
+                                </div>
                             </div>
                             <div class="col-lg-3 col-xs-12">
                                 <div class="meta-head">Started : </div>
@@ -44,7 +56,7 @@
                                 <div class="meta-value">{{build.finished|date('Y-m-d H:i:s')}}</div>
                             </div>
                             <div class="col-lg-3 col-xs-12">
-                                <div class="meta-head">Elapsed : </div>
+                                <div class="meta-head">Duration : </div>
                                 <div class="meta-value">{{build.elapsed()|date('H:i:s')}}</div>
                             </div>
                         </div>
@@ -76,9 +88,15 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
+                        <div class="row-fluid">
+                            <div class="col-lg-12 col-xs-12">
+                                <h2>Build #{{build.build_id}} failed</h2>
+                            </div>
+                        </div>
                         <div class="row-fluid clearfix meta">
                             <div class="col-lg-3 col-xs-12">
-                                Build #{{build.build_id}} failed
+                                <div class="meta-head">Artifact : </div>
+                                <div class="meta-value">{{build.started|date('Y-m-d H:i:s')}}</div>
                             </div>
                             <div class="col-lg-3 col-xs-12">
                                 <div class="meta-head">Started : </div>
@@ -89,7 +107,7 @@
                                 <div class="meta-value">{{build.finished|date('Y-m-d H:i:s')}}</div>
                             </div>
                             <div class="col-lg-3 col-xs-12">
-                                <div class="meta-head">Elapsed : </div>
+                                <div class="meta-head">Duration : </div>
                                 <div class="meta-value">{{build.elapsed()|date('H:i:s')}}</div>
                             </div>
                         </div>

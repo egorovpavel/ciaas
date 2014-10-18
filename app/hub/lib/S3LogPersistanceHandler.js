@@ -8,7 +8,7 @@ var S3LogPersistanceHandler = function(config,logger){
 	var client = s3.createClient({
 	  s3Options: {
 	    accessKeyId: process.env.AWS_KEY,
-	    secretAccessKey: process.env.AWS_SECRET,
+	    secretAccessKey: process.env.AWS_SECRET
 	  }
 	});
 	var handle = function(build, done){

@@ -69,7 +69,7 @@
                             </div>
                             <div class="build-time main-col col-lg-2 col-xs-12">
                                 {%if build.status_exec == "COMPLETE"%}
-                                    <span>Elapsed : <div>{{build.elapsed()|date('H:i:s')}}</div></span>
+                                    <span>Duration : <div>{{build.elapsed()|date('H:i:s')}}</div></span>
                                 {%endif%}
                             </div>
                             <div class="action-col main-col col-lg-2 col-xs-12">

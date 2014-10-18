@@ -43,21 +43,24 @@ util.inherits(Container, Writable);
 
 // Handles chunk of data. It will buffer it if line end not detected
 Container.prototype.parse = function (data) {
+    console.log("CHUNK:",data);
     var chars = [
-        {from: /\r\r/g, to: "\r[#SPLIT#][#RETURN#]"},
+        {from: /\r\r/g, to: "[#RETURN#]"},
         {from: /\r\n/g, to: "[#SPLIT#]"},
         {from: /\n/g, to: "[#SPLIT#]"},
-        {from: /\r/g, to: "\r[#RETURN#]"},
+        {from: /\r/g, to: "[#RETURN#]"},
         {from: /\r\s/g, to: " "},
-        {from: /\[0G/g, to: "\r[#RETURN#]"}
+        {from: /\[0G/g, to: "[#RETURN#]"}
     ];
 
-    var result = data.toString();
+    var result = data.toString().replace("\u001b[K","").replace("\u001b[2K","");
     _.each(chars, function (val, idx) {
         result = result.replace(val.from, val.to);
     });
 
     this.lineBuffer += result;
+
+
 
     if (/\[#SPLIT#\]/.test(result)) {
         var lines = [];
@@ -65,7 +68,7 @@ Container.prototype.parse = function (data) {
             return e
         });
         _.each(result, function (l) {
-            lines = lines.concat(l.split("[#RETURN#]"));
+            lines = lines.concat(l.replace(/(.*)\[#RETURN#\]/g,''));
         }, this);
         this.lineBuffer = "";
         return lines.filter(function (e) {
@@ -82,7 +85,6 @@ Container.prototype._write = function (chunk, enc, cb) {
     var lines = this.parse(chunk);
     if (this.callback && lines) {
         _.each(lines, function (l) {
-            console.log("PARSE:",l);
             this.callback({
                 id: this.id,
                 line: this.lineNum++,

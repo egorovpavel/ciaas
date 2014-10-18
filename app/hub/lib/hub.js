@@ -30,6 +30,7 @@ var Hub = function(redisConfig,logger){
 					buildid : job.data.id,
 					status : job.data.status.StatusCode,
 					started : job.data.started,
+                    artifact_name : job.data.artifact_name,
 					finished : job.data.finished,
 					entries : entries,
                     reposity : job.data.reposity

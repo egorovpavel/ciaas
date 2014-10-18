@@ -8,6 +8,7 @@ var Queue = require('bull'),
     EventEmitter = require('events').EventEmitter,
     redis = require('redis'),
     util = require('util'),
+    S3ArtifactPersistanceHandler = require('./S3ArtifactPersistanceHandler'),
     Worker = require('./worker.js');
 
 // The main purpose of `Client` object is to process the build queue and
@@ -89,11 +90,31 @@ var Client = function (host, port, log) {
         worker.put(job.data, function (data) {
             job.data.output = [];
             reportHandler(data, job)
-        }).on('complete', function (result) {
+        }).on('handle_artifact', function (path,name,done) {
+            log.info("artifact HANDLED:",path,name);
+            (new S3ArtifactPersistanceHandler(log)).handle(path,name,done);
+        }).on('complete', function (result,artifact_name) {
             job.data.status = result;
+            if(artifact_name){
+                job.data.artifact_name = artifact_name;
+            }
             job.data.finished = new Date().getTime();
             emitter.emit('complete', result);
             log.info("job processed");
+            resultHandler(job.data, complete);
+        }).on('timeout', function(result){
+            job.data.status = result;
+            job.data.finished = new Date().getTime();
+            emitter.emit('timeout', result);
+            log.info("job processed timeout");
+            resultHandler(job.data, complete);
+        }).on('error', function(result){
+            job.data.status = {
+                StatusCode: 500
+            };
+            job.data.finished = new Date().getTime();
+            emitter.emit('error', result);
+            log.info("job processed timeout");
             resultHandler(job.data, complete);
         });
     };

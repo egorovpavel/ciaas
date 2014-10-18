@@ -6758,6 +6758,9 @@ dl dd {
   padding-top: 30px;
   padding-bottom: 30px;
 }
+.build-status-header h2 {
+  color: #FFF;
+}
 .build-status-header .meta {
   line-height: 1em;
   padding: 10px 0px;

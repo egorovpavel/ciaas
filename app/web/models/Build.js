@@ -32,6 +32,9 @@ module.exports = function (sequelize, DataTypes) {
         },
         commit_author : {
             type: DataTypes.STRING  
+        },
+        artifact_path : {
+            type: DataTypes.STRING
         }
     }, {
         getterMethods: {

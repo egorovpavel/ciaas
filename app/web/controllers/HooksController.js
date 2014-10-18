@@ -13,14 +13,11 @@ var HooksController = function(app){
     	var _id,_buildid,_branch,_account;
         Projects.get(req.param('projectid')).then(function (project) {
             _project = project;
-            console.log("PROJECT:",_project);
             return Accounts.get(project.AccountId);
         }).then(function(account){
-            console.log("ACCOUNT:",account);
             _account = account;
             return GitHubRemote.getHeadCommitInfo(_account.token,_account.username,_project.name, _project.default_branch);
         }).then(function(branch){
-            console.log("BRANCH:",branch);
             _branch = branch;
             return Builds.open(_project,{
                 commit_id : branch.commit.sha,
@@ -42,6 +39,7 @@ var HooksController = function(app){
                 container: {
                     primary: container.name
                 },
+                artifact_path: _project.artifact_path,
                 reposity: {
                     uri: _project.repo_url,
                     name: _project.name,
@@ -50,7 +48,7 @@ var HooksController = function(app){
                 },
                 skipSetup: false,
                 payload: {
-                    commands: _project.command.split("\n")
+                    commands: _project.command.split("\r\n")
                 }
             };
             return BuildQueue.add(job);

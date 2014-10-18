@@ -13,7 +13,7 @@ var EmailNotificationHandler = function(logger){
     var handle = function(build, done){
         var diff = (new Date(build.finished)).getTime() - (new Date(build.started)).getTime();
         build.duration = new Date(diff);
-        var body = swig.renderFile('./templates/build_report.html', {
+        var body = swig.renderFile(__dirname+'/../templates/build_report.html', {
             build: build
         });
         transporter.sendMail({

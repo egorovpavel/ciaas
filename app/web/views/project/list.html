@@ -59,6 +59,11 @@
                                         Build {{project.lastBuildId()}} failing
                                     </span>
                                 {%endif%}
+                                {%if project.lastBuildStatus() == 'TIMEOUT'%}
+                                    <span class="label label-danger">
+                                        Build {{project.lastBuildId()}} timed out
+                                    </span>
+                                {%endif%}
                                 {%if project.isInProgress()%}
                                     <span class="label label-warning">
                                         Build {{project.lastBuildId()}} in progress...
