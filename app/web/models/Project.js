@@ -48,6 +48,11 @@ module.exports = function (sequelize, DataTypes) {
                 Project.belongsTo(models.Account);
                 Project.hasMany(models.Build);
                 Project.belongsTo(models.Container);
+                Project.hasMany(models.Container,{
+                    as : "SecondaryContainer",
+                    foreignKey: 'ProjectId',
+                    through: "ProjectsSecondaryContainers"
+                });
             }
         }
     });

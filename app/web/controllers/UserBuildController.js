@@ -34,6 +34,7 @@ function UserBuildController(app) {
     app.post('/projects/:id/build',Authorization.isAuthenticated, function (req, res) {
         var _buildid;
         var _project;
+        var _container;
         var _branch;
         var _id;
         Projects.get(req.param('id')).then(function (project) {
@@ -59,7 +60,13 @@ function UserBuildController(app) {
                     timeout: 500000
                 },
                 container: {
-                    primary: container.name
+                    primary: container.name,
+                    secondary :  _.map(_project.secondaryContainer,function(item){
+                        return {
+                            id : item.id,
+                            name: item.name
+                        };
+                    })
                 },
                 artifact_path: _project.artifact_path,
                 reposity: {
@@ -73,6 +80,7 @@ function UserBuildController(app) {
                     commands: _project.command.split("\r\n")
                 }
             };
+            console.log("JOB:",job);
             return BuildQueue.add(job);
         }).then(function (build) {
             res.redirect('/projects/' + req.param('id') + "/build/" + _buildid);

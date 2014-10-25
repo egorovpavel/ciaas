@@ -40,13 +40,17 @@ function UserProjectsController(app) {
     });
 
     app.get('/projects/create/:repo',Authorization.isAuthenticated, function (req, res) {
-        var repositories;
+        var repositories,_containers;
         GitHubRemote.getRepo(req.user.token, req.user.username,req.params.repo).then(function(repos){
             repositories = repos;
-            return Containers.getPrimary();  
+            return Containers.getPrimary();
+        }).then(function(containers){
+            _containers = containers;
+            return Containers.getSecondary();
         }).then(function (containers) {
             res.render('project/new_config.html', {
-                containers: containers,
+                secondary_containers: containers,
+                containers: _containers,
                 repos : repositories
             });
         }).catch(function (err) {
@@ -126,10 +130,13 @@ function UserProjectsController(app) {
     });
 
     app.get('/projects/:id/config',Authorization.isAuthenticated, function (req, res) {
-        var _containers;
+        var _containers,_secondary_containers;
         var _project;
-        Containers.getPrimary().then(function (containers) {
+        Containers.getPrimary().then(function(containers){
             _containers = containers;
+            return Containers.getSecondary();
+        }).then(function (containers) {
+            _secondary_containers = containers;
             return Projects.get(req.param('id'));
         }).then(function (project) {
             _project = project;
@@ -138,6 +145,7 @@ function UserProjectsController(app) {
             console.log(_project);
             res.render('project/config.html', {
                 containers: _containers,
+                secondary_containers: _secondary_containers,
                 project: _project,
                 repo : repo,
                 account: req.user
@@ -154,10 +162,9 @@ function UserProjectsController(app) {
     });
 
     app.post('/projects/:id/config',Authorization.isAuthenticated, function (req, res) {
-        var _account;
         Projects.update(req.param('id'), req.body.project).then(function () {
             req.flash("notifications", {status : "success", message : "Project updated successfully."});
-            res.redirect('/projects');
+            res.redirect('/projects/'+req.param('id')+'/config');
         }).catch(function (err) {
             console.log(err);
             if (err) {

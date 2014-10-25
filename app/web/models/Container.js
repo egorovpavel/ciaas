@@ -33,6 +33,11 @@ module.exports = function (sequelize, DataTypes) {
         classMethods: {
             associate: function (models) {
                 Container.hasMany(models.Project);
+                Container.hasMany(models.Project,{
+                    as : "ProjectSecondary",
+                    foreignKey: 'ContainerId',
+                    through: "ProjectsSecondaryContainers"
+                });
             }
         }
     });

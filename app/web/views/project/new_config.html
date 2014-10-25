@@ -33,6 +33,20 @@
                 {%if errors.container%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
                 <span class="help-block">{{errors.container|default('')}}</span>
             </div>
+            <div class="form-group {%if errors.secondary_container%}has-error has-feedback{%endif%}">
+                <label>Secondary container</label>
+                <div>
+                    {%for container in containers%}
+                    <label>
+                        <input
+                        {%if project.secondaryContaines and container.id == project.container.id|default(0)%}checked="checked"{%endif%}
+                        type="checkbox" name="project[secondary_container][id]" value="{{container.id}}" /> {{container.name}}
+                    </label>
+                    {%endfor%}
+                </div>
+                {%if errors.secondary_container%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
+                <span class="help-block">{{errors.secondary_container|default('')}}</span>
+            </div>
             <div class="form-group {%if errors.container%}has-error has-feedback{%endif%}">
                 <label for="branch">Default branch</label>
                 <select class="form-control" name="project[default_branch]" id="branch">

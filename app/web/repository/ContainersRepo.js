@@ -46,6 +46,10 @@ var ContainersRepo = function () {
         return db.Container.findAll({where: {type: 'primary'}});
     };
 
+    var getSecondary = function () {
+        return db.Container.findAll({where: {type: 'secondary'}});
+    };
+
     var countAll = function () {
         return db.Container.count();
     };
@@ -63,6 +67,7 @@ var ContainersRepo = function () {
         get: getById,
         count : countAll,
         getPrimary: getPrimary,
+        getSecondary : getSecondary,
         'delete': destroy
     }
 }();

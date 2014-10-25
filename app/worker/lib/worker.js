@@ -51,7 +51,6 @@ var Worker = function () {
         var volumes = {};
         var checkoutpath = "/home/"+item.item.reposity.name;
         volumes[checkoutpath] = {};
-        console.log("VOLUMES:",volumes);
         var script = prepareScript(item.item,checkoutpath);
 
         docker.createContainer({
@@ -75,7 +74,6 @@ var Worker = function () {
 
                 stream.setEncoding('utf8');
                 stream.pipe(item, {end: true});
-
 
                 container.start({
                     'Binds': dir.path+":"+checkoutpath
@@ -112,7 +110,6 @@ var Worker = function () {
                 });
             });
         });
-
     };
 
     var putItem = function (item, callback) {

@@ -96,7 +96,13 @@
                         <div class="row-fluid clearfix meta">
                             <div class="col-lg-3 col-xs-12">
                                 <div class="meta-head">Artifact : </div>
-                                <div class="meta-value">{{build.started|date('Y-m-d H:i:s')}}</div>
+                                <div class="meta-value">
+                                    {% if build.artifact_path != null%}
+                                        <a href="{{bucket}}/{{build.artifact_path}}"><i class="fa fa-2 fa-file-archive-o"></i> {{build.artifact_path}}</a>
+                                    {%else%}
+                                        no artifact produced
+                                    {%endif%}
+                                </div>
                             </div>
                             <div class="col-lg-3 col-xs-12">
                                 <div class="meta-head">Started : </div>

@@ -1,6 +1,7 @@
 'use strict';
 var db = require('../models');
 var Promise = require('bluebird');
+var _ = require('lodash');
 
 var ProjectsRepo = function () {
     var addProjectToAccount = function (account, projectProperties) {
@@ -33,6 +34,14 @@ var ProjectsRepo = function () {
             }
             return project.save().then(function (project) {
                 return project.setContainer(projectProperties.container);
+            }).then(function(project){
+                var secondaryConatiners = _.map(projectProperties.secondary_container,function(item){
+                    item.id = parseInt(item.id);
+                    return db.Container.build(item);
+                });
+                console.log("SECONADY:",secondaryConatiners);
+
+                return project.setSecondaryContainer(secondaryConatiners);
             });
         });
     };
@@ -42,7 +51,7 @@ var ProjectsRepo = function () {
     };
 
     var getById = function (id) {
-        return db.Project.find({include: [db.Container], where: {id: id}});
+        return db.Project.find({include: [{ model: db.Container},{ model: db.Container, as: 'SecondaryContainer' }], where: {id: id}});
     };
 
     var deleteProject = function (id) {

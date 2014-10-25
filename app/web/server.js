@@ -10,6 +10,8 @@ var config = require('./config.json')[process.env.NODE_ENV || 'development'];
 var passport = require('passport');
 var flash = require('connect-flash');
 var bcrypt = require('bcrypt');
+var RedisStore = require('connect-redis')(express.session);
+var _ = require('lodash');
 var querystring = require('querystring');
 
 var GitHubStrategy = require('passport-github').Strategy;
@@ -20,6 +22,8 @@ var GITHUB_REDIRECT =  process.env.GITHUB_REDIRECT || "http://localhost/auth/git
 
 
 var app = express();
+
+
 app.http().io();
 app.set('env', process.env.NODE_ENV || 'development');
 app.configure('development', function () {
@@ -47,7 +51,13 @@ app.use('/app', express.static(__dirname + '/assets/src/bower_components'));
 app.use(express.cookieParser());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.session({ secret: 'keyboard cat' }));
+app.use(express.session({
+    store: new RedisStore({
+        host : app.get('redisHost'),
+        port : app.get('redisPort')
+    }),
+    secret: 'keyboard cat'
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -63,6 +73,22 @@ app.use(function(req, res, next) {
 
 swig.setFilter('substring', function (input, count) {
     return input && input.toString().substr(0, count);
+});
+
+swig.setFilter('map', function(input,key){
+    console.log("MAP:",_.map(_.map(input, key), function(item){
+        return item;
+    }));
+    return _.map(_.map(input, key), function(item){
+        return item;
+    });
+});
+
+swig.setFilter('in', function(val,array){
+    console.log("VAL:",val);
+    console.log("ARR:",array);
+    console.log("RES:",_.contains(array,val));
+    return _.contains(array,val);
 });
 
 app.locals.buildPages = function(total,perpage,current,req){
@@ -84,7 +110,7 @@ app.locals.req = function(){
         return app.get('req');
     }
     return null;
-}
+};
 app.locals.getNotifications = function(){
     if(app.get('notifications') && app.get('notifications').length > 0){
         return app.get('notifications')[0];
@@ -102,7 +128,7 @@ app.locals.getNotifications = function(){
         };
     }
     return null;
-}
+};
 
 var repos_path = __dirname + '/repository';
 var repos = {};
@@ -186,7 +212,7 @@ app.listen(app.get('port'),function () {
 
 app.on('error',function(){
     logger.error("Uncaught exception: " + err);
-})
+});
 
 return app;
 
