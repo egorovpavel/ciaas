@@ -37,7 +37,15 @@ var HooksController = function(app){
                     timeout: 500000
                 },
                 container: {
-                    primary: container.name
+                    primary: container.name,
+                    secondary :  _.map(_project.secondaryContainer,function(item){
+                        return {
+                            image: item.name,
+                            alias : item.defaultAlias,
+                            command : item.command,
+                            name : item.id + "_" + _id + "_" + item.name
+                        };
+                    })
                 },
                 artifact_path: _project.artifact_path,
                 reposity: {

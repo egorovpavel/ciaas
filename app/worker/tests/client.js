@@ -83,11 +83,11 @@ describe('Client', function () {
 
         });
         it('Should put result result into result queue', function (done, fail) {
-            this.timeout(5000);
+            this.timeout(50000);
             var item = {
                 config: {
                     language: "JS",
-                    timeout: 5000
+                    timeout: 50000
                 },
                 container : {
                     primary : "ciaas-nodejs"

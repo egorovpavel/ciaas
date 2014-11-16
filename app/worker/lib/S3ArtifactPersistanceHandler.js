@@ -30,10 +30,11 @@ var S3ArtifactPersistanceHandler = function(logger){
                 }
             });
             uploader.on('end', function() {
-                done(null,data.artifact.name + '_' + Path.basename(data.artifact.path));
+                data.artifact.name = data.artifact.name + '_' + Path.basename(data.artifact.path);
+                done(null,data);
             });
         }else{
-            done(null,null);
+            done(null,data);
         }
 	};
 	return {

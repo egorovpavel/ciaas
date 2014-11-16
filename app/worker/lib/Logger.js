@@ -19,4 +19,4 @@ var Logger = function (env) {
     return logger;
 };
 
-module.exports = console;
+module.exports = Logger;
