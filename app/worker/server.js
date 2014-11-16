@@ -1,9 +1,9 @@
 'use strict';
 
-var Logger = require('winston');
+var Logger = require('./lib/Logger');
 var config = require('./config.json')[process.env.NODE_ENV || 'development'];
 var npid = require('npid');
-var Client = require('./lib/client.js');
+var Client = require('./lib/Client');
 var cluster = require('cluster');
 var numCPUs = process.env.CONCURRENCY || 10;
 

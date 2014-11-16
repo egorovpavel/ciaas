@@ -19,7 +19,7 @@
                     {%for container in containers%}
                     <option
                     {%if project.container and container.id == project.container.id|default(0)%}selected{%endif%}
-                    value="{{container.id}}">{{container.name}}</option>
+                    value="{{container.id}}">{{container.displayName}}</option>
                     {%endfor%}
                 </select>
                 {%if errors.container%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}

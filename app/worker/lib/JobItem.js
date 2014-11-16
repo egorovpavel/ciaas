@@ -8,7 +8,6 @@ var stream = require("stream");
 var Writable = stream.Writable;
 var _ = require('lodash');
 var util = require('util');
-var stripcc = require('stripcc');
 
 // Implements Writable stream so we be able to pipe into docker container
 // output stream
@@ -43,7 +42,6 @@ util.inherits(Container, Writable);
 
 // Handles chunk of data. It will buffer it if line end not detected
 Container.prototype.parse = function (data) {
-    console.log("CHUNK:",data);
     var chars = [
         {from: /\r\r/g, to: "[#RETURN#]"},
         {from: /\r\n/g, to: "[#SPLIT#]"},

@@ -30,10 +30,14 @@
                 {% for container in containers.rows%}
                     <div class="t-row row-fluid clearfix">
                         <div class="main-col col-lg-8 col-xs-12">
-                            <a class="repo-name" href="/dashboard/container/{{container.id}}">
-                                {{container.name}}
+                            <a class="repo-name" href="/dashboard/container/{{container.id}}/edit">
+                                {{container.displayName}}
                             </a>
-                            <span class="label label-default">{{container.type}}</span>
+                            {%if container.type == 'primary'%}
+                                <sup><span class="label label-primary">{{container.type}}</span></sup>
+                            {%else%}
+                                <sup><span class="label label-default">{{container.type}}</span></sup>
+                            {%endif%}
                             <p class="text-muted">
                                 {{container.description}}
                             </p>

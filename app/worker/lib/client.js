@@ -9,7 +9,7 @@ var Queue = require('bull'),
     redis = require('redis'),
     util = require('util'),
     S3ArtifactPersistanceHandler = require('./S3ArtifactPersistanceHandler'),
-    Worker = require('./worker.js');
+    Worker = require('./Worker');
 
 // The main purpose of `Client` object is to process the build queue and
 // report back to result queue and also to stream output to redis pub/sub channel
@@ -21,7 +21,12 @@ var Queue = require('bull'),
 //
 var Client = function (host, port, log) {
     // Worker object
-    var worker = new Worker();
+    var worker = new Worker({
+        postProcess : function (resultData,done) {
+            log.info("artifact HANDLED:",resultData);
+            (new S3ArtifactPersistanceHandler(log)).handle(resultData,done);
+        }
+    });
     // Logger object
     var log = log || console;
     // Referring current instance as emitter
@@ -87,12 +92,10 @@ var Client = function (host, port, log) {
     var buildHandler = function (job, complete) {
         log.info("job processing");
         job.data.started = new Date().getTime();
+        console.log("DATA",job.data.container.secondary);
         worker.put(job.data, function (data) {
             job.data.output = [];
             reportHandler(data, job)
-        }).on('handle_artifact', function (path,name,done) {
-            log.info("artifact HANDLED:",path,name);
-            (new S3ArtifactPersistanceHandler(log)).handle(path,name,done);
         }).on('complete', function (result,artifact_name) {
             job.data.status = result;
             if(artifact_name){

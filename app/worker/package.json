@@ -4,7 +4,7 @@
   "description": "The worker server that will handle all docker manipulating routine",
   "main": "index.js",
   "scripts": {
-    "test": "sudo mocha tests -R progress && sudo mocha --require blanket -R html-cov tests > coverage.html",
+    "test": "sudo mocha tests -R spec && sudo mocha --require blanket -R html-cov tests > coverage.html",
     "startDev": "NODE_ENV=development sudo node service.js",
     "startProd": "NODE_ENV=production sudo node service.js",
     "docs": "docco lib/*.js"
@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/egorovpavel/worker",
   "dependencies": {
+    "bluebird": "^2.3.10",
     "bull": "^0.1.6",
     "dockerode": "~1.2.8",
     "lodash": "^2.4.1",

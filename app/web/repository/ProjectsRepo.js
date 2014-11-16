@@ -12,6 +12,13 @@ var ProjectsRepo = function () {
             promise.reject(errors);
             return promise.promise;
         }
+        if(!projectProperties.container){
+            errors = {
+                ContainerId : ["Primary container must be selected"]
+            };
+            promise.reject(errors);
+            return promise.promise;
+        }
 
         return newproject.save().then(function (project) {
             newproject = project;

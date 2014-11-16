@@ -1,4 +1,12 @@
 {%extends '../../common/layout.html'%}
+{% block js %}
+    <script>
+        $(function(){
+            $('#type1').parent().click(function(){$('#secondary-container-info').addClass('hidden')});
+            $('#type2').parent().click(function(){$('#secondary-container-info').removeClass('hidden')});
+        });
+    </script>
+{% endblock %}
 {% block secondary-header %}
 <div class="secondary-header">
     <div class="container-fluid">
@@ -9,7 +17,7 @@
                         <ol class="breadcrumb">
                             <li class=""><a href="/dashboard">Dashboard</a></li>
                             <li class=""><a href="/dashboard/container">Containers</a></li>
-                            <li class="active">{%if container.id%}Edit container {{container.name}}
+                            <li class="active">{%if container.id%}Edit container {{container.displayName}}
                                 {%else%}New container{%endif%}
                             </li>
                         </ol>
@@ -24,6 +32,20 @@
 <div class="row-fluid contnent">
     <div class="col-lg-12">
         <form method="post">
+            <div class="form-group {%if errors.displayName%}has-error has-feedback{%endif%}">
+                <label for="displayName">Display Name</label>
+                <input type="text" class="form-control" rows="1" name="container[displayName]" id="displayName"
+                       value="{{container.displayName|default('')}}"/>
+                {%if errors.displayName%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
+                <span class="help-block">{{errors.displayName|default('')}}</span>
+            </div>
+            <div class="form-group {%if errors.icon%}has-error has-feedback{%endif%}">
+                <label for="icon">Icon</label>
+                <input type="text" class="form-control" rows="1" name="container[icon]" id="icon"
+                       value="{{container.icon|default('')}}"/>
+                {%if errors.icon%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
+                <span class="help-block">{{errors.icon|default('')}}</span>
+            </div>
             <div class="form-group {%if errors.name%}has-error has-feedback{%endif%}">
                 <label for="name">Name</label>
                 <input type="text" class="form-control" rows="1" name="container[name]" id="name"
@@ -31,28 +53,44 @@
                 {%if errors.name%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
                 <span class="help-block">{{errors.name|default('')}}</span>
             </div>
-            <div class="form-group {%if errors.type%}has-error{%endif%}">
-                <label for="type1">Type</label>
-
-                <div>
-                    <label>
-                        <input type="radio" name="container[type]" id="type1" value="primary" {%if container.type ==
-                        'primary'%}checked{%endif%}>
-                        Primary
-                    </label>
-                    <label>
-                        <input type="radio" name="container[type]" id="type2" value="secondary" {%if container.type ==
-                        'secondary'%}checked{%endif%}>
-                        Secondary
-                    </label>
-                </div>
-                <span class="help-block">{{errors.type|default('')}}</span>
-            </div>
             <div class="form-group {%if errors.description%}has-error has-feedback{%endif%}">
                 <label for="description">Description</label>
                 <textarea class="form-control" rows="5" name="container[description]" id="description">{{container.description|default('')}}</textarea>
                 {%if errors.description%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
                 <span class="help-block">{{errors.description|default('')}}</span>
+            </div>
+            <div class="form-group {%if errors.type%}has-error{%endif%}">
+                <label for="type1">Type</label>
+                <div>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary {%if container.type == 'primary'%}active{%endif%}">
+                            <input type="radio" name="container[type]" id="type1" value="primary" {%if container.type ==
+                            'primary'%}checked{%endif%}>
+                            Primary
+                        </label>
+                        <label class="btn btn-primary {%if container.type == 'secondary'%}active{%endif%}">
+                            <input type="radio" name="container[type]" id="type2" value="secondary" {%if container.type ==
+                            'secondary'%}checked{%endif%}>
+                            Secondary
+                        </label>
+                    </div>
+                </div>
+                <span class="help-block">{{errors.type|default('')}}</span>
+            </div>
+            <div id="secondary-container-info" class="{%if container.type == 'primary'%}hidden{%endif%}">
+                <div class="form-group {%if errors.command%}has-error has-feedback{%endif%}">
+                    <label for="command">Command for start</label>
+                    <textarea rows="5" type="text" class="form-control output" rows="1" name="container[command]" id="command">{{container.command|default('')}}</textarea>
+                    {%if errors.command%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
+                    <span class="help-block">{{errors.command|default('')}}</span>
+                </div>
+                <div class="form-group {%if errors.defaultAlias%}has-error has-feedback{%endif%}">
+                    <label for="defaultAlias">Default Alias</label>
+                    <input type="text" class="form-control" rows="1" name="container[defaultAlias]" id="defaultAlias"
+                           value="{{container.defaultAlias|default('')}}"/>
+                    {%if errors.defaultAlias%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
+                    <span class="help-block">{{errors.defaultAlias|default('')}}</span>
+                </div>
             </div>
             <div class="form-group {%if errors.username%}has-error{%endif%}">
                 <button type="submit" class="btn btn-primary btn-lg">Save</button>

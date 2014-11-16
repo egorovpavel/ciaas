@@ -4,14 +4,14 @@
 			"type": "docker",
 			"image": "egorovpavel/ciaas-docker-base",
 			"pull" : true,
-			"export_path": "nodejs.tar"
+			"export_path": "redis.tar"
 		}
 	],
 	"provisioners": [
 		{
 			"type": "chef-solo",
 			"cookbook_paths": ["containers/berks-cookbooks","containers/cookbooks"],
-			"run_list" : ["apt","git","nodejs","build-essential","container-nodejs"]
+			"run_list" : ["apt","container-redis"]
 		}
 	]
 }

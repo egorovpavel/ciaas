@@ -12,25 +12,29 @@ var S3ArtifactPersistanceHandler = function(logger){
             secretAccessKey: process.env.AWS_SECRET
         }
 	});
-	var handle = function(path, name, done){
-		var params = {
-		  localFile: path,
-		  s3Params: {
-		    Bucket: process.env.S3_BUCKET || "dev-artifact",
-		    Key: name + '_' + Path.basename(path),
-		    ACL : "public-read"
-		  }
-		};
-        var uploader = client.uploadFile(params);
-        uploader.on('error', function(err) {
-            if(err){
-                console.log("UPLOAD FAILED:",err);
-                done(err);
-            }
-        });
-        uploader.on('end', function() {
-            done(null,name + '_' + Path.basename(path));
-        });
+	var handle = function(data, done){
+        if(data.artifact.produce){
+            var params = {
+                localFile: data.artifact.path,
+                s3Params: {
+                    Bucket: process.env.S3_BUCKET || "dev-artifact",
+                    Key: data.artifact.name + '_' + Path.basename(data.artifact.path),
+                    ACL : "public-read"
+                }
+            };
+            var uploader = client.uploadFile(params);
+            uploader.on('error', function(err) {
+                if(err){
+                    console.log("UPLOAD FAILED:",err);
+                    done(err);
+                }
+            });
+            uploader.on('end', function() {
+                done(null,data.artifact.name + '_' + Path.basename(data.artifact.path));
+            });
+        }else{
+            done(null,null);
+        }
 	};
 	return {
 		handle : handle

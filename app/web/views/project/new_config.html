@@ -18,42 +18,53 @@
 </div>
 {% endblock %}
 {%block center_column%}
-<div class="row-fluid contnent">
+<div class="row-fluid content">
     <div class="col-lg-12">
         <form method="post">
             <div class="form-group {%if errors.container%}has-error has-feedback{%endif%}">
-                <label for="container">Container</label>
-                <select class="form-control" name="project[container][id]" id="container">
-                    {%for container in containers%}
-                    <option
-                    {%if project.container and container.id == project.container.id|default(0)%}selected{%endif%}
-                    value="{{container.id}}">{{container.name}}</option>
-                    {%endfor%}
-                </select>
-                {%if errors.container%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
-                <span class="help-block">{{errors.container|default('')}}</span>
+                <label>Primary container</label>
+                <div>
+                    <div class="btn-group" data-toggle="buttons">
+                        {%for container in containers%}
+                            <label class="btn btn-primary {%if project.container and container.id == project.container.id|default(0)%}active{%endif%}">
+                            <input type="radio" name="project[container][id]"
+                            {%if project.container and container.id == project.container.id|default(0)%}checked{%endif%}
+                            value="{{container.id}}"/>{{container.displayName}}
+                            </label>
+                        {%endfor%}
+                    </div>
+                </div>
+                <span class="help-block">{%if errors.ContainerId%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%} {{errors.ContainerId|default('')}}</span>
             </div>
             <div class="form-group {%if errors.secondary_container%}has-error has-feedback{%endif%}">
-                <label>Secondary container</label>
+                <label>Secondary container <sup class="text-muted">optional</sup></label>
                 <div>
-                    {%for container in containers%}
-                    <label>
-                        <input
-                        {%if project.secondaryContaines and container.id == project.container.id|default(0)%}checked="checked"{%endif%}
-                        type="checkbox" name="project[secondary_container][id]" value="{{container.id}}" /> {{container.name}}
-                    </label>
+                    {%for s_container in secondary_containers%}
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-info {%if s_container.id|in(project.secondaryContainer|map('id')) %}active{%endif%}">
+                            <input
+                            {%if s_container.id|in(project.secondaryContainer|map('id')) %}checked="checked"{%endif%}
+                            type="checkbox" name="project[secondary_container][{{s_container.id}}][id]" value="{{s_container.id}}" /> <span class="fa fa-database"></span>  {{s_container.displayName}}
+                        </label>
+                    </div>
                     {%endfor%}
                 </div>
                 {%if errors.secondary_container%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
                 <span class="help-block">{{errors.secondary_container|default('')}}</span>
             </div>
             <div class="form-group {%if errors.container%}has-error has-feedback{%endif%}">
-                <label for="branch">Default branch</label>
-                <select class="form-control" name="project[default_branch]" id="branch">
+                <label>Default branch</label>
+                <div>
                     {%for branch in repos.branches%}
-                        <option value="{{branch.name}}">{{branch.name}}</option>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-success {%if branch.name == 'master' %}active{%endif%}">
+                            <input
+                            {%if branch.name == project.get('default_branch') %}checked="checked"{%endif%}
+                            type="radio" name="project[default_branch]" value="{{branch.name}}" /> <span class="fa fa-code-fork"></span> {{branch.name}}
+                        </label>
+                    </div>
                     {%endfor%}
-                </select>
+                </div>
                 {%if errors.branch%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
                 <span class="help-block">{{errors.container|default('')}}</span>
             </div>
@@ -64,8 +75,8 @@
                 <span class="help-block">{{errors.command|default('')}}</span>
             </div>
             <div class="form-group {%if errors.artifact_path%}has-error has-feedback{%endif%}">
-                <label for="artifact_path">Artifact path (relative path)</label>
-                <input id="artifact_path" name="project[artifact_path]" type="text"  class="form-control"/>
+                <label for="artifact_path">Artifact relative path <sup class="text-muted">optional</sup></label>
+                <input id="artifact_path" name="project[artifact_path]" type="text" value="{{project.artifact_path|default('')}}" class="form-control"/>
                 {%if errors.artifact_path%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
                 <span class="help-block">{{errors.artifact_path|default('')}}</span>
             </div>

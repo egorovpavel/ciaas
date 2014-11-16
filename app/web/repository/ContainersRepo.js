@@ -19,9 +19,15 @@ var ContainersRepo = function () {
     var updateContainer = function (id, containerProperties) {
         return getById(id).then(function (container) {
             var promise = Promise.pending();
+            console.log("PROPS",containerProperties);
+            console.log("CONT",container);
             container.name = containerProperties.name;
             container.type = containerProperties.type;
             container.description = containerProperties.description;
+            container.command = containerProperties.command;
+            container.defaultAlias = containerProperties.defaultAlias;
+            container.displayName = containerProperties.displayName;
+            container.icon = containerProperties.icon;
             var errors = container.validate();
             if (errors) {
                 promise.reject(errors);

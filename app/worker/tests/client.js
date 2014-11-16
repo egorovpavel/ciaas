@@ -1,8 +1,8 @@
 'use strict';
 require('should');
-var Client = require('../lib/client.js');
+var Client = require('../lib/Client.js');
 var Queue = require('bull');
-var logger = require('../lib/logger.js')();
+var logger = require('../lib/Logger.js')();
 
 describe('Client', function () {
     describe('Queue', function () {
@@ -13,11 +13,15 @@ describe('Client', function () {
                     language: "JS",
                     timeout: 5000
                 },
-                reposity: {
-                    uri: "https://github.com/jashkenas/underscore.git",
-                    name: "underscore"
+                container : {
+                    primary : "ciaas-nodejs"
                 },
-                skipSetup: true,
+                skipSetup : true,
+                reposity : {
+                    uri : "https://github.com/jashkenas/underscore.git",
+                    name: "underscore",
+                    branch : "master"
+                },
                 payload: {
                     commands: [
                         "echo 'Hello world'"
@@ -45,11 +49,15 @@ describe('Client', function () {
                     language: "JS",
                     timeout: 5000
                 },
-                reposity: {
-                    uri: "https://github.com/jashkenas/underscore.git",
-                    name: "underscore"
+                container : {
+                    primary : "ciaas-nodejs"
                 },
-                skipSetup: true,
+                skipSetup : true,
+                reposity : {
+                    uri : "https://github.com/jashkenas/underscore.git",
+                    name: "underscore",
+                    branch : "master"
+                },
                 payload: {
                     commands: [
                         "echo 'Hello world'"
@@ -57,7 +65,7 @@ describe('Client', function () {
                 }
             };
             var result = "";
-            var expected = "$ echo Hello worldHello world";
+            var expected = "\u001b[32m$ echo Hello world\u001b[0mHello world";
             var client = new Client('127.0.0.1', 6379, logger);
             var queue = Queue('build', 6379, '127.0.0.1');
             client.progress(function (data) {
@@ -81,11 +89,15 @@ describe('Client', function () {
                     language: "JS",
                     timeout: 5000
                 },
-                reposity: {
-                    uri: "https://github.com/jashkenas/underscore.git",
-                    name: "underscore"
+                container : {
+                    primary : "ciaas-nodejs"
                 },
-                skipSetup: true,
+                skipSetup : true,
+                reposity : {
+                    uri : "https://github.com/jashkenas/underscore.git",
+                    name: "underscore",
+                    branch : "master"
+                },
                 payload: {
                     commands: [
                         "echo 'Hello world'"

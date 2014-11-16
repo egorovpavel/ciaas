@@ -81,7 +81,21 @@ function UserProjectsController(app) {
         }).catch(function (err) {
             if (err) {
                 logger.error(err);
-                res.status(500);
+                var repositories,_containers;
+                GitHubRemote.getRepo(req.user.token, req.user.username,req.params.repo).then(function(repos){
+                    repositories = repos;
+                    return Containers.getPrimary();
+                }).then(function(containers){
+                    _containers = containers;
+                    return Containers.getSecondary();
+                }).then(function (containers) {
+                    res.render('project/new_config.html', {
+                        errors : err,
+                        secondary_containers: containers,
+                        containers: _containers,
+                        repos : repositories
+                    });
+                })
             }
         }).finally(function () {
             logger.info("project create save");

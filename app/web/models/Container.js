@@ -28,6 +28,18 @@ module.exports = function (sequelize, DataTypes) {
                     msg: "Description cant be empty"
                 }
             }
+        },
+        displayName: {
+            type: DataTypes.STRING
+        },
+        defaultAlias: {
+            type: DataTypes.STRING
+        },
+        command: {
+            type: DataTypes.STRING
+        },
+        icon: {
+            type: DataTypes.STRING
         }
     }, {
         classMethods: {

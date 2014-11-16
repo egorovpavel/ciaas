@@ -1,6 +1,6 @@
 "use strict";
 require('should');
-var Worker = require('../lib/worker.js');
+var Worker = require('../lib/Worker.js');
 describe('Worker', function() {
     describe('Should create build script from array', function () {
         it('Creates valid shell script from array', function (done, fail) {
@@ -8,7 +8,8 @@ describe('Worker', function() {
             var data = {
             	reposity : {
 	                uri : "https://github.com/jashkenas/underscore.git",
-                    name: "underscore"
+                    name: "underscore",
+                    branch : "master"
 	            },
 	            skipSetup : false,
 	            payload: {
@@ -17,8 +18,11 @@ describe('Worker', function() {
 		            ]
 	            }
             };
-            var expected = "(git clone "+data.reposity.uri+" && cd "+data.reposity.name+";echo '$ echo 'Hello world''; echo 'Hello world' || exit 1;)";
-            var script = worker.prepare(data);
+            //(cd /home/user && git clone https://github.com/jashkenas/underscore.git -b master .;echo '\u001b[32m$ echo 'Hello world'\u001b[0m'; echo 'Hello world' || exit 1;)
+            var checkoutpath = "/home/user";
+            var expected = "(cd "+checkoutpath+" && git clone "+data.reposity.uri+" -b "+data.reposity.branch+" .;echo '\u001b[32m$ echo 'Hello world'\u001b[0m'; echo 'Hello world' || exit 1;)";
+
+            var script = worker.prepare(data,checkoutpath);
             script.should.be.equal(expected);
             done();
         });
@@ -32,10 +36,14 @@ describe('Worker', function() {
 					language: "JS",
 					timeout: 5000
 				},
+                container : {
+                    primary : "ciaas-nodejs"
+                },
 				skipSetup : true,
             	reposity : {
-	                uri : "https://github.com/jashkenas/underscore.git",
-                    name: "underscore"
+                    uri : "https://github.com/jashkenas/underscore.git",
+                    name: "underscore",
+                    branch : "master"
 	            },
 				payload: {
 					commands: [
@@ -60,11 +68,15 @@ describe('Worker', function() {
 					language: "JS",
 					timeout: 5000
 				},
-            	reposity : {
-	                uri : "https://github.com/jashkenas/underscore.git",
-                    name: "underscore"
-	            },
-	            skipSetup : true,
+                container : {
+                    primary : "ciaas-nodejs"
+                },
+                skipSetup : true,
+                reposity : {
+                    uri : "https://github.com/jashkenas/underscore.git",
+                    name: "underscore",
+                    branch : "master"
+                },
 				payload: {
 					commands: [
 						"this must fail"
@@ -84,16 +96,20 @@ describe('Worker', function() {
 			var item = {
 				config: {
 					language: "JS",
-					timeout: 1000
+					timeout: 2000
 				},
-            	reposity : {
-	                uri : "https://github.com/jashkenas/underscore.git",
-	                name :  "underscore",
-	            },
-	            skipSetup : true,
+                container : {
+                    primary : "ciaas-nodejs"
+                },
+                skipSetup : true,
+                reposity : {
+                    uri : "https://github.com/jashkenas/underscore.git",
+                    name: "underscore",
+                    branch : "master"
+                },
 				payload: {
 					commands: [
-						"sleep 2"
+						"sleep 20"
 					]
 				}
 			};
@@ -103,5 +119,115 @@ describe('Worker', function() {
 				done();
 			});
 		});
+
+        it('Run primary and secondary container', function(done, fail) {
+            this.timeout(50000000);
+            var worker = new Worker();
+            var item = {
+                config: {
+                    language: "JS",
+                    timeout: 200000
+                },
+                container : {
+                    primary : "ciaas-nodejs",
+                    secondary : [
+                        {
+                            image : "redis",
+                            name : "unique_id",
+                            alias : "redis_alias",
+                            command : "redis-server"
+                        }
+                    ]
+                },
+                skipSetup : true,
+                reposity : {
+                    uri : "https://github.com/jashkenas/underscore.git",
+                    name: "underscore",
+                    branch : "master"
+                },
+                payload: {
+                    commands: ["redis-cli -h redis_alias ping"]
+                }
+            };
+
+            worker.put(item).on('complete', function (data) {
+                data.StatusCode.should.be.equal(0);
+                done();
+            });
+        });
+
+        it('Run primary and secondary container and handles timeout correctly', function(done, fail) {
+            this.timeout(50000000);
+            var worker = new Worker();
+            var item = {
+                config: {
+                    language: "JS",
+                    timeout: 2000
+                },
+                container : {
+                    primary : "ciaas-nodejs",
+                    secondary : [
+                        {
+                            image : "redis",
+                            name : "unique_id",
+                            alias : "redis_alias",
+                            command : "redis-server"
+                        }
+                    ]
+                },
+                skipSetup : true,
+                reposity : {
+                    uri : "https://github.com/jashkenas/underscore.git",
+                    name: "underscore",
+                    branch : "master"
+                },
+                payload: {
+                    commands: ["sleep 10"]
+                }
+            };
+
+            worker.put(item).on('timeout', function (data) {
+                data.StatusCode.should.be.equal(100);
+                done();
+            });
+        });
+
+        it('Post process executed', function(done, fail) {
+            this.timeout(50000000);
+            var worker = new Worker({
+                postProcess : function(result, cb){
+                    cb(null,result);
+                    done();
+                }
+            });
+            var item = {
+                config: {
+                    language: "JS",
+                    timeout: 2000
+                },
+                container : {
+                    primary : "ciaas-nodejs",
+                    secondary : [
+                        {
+                            image : "redis",
+                            name : "unique_id",
+                            alias : "redis_alias",
+                            command : "redis-server"
+                        }
+                    ]
+                },
+                skipSetup : true,
+                reposity : {
+                    uri : "https://github.com/jashkenas/underscore.git",
+                    name: "underscore",
+                    branch : "master"
+                },
+                payload: {
+                    commands: ["echo OK"]
+                }
+            };
+
+            worker.put(item);
+        });
 	});
 });

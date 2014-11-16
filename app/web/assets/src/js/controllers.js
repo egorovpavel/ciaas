@@ -3,6 +3,12 @@
 /* Controllers */
 
 angular.module('CI.controllers', [])
+    .controller('ProjectConfigController', ['$scope', function ($scope) {
+        console.log("CONTROLLER");
+        $scope.select = function(){
+            console.log("SELECT");
+        }
+    }])
     .controller('BuildResultController', ['$scope', '$routeParams', 'iosocket', '$sce', function ($scope, $routeParams, iosocket, $sce) {
 
         $scope.buildId = $routeParams.buildid;

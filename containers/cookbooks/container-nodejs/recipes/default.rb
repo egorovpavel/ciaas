@@ -8,6 +8,10 @@
 #
 
 
+package  "redis-tools" do
+    action :install
+end
+
 execute "npm-install-nodeunit" do
     command "sudo npm install nodeunit -g"
 end
