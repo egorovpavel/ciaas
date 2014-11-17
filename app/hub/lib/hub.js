@@ -28,9 +28,10 @@ var Hub = function(redisConfig,logger){
 				var build = {
 					id : job.data._id,
 					buildid : job.data.id,
+                    project : job.data.project,
 					status : job.data.status.StatusCode,
 					started : job.data.started,
-                    artifact : job.data.artifact,
+                    artifact : job.data.status.artifact,
 					finished : job.data.finished,
 					entries : entries,
                     reposity : job.data.reposity

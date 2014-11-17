@@ -18,15 +18,16 @@ var S3ArtifactPersistanceHandler = function(logger){
                 localFile: data.artifact.path,
                 s3Params: {
                     Bucket: process.env.S3_BUCKET || "dev-artifact",
-                    Key: data.artifact.name + '_' + Path.basename(data.artifact.path),
+                    Key: data.artifact.name,
                     ACL : "public-read"
                 }
             };
             var uploader = client.uploadFile(params);
             uploader.on('error', function(err) {
                 if(err){
+                    data.artifact.name = '';
                     console.log("UPLOAD FAILED:",err);
-                    done(err);
+                    done(err,data);
                 }
             });
             uploader.on('end', function() {

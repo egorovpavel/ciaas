@@ -45,7 +45,14 @@
                         <label class="btn btn-info {%if s_container.id|in(project.secondaryContainer|map('id')) %}active{%endif%}">
                             <input ng-chacked="select()"
                             {%if s_container.id|in(project.secondaryContainer|map('id')) %}checked="checked"{%endif%}
-                            type="checkbox" name="project[secondary_container][{{s_container.id}}][id]" value="{{s_container.id}}" /> <span class="fa fa-database"></span>  {{s_container.displayName}}
+                            type="checkbox" name="project[secondary_container][{{s_container.id}}][id]" value="{{s_container.id}}" />
+                            <div>
+                                <div style="text-align: left">
+                                    <span class="fa fa-database"></span>
+                                    {{s_container.displayName}}
+                                </div>
+                                <div style="margin-left: 16px;font-size: 13px">Host: <strong>{{s_container.defaultAlias}}</strong></div>
+                            </div>
                         </label>
                     </div>
                     {%endfor%}
@@ -74,27 +81,6 @@
                 <textarea rows="5" type="text" class="form-control output" rows="1" name="project[command]" id="command">{{project.command|default('npm install && npm test')}}</textarea>
                 {%if errors.command%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
                 <span class="help-block">{{errors.command|default('')}}</span>
-            </div>
-            <div class="form-group {%if errors.secondary_container%}has-error has-feedback{%endif%}">
-                <label>Connection details</label>
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>Container</th>
-                        <th>Host</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {%for s_container in secondary_containers%}
-                    <tr>
-                        <td>{{s_container.displayName}}</td>
-                        <td><code>{{s_container.defaultAlias}}</code></td>
-                    </tr>
-                    {%endfor%}
-                    </tbody>
-                </table>
-                {%if errors.secondary_container%}<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>{%endif%}
-                <span class="help-block">{{errors.secondary_container|default('')}}</span>
             </div>
             <div class="form-group {%if errors.artifact_path%}has-error has-feedback{%endif%}">
                 <label for="artifact_path">Artifact path (relative path)</label>

@@ -1,5 +1,6 @@
 'use strict';
 var tmp = require('temporary');
+var Path = require('path');
 // Build handler
 // =============
 //
@@ -131,7 +132,7 @@ var Worker = function (options) {
         var result = {
             artifact : {
                 produce : config.artifact_path != '',
-                name : [config.reposity.name,config.id].join('_'),
+                name : [config.reposity.name,config.id,Path.basename(config.artifact_path)].join('_'),
                 path : [dir.path,config.artifact_path].join('/')
             }
         };
@@ -165,10 +166,11 @@ var Worker = function (options) {
         }).then(function(){
             return Promise.all(removeContainers(secondaryContainers));
         }).then(function(){
-            return primaryContainer.remove();
-        }).then(function(){
             return postProcess(result,options.postProcess);
         }).then(function(){
+            return primaryContainer.remove();
+        }).then(function(data){
+            result = _.merge(result,data);
             item.emit('complete', result);
         }).catch(function(status){
             if(status.statusCode != 404){
@@ -176,66 +178,6 @@ var Worker = function (options) {
             }
             item.emit('complete', result);
         });
-
-        /*
-
-        docker.createContainer({
-            Image: item.item.container.primary,
-            AttachStdin: false,
-            AttachStdout: true,
-            AttachStderr: true,
-            Tty: true,
-            Cmd: ['/bin/bash', '-c', script],
-            OpenStdin: false,
-            Volumes : volumes,
-            StdinOnce: false
-        }, function (err, container) {
-            if (err) {
-                item.emit('error', err);
-            }
-            container.attach({stream: true, stdout: true, stderr: true}, function (err, stream) {
-                if (err) {
-                    item.emit('error', err);
-                }
-
-                stream.setEncoding('utf8');
-                stream.pipe(item, {end: true});
-
-                container.start({
-                    'Binds': dir.path+":"+checkoutpath
-                },function (err, data) {
-                    if (err) {
-                        return item.emit('error', err);
-                    }
-                    var timeout_handle = setTimeout(function () {
-                        container.stop(function (err, data) {
-                            item.emit('timeout', {
-                                StatusCode: 100
-                            });
-                        });
-                    }, item.item.config.timeout);
-                    container.wait(function (err, data) {
-                        if (err) {
-                            item.emit('error', err);
-                            clearTimeout(timeout_handle);
-                        } else {
-                            clearTimeout(timeout_handle);
-                            var completeBuild = function(err,artifact_name){
-                                dir.rmdir();
-                                item.emit('complete', data, artifact_name);
-                            };
-                            if(!item.item.artifact_path){
-                                completeBuild();
-                            }else{
-                                var artifact_name = [item.item.reposity.name,item.item.id].join('_');
-                                item.emit('handle_artifact', dir.path+"/"+item.item.artifact_path, artifact_name,completeBuild);
-                            }
-                        }
-                    });
-
-                });
-            });
-        });*/
     };
 
     var putItem = function (item, callback) {

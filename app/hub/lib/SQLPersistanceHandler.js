@@ -10,6 +10,7 @@ var PersistanceHandler = function(sqlConfig,logger){
     });
 
 	var handle = function(build, done){
+        console.log("ARTIFACT",build.artifact);
 		var params = {
 			id : build.id,
 			started : new Date(build.started),
