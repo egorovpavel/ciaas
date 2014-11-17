@@ -15,7 +15,7 @@ var PersistanceHandler = function(sqlConfig,logger){
 			started : new Date(build.started),
 			finished : new Date(build.finished),
 			log_build : build.id,
-            artifact_path : build.artifact_name,
+            artifact_path : build.artifact.name,
 			log_result : JSON.stringify(build.status),
 			status_result : (build.status == 0) ? "SUCCESS" : ((build.status == 100) ? "TIMEOUT" : "FAILED")
 		};
