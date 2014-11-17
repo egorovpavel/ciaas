@@ -1,6 +1,6 @@
 'use strict';
 
-var Logger = require('./lib/Logger');
+var Logger = require('./lib/Logger')(process.env.NODE_ENV ||  'development');
 var config = require('./config.json')[process.env.NODE_ENV || 'development'];
 var npid = require('npid');
 var Client = require('./lib/Client');
